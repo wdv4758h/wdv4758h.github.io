@@ -28,3 +28,8 @@ asd
 <script type="math/tex">x+\sqrt{1-x^2}</script>
 
 <m>\frac{123}{456}</m>
+
+```python
+x = [1, 2, 3]
+print("hello")
+```
