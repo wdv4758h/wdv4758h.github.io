@@ -62,9 +62,17 @@ p {
   font-family: "PT Sans","Helvetica Neue",Helvetica,Arial,"Microsoft YaHei",sans-serif;
 }
 
+h1 small {
+  font-size: 30px;
+}
+
 .topbar-inner {
   background-color: #145817;
   background-image: none;
+}
+
+.topbar .brand{
+  margin-left: -130px;
 }
 
 /* Page header tweaks */
