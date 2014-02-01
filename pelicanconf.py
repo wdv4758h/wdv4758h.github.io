@@ -60,3 +60,5 @@ ARTICLE_SAVE_AS = 'posts/{date:%Y}/{date:%m}/{slug}/index.html'
 DIRECT_TEMPLATES = (('index', 'blog', 'tags', 'categories', 'archives'))
 PAGINATED_DIRECT_TEMPLATES = (('blog',))
 TEMPLATE_PAGES = {'home.html': 'index.html',}
+
+DISQUS_SITENAME = 'wdv4758h-blog.disqus.com'
