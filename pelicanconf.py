@@ -63,3 +63,4 @@ TEMPLATE_PAGES = {'home.html': 'index.html',}
 
 DISQUS_SITENAME = 'wdv4758h-blog.disqus.com'
 GOOGLE_ANALYTICS = 'UA-42810012-2'
+BLOG_URL = 'wdv4758h.github.io'
