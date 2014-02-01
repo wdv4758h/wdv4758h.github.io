@@ -6,7 +6,11 @@
 <div class='article'>
 	<h2>{{ article.title }}</h2>
 	<div class="well small">{% include "metadata.html" %}</div>
-	<div class="summary">{{ article.summary }} <a class="btn primary xsmall" href="{{ SITEURL }}/{{ article.url }}">more…</a>
+	<div class="summary">
+        {{ article.summary }}
+        <br>
+        <br>
+        <a class="btn" href="{{ SITEURL }}/{{ article.url }}">more…</a>
 	</div>
     <br>
     <br>
