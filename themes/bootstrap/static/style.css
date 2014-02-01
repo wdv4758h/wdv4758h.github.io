@@ -67,6 +67,10 @@ h1 small {
   font-size: 30px;
 }
 
+span .margin-note-marker {
+  padding-right: 5px;
+}
+
 .topbar-inner {
   background-color: #145817;
   background-image: none;
