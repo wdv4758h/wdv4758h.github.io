@@ -12,6 +12,7 @@ var mathReplace = function(){
         s.type = "math/tex";
         s.innerHTML = elements[i].innerHTML;
         elements[i].innerHTML = "";
+        elements[i].style.fontSize = "150%";
         elements[i].appendChild(s);
     }
 };
