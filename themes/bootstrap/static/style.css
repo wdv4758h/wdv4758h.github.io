@@ -99,6 +99,12 @@ ul .archive {
   margin-top: 10px;
 }
 
+/* topbar fixed or absolute */
+
+.topbar {
+  position: absolute;
+}
+
 /* header link */
 
 .headerlink {
