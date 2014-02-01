@@ -75,6 +75,10 @@ h1 small {
   margin-left: -130px;
 }
 
+.article h2 {
+  background-color: rgba(255, 249, 95, 0.36);
+}
+
 /* Page header tweaks */
 .page-header {
   background-color: #f5f5f5;
