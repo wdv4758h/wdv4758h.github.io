@@ -62,3 +62,4 @@ PAGINATED_DIRECT_TEMPLATES = (('blog',))
 TEMPLATE_PAGES = {'home.html': 'index.html',}
 
 DISQUS_SITENAME = 'wdv4758h-blog.disqus.com'
+GOOGLE_ANALYTICS = 'UA-42810012-2'
