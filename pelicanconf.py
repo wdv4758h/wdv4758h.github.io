@@ -35,8 +35,9 @@ EXTRA_PATH_METADATA = {
 # static paths will be copied without parsing their contents
 STATIC_PATHS = [
     'pictures',
+    'img',
     'extra/robots.txt',
-    ]
+]
 
 # custom page generated with a jinja2 template
 TEMPLATE_PAGES = {'pages/jinja2_template.html': 'jinja2_template.html'}
