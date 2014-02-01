@@ -15,6 +15,7 @@
 	<link href="{{ SITEURL }}/theme/bootstrap.min.css" rel="stylesheet">
 	<link href="{{ SITEURL }}/theme/local.css" rel="stylesheet">
 	<link href="{{ SITEURL }}/theme/pygments.css" rel="stylesheet">
+	<link href="{{ SITEURL }}/theme/style.css" rel="stylesheet">
 
     <!-- Feeds -->
     {% if FEED_ALL_ATOM %}
@@ -53,24 +54,6 @@
 	</div>
 
 	<div class="container-fluid">
-	  <div class="sidebar">
-		<div class="well">
-			<h3>Blogroll</h3>
-			<ul>
-				{% for name, link in LINKS %}
-				<li><a href="{{ link }}">{{ name }}</a></li>
-				{% endfor %}
-			</ul>
-			<div class="social">
-			<h3>Social</h3>
-			<ul>
-				{% for name, link in SOCIAL %}
-				<li><a href="{{ link }}">{{ name }}</a></li>
-				{% endfor %}
-			</ul>
-			</div>
-		</div>
-	  </div>
 	  <div class="content">
 			{% block indextitle %}<div class="page-header"><h1>{% block title %} {{ self.windowtitle() }} {% endblock %}</h1></div>{% endblock %}
 			{% block content %}{% endblock %}
