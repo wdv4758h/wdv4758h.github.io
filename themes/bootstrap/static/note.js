@@ -11,7 +11,7 @@ var floatRight = function(){
 var labelLeft = function(){
     var elements = document.getElementsByTagName('l');
     for(var i = 0; i < elements.length; i++){
-        elements[i].innerHTML = '<div class="label-anchor"><a class="label-anchor"><span>' + elements[i].innerHTML + '</span></a><div>';
+        elements[i].innerHTML = '<div class="label-anchor"><a class="label-anchor"><span>' + elements[i].innerHTML + ' »</span></a><div>';
     }
 };
 
