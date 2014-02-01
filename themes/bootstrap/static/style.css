@@ -71,12 +71,17 @@ h1 small {
   background-image: none;
 }
 
-.topbar .brand{
+.topbar .brand {
   margin-left: -130px;
 }
 
 .article h2 {
   background-color: rgba(255, 249, 95, 0.36);
+}
+
+.pull-right a {
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 /* Page header tweaks */
