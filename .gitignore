@@ -2,6 +2,9 @@
 output
 pelicanconf_local.py
 
+#swap
+*.swp
+
 #Python
 *.py[cod]
 __pycache__/*
