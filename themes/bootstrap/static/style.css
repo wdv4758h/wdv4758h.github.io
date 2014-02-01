@@ -84,6 +84,11 @@ h1 small {
   margin-right: 5px;
 }
 
+ul .archive {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
 /* Page header tweaks */
 .page-header {
   background-color: #f5f5f5;
