@@ -107,6 +107,12 @@ ul .archive, ul .tag {
   padding-bottom: 0px;
 }
 
+/* table */
+
+table {
+  font-size: 20px;
+}
+
 /* code block line number */
 
 .linenos {
