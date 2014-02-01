@@ -71,6 +71,10 @@ span .margin-note-marker {
   padding-right: 5px;
 }
 
+.margin-note-marker sup {
+  font-weight: bold;
+}
+
 .topbar-inner {
   background-color: #145817;
   background-image: none;
