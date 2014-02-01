@@ -99,6 +99,17 @@ ul .archive {
   margin-top: 10px;
 }
 
+/* header link */
+
+.headerlink {
+    visibility: hidden;
+    margin-left: 10px;
+}
+
+h1:hover > a.headerlink, h2:hover > a.headerlink, h3:hover > a.headerlink {
+    visibility: visible;
+}
+
 /* Page header tweaks */
 .page-header {
   background-color: #f5f5f5;

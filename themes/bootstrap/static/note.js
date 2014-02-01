@@ -27,6 +27,19 @@ var mathReplace = function(){
     }
 };
 
+var headerlink = function(){
+    var elements = document.getElementsByTagName('h2');
+    for(var i = 0; i < elements.length; i++){
+        var link = document.createElement("a");
+        link.innerText = '¶';
+        link.className = 'headerlink';
+        link.href = '#' + elements[i].innerText.replace(/ /g, '-');
+        elements[i].id = elements[i].innerText.replace(/ /g, '-');
+        elements[i].appendChild(link);
+    }
+};
+
 floatRight();
 labelLeft();
+headerlink();
 mathReplace();
