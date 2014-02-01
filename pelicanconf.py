@@ -9,7 +9,7 @@ TIMEZONE = "Asia/Taipei"
 # can be useful in development, but set to False when you're ready to publish
 RELATIVE_URLS = True
 
-GITHUB_URL = 'http://github.com/wdv4758h/'
+#GITHUB_URL = 'http://github.com/wdv4758h/'
 DISQUS_SITENAME = ""
 PDF_GENERATOR = False
 REVERSE_CATEGORY_ORDER = True
