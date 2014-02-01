@@ -62,6 +62,11 @@ p {
   font-family: "PT Sans","Helvetica Neue",Helvetica,Arial,"Microsoft YaHei",sans-serif;
 }
 
+.topbar-inner {
+  background-color: #145817;
+  background-image: none;
+}
+
 /* Page header tweaks */
 .page-header {
   background-color: #f5f5f5;
