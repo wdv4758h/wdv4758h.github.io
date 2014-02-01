@@ -107,6 +107,12 @@ ul .archive, ul .tag {
   padding-bottom: 0px;
 }
 
+/* code block line number */
+
+.linenos {
+    width: 20px;
+}
+
 /* topbar fixed or absolute */
 
 .topbar {
