@@ -34,7 +34,7 @@ EXTRA_PATH_METADATA = {
 
 # static paths will be copied without parsing their contents
 STATIC_PATHS = [
-    'pictures',
+    'html',
     'img',
     'extra/robots.txt',
 ]
@@ -67,3 +67,5 @@ GOOGLE_ANALYTICS = 'UA-42810012-2'
 BLOG_URL = 'wdv4758h.github.io'
 
 MD_EXTENSIONS = ['fenced_code', 'codehilite(css_class=highlight, linenums=True)', 'extra']
+
+READERS = {"html": None}
