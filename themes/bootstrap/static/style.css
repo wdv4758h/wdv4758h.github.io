@@ -94,9 +94,14 @@ span .margin-note-marker {
   margin-right: 5px;
 }
 
-ul .archive, ul .tag {
+li, ul .archive, ul .tag {
   margin-bottom: 10px;
   margin-top: 10px;
+}
+
+.nav li {
+  margin-bottom: 0px;
+  margin-top: 0px;
 }
 
 .btn {
