@@ -89,6 +89,8 @@ p {
   font-family: "PT Sans","Helvetica Neue",Helvetica,Arial,"Microsoft YaHei",sans-serif;
   line-height: 25px;
   margin: auto;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 img {
