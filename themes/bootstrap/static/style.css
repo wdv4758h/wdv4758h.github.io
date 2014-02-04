@@ -93,6 +93,10 @@ p {
   padding-bottom: 10px;
 }
 
+.pull-right {
+  padding: 0px;
+}
+
 img {
   max-width: 100%;
 }
