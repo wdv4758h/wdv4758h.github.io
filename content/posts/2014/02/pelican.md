@@ -27,6 +27,7 @@ Pelican 是個 Python 寫的靜態網站 generator，
 
 Pelican 要支援 Disqus 非常簡單，首先只要在你的 Disqus 新增好你的網站，獲得你的 Disqul url 後，
 只要在你的 pelicanconf.py 裡新增 DISQUS_SITENAME = 'your-disqus-url' 即可：
+
 ```python
 DISQUS_SITENAME = 'my-blog.disqus.com'
 ```

@@ -12,7 +12,32 @@ This is the content of my blog post.
 
 # header 1
 
+in header 1
+
+    in header 1
+
 ## header 2
+
+in header 2
+
+    in header 2
+
+### header 3
+
+in header 3
+
+    in header 3
+
+#### header 4
+
+in header 4
+
+    in header 4
+
+- list1
+- list2
+- list3
+    * sub list
 
 [link]()
 
