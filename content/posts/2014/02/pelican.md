@@ -2,7 +2,7 @@ Title: 初次使用 Pelican
 Slug: pelican
 Date: 2014-02-01 14:33
 Category: Python
-Tags: pelican
+Tags: pelican, Python
 Author: wdv4758h
 Summary: 一些 Pelican 使用紀錄
 

@@ -2,7 +2,7 @@ Title: closure 概念
 Slug: closure
 Date: 2014-02-07 21:06
 Category: Misc
-Tags: closure
+Tags: closure, program
 Author: wdv4758h
 Summary: closure
 

@@ -2,7 +2,7 @@ Title: coroutine 概念
 Slug: coroutine
 Date: 2014-02-06 21:33
 Category: Misc
-Tags: coroutine
+Tags: coroutine, program
 Author: wdv4758h
 Summary: coroutine
 

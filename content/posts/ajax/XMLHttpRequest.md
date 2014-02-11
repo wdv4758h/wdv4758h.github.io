@@ -2,7 +2,7 @@ Title: XMLHttpRequest
 Slug: XMLHttpRequest
 Date: 2014-02-11 00:06
 Category: Misc
-Tags: XMLHttpRequest
+Tags: XMLHttpRequest, ajax
 Author: wdv4758h
 Summary: XMLHttpRequest
 
