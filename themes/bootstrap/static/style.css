@@ -156,6 +156,8 @@ li, ul .archive, ul .tag {
 .h3 { padding-left: 4%; }
 .h4 { padding-left: 8%; }
 
+tbody, tr, td { padding-left: inherit; }
+
 /* def-block */
 
 .def-block {
@@ -187,6 +189,7 @@ table {
 .linenos {
   width: 20px;
   padding-right: 5px;
+  padding-left: inherit;
 }
 
 .code {
