@@ -8,6 +8,16 @@
 		<div class="indent span15">{{ article.content }}</div>
         <br>
         <hr>
+        {% if article.related_posts %}
+        <h2>相關文章</h2>
+        <br>
+        <ul>
+            {% for related_post in article.related_posts %}
+            <li><a href="{{ SITEURL }}/{{ related_post.url }}">{{ related_post.title }}</a></li>
+            {% endfor %}
+        </ul>
+        <hr>
+        {% endif %}
 		<div>
 		 	{% include "twitter.html" %}
 			{% if DISQUS_SITENAME %}<div id="disqus_thread"></div>{% endif %}

@@ -69,3 +69,6 @@ BLOG_URL = 'wdv4758h.github.io'
 MD_EXTENSIONS = ['fenced_code', 'codehilite(css_class=highlight, linenums=True)', 'extra']
 
 READERS = {"html": None}
+
+PLUGIN_PATH = 'plugins'
+PLUGINS = ['related_posts']
