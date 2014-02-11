@@ -150,6 +150,12 @@ li, ul .archive, ul .tag {
   padding-bottom: 0px;
 }
 
+/* content indent */
+
+.h2 { padding-left: 0%; }
+.h3 { padding-left: 4%; }
+.h4 { padding-left: 8%; }
+
 /* def-block */
 
 .def-block {
@@ -298,8 +304,8 @@ a.label-anchor {
 	display: block;
 	text-align: right;
 	width: 200px;
-	left: -210px;
-  top: 5px;
+    left: -142px;
+    top: 5px;
 	font-family: 'PT Sans', sans-serif;
 }
 a.label-anchor:target span {
@@ -317,10 +323,11 @@ a.label-anchor span {
 	white-space: nowrap;
 	vertical-align: baseline;
 	background-color: #666;
-	padding: 1px 4px 2px;
+	padding: 4px 4px 4px 4px;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	border-radius: 3px;
+    float:left;
 }
 
 a.inline-ref {

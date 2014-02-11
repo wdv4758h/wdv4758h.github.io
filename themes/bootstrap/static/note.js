@@ -39,7 +39,23 @@ var headerlink = function(){
     }
 };
 
+var indent = function(){
+    var elements = document.getElementsByClassName('indent')[0].childNodes;
+    var tmp = 'h1';
+    for(var i = 0; i < elements.length; i++){
+        if(elements[i].tagName == 'H2')
+            tmp = 'h2';
+        else if(elements[i].tagName == 'H3')
+            tmp = 'h3';
+        else if(elements[i].tagName == 'H4')
+            tmp = 'h4';
+        else
+            elements[i].className += ' ' + tmp;
+    }
+}
+
 floatRight();
 labelLeft();
 headerlink();
 mathReplace();
+indent();
