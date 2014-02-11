@@ -150,6 +150,26 @@ li, ul .archive, ul .tag {
   padding-bottom: 0px;
 }
 
+/* def-block */
+
+.def-block {
+  color: black;
+  border-color: #eed3d7;
+  background-color: #f2dede;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border: 1px solid #fbeed5;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+  padding: 8px 14px 8px 14px;
+  margin-bottom: 22px;
+  margin-left: 0px;
+}
+
+.def-block > li {
+  margin-left: 20px;
+}
+
 /* table */
 
 table {
