@@ -16,6 +16,7 @@
 	<link href="{{ SITEURL }}/theme/local.css" rel="stylesheet">
 	<link href="{{ SITEURL }}/theme/pygments.css" rel="stylesheet">
 	<link href="{{ SITEURL }}/theme/style.css" rel="stylesheet">
+	<link href="{{ SITEURL }}/theme/font-awesome-4.0.3/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow|PT+Sans:400,400italic,700,700italic|Droid+Serif:400,400italic' rel='stylesheet' type='text/css'>
 
     <!-- Feeds -->
@@ -49,7 +50,11 @@
 					<li {% if cat == category %}class="active"{% endif %}><a href="{{ SITEURL }}/{{ cat.url }}">{{ cat }}</a></li>
 				{% endfor %}
 			</ul>
-			<p class="pull-right"><a href="{{ SITEURL }}/archives.html">[archives]</a> <a href="{{ SITEURL }}/tags.html">[tags]</a><a href="{{ SITEURL }}/feeds/all.rss.xml">[Subscribe]</a></p>
+            <p class="pull-right">
+                <a href="{{ SITEURL }}/archives.html"><i class="fa fa-archive"></i></a>
+                <a href="{{ SITEURL }}/tags.html"><i class="fa fa-tags"></i></a>
+                <a href="{{ SITEURL }}/feeds/all.rss.xml"><i class="fa fa-rss"></i></a>
+            </p>
 		</div>
 	  </div>
 	</div>
