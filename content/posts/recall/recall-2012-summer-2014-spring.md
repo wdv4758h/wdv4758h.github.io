@@ -2,7 +2,7 @@ Title: [回憶] 2012 年夏 ~ 2014 年春
 Slug: recall-2012-summer-2014-spring
 Date: 2014-02-18 21:00
 Category: Misc
-Tags:
+Tags: recall
 Author: wdv4758h
 Summary: 回想一些經過
 
