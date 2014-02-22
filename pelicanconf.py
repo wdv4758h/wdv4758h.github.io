@@ -70,5 +70,19 @@ MD_EXTENSIONS = ['fenced_code', 'codehilite(css_class=highlight, linenums=True)'
 
 READERS = {"html": None}
 
+SITEMAP = {
+    'format': 'xml',
+    'priorities': {
+        'articles': 0.5,
+        'indexes': 0.5,
+        'pages': 0.5
+    },
+    'changefreqs': {
+        'articles': 'monthly',
+        'indexes': 'daily',
+        'pages': 'monthly'
+    }
+}
+
 PLUGIN_PATH = 'plugins'
-PLUGINS = ['related_posts']
+PLUGINS = ['related_posts', 'sitemap']
