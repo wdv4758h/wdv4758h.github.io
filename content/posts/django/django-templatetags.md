@@ -12,7 +12,7 @@ Summary: 今天解問題的時候剛好查到利用 template tags 的解法，�
 如果這些 tags 是跟 app A 有關的話，那很理所當然可以放在 app A 資料夾下的 "templatetags"，
 如果是比較不能區分的話，可以建立一個 app 專門放 template tags。
 
-**注意要有 __init__.py 來讓 Python 把這個資料夾當作 package"
+**注意要有 \_\_init\_\_.py 來讓 Python 把這個資料夾當作 package**
 
 自製的 tags 和 filter 就放在 templatetags 資料夾底下的檔案，
 檔案名字就是在 template 要 load 時的名字
