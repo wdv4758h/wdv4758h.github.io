@@ -39,6 +39,14 @@ var headerlink = function(){
     }
 };
 
+var colorBlock = function(tag, name){
+    var elements = document.getElementsByTagName(tag);
+    for(var i = 0; i < elements.length; i++){
+        elements[i].parentElement.nextElementSibling.className = name;
+        elements[i].parentElement.remove();
+    }
+}
+
 var indent = function(){
     var elements = document.getElementsByClassName('indent')[0].childNodes;
     var tmp = 'h1';
@@ -59,3 +67,4 @@ labelLeft();
 headerlink();
 mathReplace();
 indent();
+//colorBlock('def', 'def-block');
