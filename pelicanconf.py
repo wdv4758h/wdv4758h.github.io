@@ -84,5 +84,5 @@ SITEMAP = {
     }
 }
 
-PLUGIN_PATH = 'plugins'
+PLUGIN_PATH = ['plugins']
 PLUGINS = ['related_posts', 'sitemap']
