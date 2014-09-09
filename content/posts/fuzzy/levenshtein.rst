@@ -38,9 +38,9 @@ Levenshtein distance 是用來評估兩 sequence 差別度的一種 string metri
 兩個字串的 Levenshtein distance 就是一個字串變成另一個字串的最小字元編輯次數 (insert, delete, substitute)，
 由俄國科學家 Vladimir Levenshtein 在 1965 年提出
 
-- substitution : s**a**t -> s**i**t
-- insertion : st -> s**i**t
-- deletion : si**a**t -> sit
+- substitution : s **a** t -> s **i** t
+- insertion : st -> s **i** t
+- deletion : si **a** t -> sit
 
 看一段簡單的 Python code 來了解運算:
 
