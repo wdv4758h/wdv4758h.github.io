@@ -1,36 +1,16 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
 
 AUTHOR = 'wdv4758h'
-SITENAME = "DoVe"
+SITENAME = 'DoVe'
 SITEURL = 'https://wdv4758h.github.io'
-TIMEZONE = "Asia/Taipei"
+TIMEZONE = 'Asia/Taipei'
 
-# can be useful in development, but set to False when you're ready to publish
-RELATIVE_URLS = True
-
-#GITHUB_URL = 'http://github.com/wdv4758h/'
-DISQUS_SITENAME = ""
-PDF_GENERATOR = False
-REVERSE_CATEGORY_ORDER = True
-LOCALE = "C"
-DEFAULT_PAGINATION = 4
-DEFAULT_DATE = (2014, 2, 1, 0, 1, 1)
+PATH = 'content'
 
 FEED_ALL_RSS = 'feeds/all.rss.xml'
 CATEGORY_FEED_RSS = 'feeds/%s.rss.xml'
-
-LINKS = ()
-
-SOCIAL = (('github', 'http://github.com/wdv4758h'),)
-
-# global metadata to all the contents
-DEFAULT_METADATA = (('yeah', 'it is'),)
-
-# path-specific metadata
-EXTRA_PATH_METADATA = {
-    'extra/robots.txt': {'path': 'robots.txt'},
-    }
 
 # static paths will be copied without parsing their contents
 STATIC_PATHS = [
@@ -38,51 +18,34 @@ STATIC_PATHS = [
     'img',
     'extra/robots.txt',
 ]
-
-# custom page generated with a jinja2 template
-TEMPLATE_PAGES = {'pages/jinja2_template.html': 'jinja2_template.html'}
-
-# code blocks with line numbers
-PYGMENTS_RST_OPTIONS = {'linenos': 'table'}
-
-# foobar will not be used, because it's not in caps. All configuration keys
-# have to be in caps
-foobar = "barbaz"
-
-THEME = 'themes/bootstrap'
-OUTPUT_PATH = 'output'
-PATH = 'content'
+READERS = {"html": None}
+THEME = 'themes/aboutwilson'
 
 ARTICLE_URL = 'posts/{date:%Y}/{date:%m}/{slug}/'
 ARTICLE_SAVE_AS = 'posts/{date:%Y}/{date:%m}/{slug}/index.html'
 
+DEFAULT_LANG = 'en'
 
-# Custom Home page
-DIRECT_TEMPLATES = (('index', 'blog', 'tags', 'categories', 'archives'))
-PAGINATED_DIRECT_TEMPLATES = (('blog',))
-TEMPLATE_PAGES = {'home.html': 'index.html',}
+# Feed generation is usually not desired when developing
+FEED_ALL_ATOM = None
+CATEGORY_FEED_ATOM = None
+TRANSLATION_FEED_ATOM = None
+
+# Blogroll
+LINKS = (('Pelican', 'http://getpelican.com/'),
+         ('Python.org', 'http://python.org/'),
+         ('Jinja2', 'http://jinja.pocoo.org/'),
+         ('You can modify those links in your config file', '#'),)
+
+# Social widget
+SOCIAL = (('You can add links in your config file', '#'),
+          ('Another social link', '#'),)
 
 DISQUS_SITENAME = 'wdv4758h-blog.disqus.com'
-GOOGLE_ANALYTICS = 'UA-42810012-2'
-BLOG_URL = 'wdv4758h.github.io'
 
-MD_EXTENSIONS = ['fenced_code', 'codehilite(css_class=highlight, linenums=True)', 'extra']
+DEFAULT_PAGINATION = 10
 
-READERS = {"html": None}
+# Uncomment following line if you want document-relative URLs when developing
+RELATIVE_URLS = True
 
-SITEMAP = {
-    'format': 'xml',
-    'priorities': {
-        'articles': 0.5,
-        'indexes': 0.5,
-        'pages': 0.5
-    },
-    'changefreqs': {
-        'articles': 'monthly',
-        'indexes': 'daily',
-        'pages': 'monthly'
-    }
-}
-
-PLUGIN_PATH = ['plugins']
-PLUGINS = ['related_posts', 'sitemap']
+MENUITEMS = [('archive', '/archives'), ('tags', '/tags')]
