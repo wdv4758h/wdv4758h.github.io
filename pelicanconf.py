@@ -41,7 +41,7 @@ LINKS = (('Pelican', 'http://getpelican.com/'),
 SOCIAL = (('You can add links in your config file', '#'),
           ('Another social link', '#'),)
 
-DISQUS_SITENAME = 'wdv4758h-blog.disqus.com'
+DISQUS_SITENAME = 'wdv4758h-blog'
 
 DEFAULT_PAGINATION = 10
 
