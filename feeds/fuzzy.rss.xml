@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DoVe</title><link>/</link><description></description><atom:link href="/feeds/fuzzy.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 10 Sep 2014 01:16:00 +0800</lastBuildDate><item><title>Levenshtein distance</title><link>/posts/2014/09/levenshtein-distance/</link><description>&lt;p&gt;第一次碰這類的東西，做些筆記 XD&lt;/p&gt;
+&lt;div class="section" id="edit-distance"&gt;
+&lt;h2&gt;edit distance&lt;/h2&gt;
+&lt;p&gt;edit distance = 更動多少次數後，兩字串會一樣&lt;/p&gt;
+&lt;p&gt;計算方式有很多種&lt;/p&gt;
+&lt;table border="1" class="table table-bordered docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="34%" /&gt;
+&lt;col width="13%" /&gt;
+&lt;col width="11%" /&gt;
+&lt;col width="16%" /&gt;
+&lt;col width="25%" /&gt;
+&lt;/colgroup&gt;
+&lt;thead valign="bottom"&gt;
+&lt;tr&gt;&lt;th class="head"&gt;Algorithm&lt;/th&gt;
+&lt;th class="head"&gt;insertion&lt;/th&gt;
+&lt;th class="head"&gt;deletion&lt;/th&gt;
+&lt;th class="head"&gt;substitution&lt;/th&gt;
+&lt;th class="head"&gt;transposition (換位)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;Hamming distance&lt;/td&gt;
+&lt;td&gt;X&lt;/td&gt;
+&lt;td&gt;X&lt;/td&gt;
+&lt;td&gt;O&lt;/td&gt;
+&lt;td&gt;X&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Longest Common Subsequence&lt;/td&gt;
+&lt;td&gt;O&lt;/td&gt;
+&lt;td&gt;O&lt;/td&gt;
+&lt;td&gt;X&lt;/td&gt;
+&lt;td&gt;X&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Levenshtein distance&lt;/td&gt;
+&lt;td&gt;O&lt;/td&gt;
+&lt;td&gt;O&lt;/td&gt;
+&lt;td&gt;O&lt;/td&gt;
+&lt;td&gt;X&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Damerau-Levenshtein distance&lt;/td&gt;
+&lt;td&gt;O&lt;/td&gt;
+&lt;td&gt;O&lt;/td&gt;
+&lt;td&gt;O&lt;/td&gt;
+&lt;td&gt;O&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class="section" id="levenshtein-distance"&gt;
+&lt;h2&gt;Levenshtein distance&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Levenshtein_distance"&gt;http://en.wikipedia.org/wiki/Levenshtein_distance&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance"&gt;http://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Levenshtein distance 是用來評估兩 sequence 差別度的一種 string metric，
+兩個字串的 Levenshtein distance 就是一個字串變成另一個字串的最小字元編輯次數 (insert, delete, substitute)，
+由俄國科學家 Vladimir Levenshtein 在 1965 年提出&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;substitution : s &lt;strong&gt;a&lt;/strong&gt; t -&amp;gt; s &lt;strong&gt;i&lt;/strong&gt; t&lt;/li&gt;
+&lt;li&gt;insertion : st -&amp;gt; s &lt;strong&gt;i&lt;/strong&gt; t&lt;/li&gt;
+&lt;li&gt;deletion : si &lt;strong&gt;a&lt;/strong&gt; t -&amp;gt; sit&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;看一段簡單的 Python code 來了解運算:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;lev&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;min&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lev&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:],&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:])&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]),&lt;/span&gt;
+               &lt;span class="n"&gt;lev&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:],&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+               &lt;span class="n"&gt;lev&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:])&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;傳入 min function 的有 3 個，
+第一個是兩邊都減一個字元，如果減去字元不一樣就把次數加 1 (substitute)，
+第二個是 a 減去一個字元並且次數加一，這可以看成 a 字串的 delete 或是在 b 前面 insert 了和 a match 的字元，
+第三個跟第二個雷同&lt;/p&gt;
+&lt;p&gt;當然，這個寫法很沒有效率，做了很多次不必要的遞迴，用 CPython (Python 3.4) 下去跑測試，
+丟個簡單的字串當測試 &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;lev('fasfasf',&lt;/span&gt; 'afvq')&lt;/tt&gt; 這個做法大約要 1.9 ms&lt;/p&gt;
+&lt;p&gt;簡單地用 lru cache 來做 DP:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;functools&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;lru_cache&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;lev&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+
+    &lt;span class="nd"&gt;@lru_cache&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;maxsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;_lev&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;min&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_lev&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:],&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:])&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]),&lt;/span&gt;
+                   &lt;span class="n"&gt;_lev&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:],&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                   &lt;span class="n"&gt;_lev&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:])&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;_lev&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;利用 lru cache 來簡單地做 DP 後，剛剛的測試現在大約變成 370 µs&lt;/p&gt;
+&lt;p&gt;當然，還有很多改進空間，像是&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;自己實際寫 DP&lt;/li&gt;
+&lt;li&gt;判斷字串相同就直接回傳 0 (對於有很多相同子字串的情況可以用字串比對的 cost 換掉一些遞迴)&lt;/li&gt;
+&lt;li&gt;減去頭尾相同的子字串&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如果要速度的話: &lt;a class="reference external" href="https://github.com/ztane/python-Levenshtein"&gt;python-Levenshtein&lt;/a&gt;
+，C 寫的 Python extension，剛剛的測試丟下去大概會變成 300 ns 以內&lt;/p&gt;
+&lt;p&gt;計算的 cost 大約會是 O(len(a) * len(b))，所以在幫助 fuzzy string searching 的時候，
+比較的字串同常會比較小，以便於提升速度&lt;/p&gt;
+&lt;div class="section" id="id1"&gt;
+&lt;h3&gt;其他性質&lt;/h3&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;lower bound : 兩字串的長度差&lt;/li&gt;
+&lt;li&gt;upper bound : 較長的字串的長度&lt;/li&gt;
+&lt;li&gt;只有當字串相等時會是 0&lt;/li&gt;
+&lt;li&gt;當字串長度相同時，Hamming distance 會是 Levenshtein distance 的 upper bound&lt;/li&gt;
+&lt;li&gt;[三角不等式] 兩個字串的 Levenshtein distance 不會大於分別和第三個字串的 Levenshtein distance 的合&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id2"&gt;
+&lt;h3&gt;使用情境&lt;/h3&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;spell checkers&lt;/li&gt;
+&lt;li&gt;OCR&lt;/li&gt;
+&lt;li&gt;assist natural language translation based on translation memory&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Record_linkage"&gt;http://en.wikipedia.org/wiki/Record_linkage&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Wed, 10 Sep 2014 01:16:00 +0800</pubDate><guid>tag:,2014-09-10:posts/2014/09/levenshtein-distance/</guid><category>Python</category><category>Fuzzy</category></item></channel></rss>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DoVe</title><link>/</link><description></description><atom:link href="/feeds/django.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 20 Feb 2014 00:10:00 +0800</lastBuildDate><item><title>自製 template tags 和 filters</title><link>/posts/2014/02/django-templatetags/</link><description>&lt;div class="section" id="id1"&gt;
+&lt;h2&gt;起手式&lt;/h2&gt;
+&lt;p&gt;要建立自己的 template tags 之前，要先在一個 app 資料架底下建立 &amp;quot;templatetags&amp;quot; 資料夾，
+如果這些 tags 是跟 app A 有關的話，那很理所當然可以放在 app A 資料夾下的 &amp;quot;templatetags&amp;quot;，
+如果是比較不能區分的話，可以建立一個 app 專門放 template tags。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;注意要有 __init__.py 來讓 Python 把這個資料夾當作 package&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;自製的 tags 和 filter 就放在 templatetags 資料夾底下的檔案，
+檔案名字就是在 template 要 load 時的名字&lt;/p&gt;
+&lt;p&gt;結構可能長這樣:&lt;/p&gt;
+&lt;div class="line-block"&gt;
+&lt;div class="line"&gt;App/&lt;/div&gt;
+&lt;div class="line-block"&gt;
+&lt;div class="line"&gt;__init__.py&lt;/div&gt;
+&lt;div class="line"&gt;models.py&lt;/div&gt;
+&lt;div class="line"&gt;templatetags/&lt;/div&gt;
+&lt;div class="line-block"&gt;
+&lt;div class="line"&gt;__init__.py&lt;/div&gt;
+&lt;div class="line"&gt;abc.py&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="line"&gt;view.py&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;在 template 裡要用到 abc.py 這個檔案裡寫的 tags、filter 時，
+就在 template 裡 &amp;quot;{% load abc %}&amp;quot;&lt;/p&gt;
+&lt;p&gt;有包含 custom tags 的 app 要加到 &lt;strong&gt;INSTALLED_APPS&lt;/strong&gt; 裡 &lt;strong&gt;{% load %}&lt;/strong&gt; 才會 work。&lt;/p&gt;
+&lt;p&gt;(security feature: 你可以在一台機器上裝多個 template libraries 而不讓它們可以 access 機器上的每個 Django 的程式)&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id2"&gt;
+&lt;h2&gt;鍛冶&lt;/h2&gt;
+&lt;p&gt;要能製造出一個 valid 的 tag library 首先要有一個叫作 &lt;strong&gt;register&lt;/strong&gt; 的 &lt;strong&gt;template.Library&lt;/strong&gt; instance&lt;/p&gt;
+&lt;p&gt;所以開頭會長這樣 :&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;template&lt;/span&gt;
+
+&lt;span class="n"&gt;register&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;template&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Library&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="section" id="filters"&gt;
+&lt;h3&gt;filters&lt;/h3&gt;
+&lt;/div&gt;
+&lt;div class="section" id="tags"&gt;
+&lt;h3&gt;tags&lt;/h3&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="ref"&gt;
+&lt;h2&gt;Ref&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p class="first"&gt;&lt;a class="reference external" href="https://docs.djangoproject.com/en/dev/howto/custom-template-tags/"&gt;Custom template tags and filters&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Django default tags &amp;amp; filters&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;django/template/defaultfilters.py&lt;/li&gt;
+&lt;li&gt;django/template/defaulttags.py&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Thu, 20 Feb 2014 00:10:00 +0800</pubDate><guid>tag:,2014-02-20:posts/2014/02/django-templatetags/</guid><category>Django</category></item></channel></rss>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>coroutine 概念 — DoVe</title>
+	<meta name="description" content="Title: coroutine 概念; Date: 2014-02-06; Author: wdv4758h">
+	<meta name="author" content="wdv4758h">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="/theme/html5.js"></script>
+		<![endif]-->
+	<link href="/theme/css/ipython.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/simplex/bootstrap.min.css" rel="stylesheet">
+	<link href="/theme/css/local.css" rel="stylesheet">
+	<link href="/theme/css/pygments.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+	<div class="page-header">
+		<h1><a href="">DoVe</a>
+			<br><small>Aquí hay gato encerrado. </small></h1>
+	</div>
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">coroutine 概念</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">wdv4758h</h4>
+		</span>
+        <span itemprop="publish">publish: <time datetime="2014-02-06T21:33:00" itemprop="datePublished">Thu 06 February 2014</time></span>
+	</div>
+	<div>
+		Category:
+		<span itemprop="articleSection">
+			<a href="/category/misc.html" rel="category">Misc</a>
+		</span>
+	</div>
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="/tag/coroutine.html" rel="tag">coroutine</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="/tag/program.html" rel="tag">program</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><p>直接往下到 Reference 看別人寫的文章比較好 (X</p>
+<p>coroutine 是由 Melvin Conway 在 1960 年代所提出來</p>
+<div class="section" id="coroutine">
+<h2>Coroutine 基本概念</h2>
+<p>Coroutine 可以視為 <strong>可以中斷及繼續執行的 function call</strong></p>
+<p>在程式語言中，通常這種中斷會用 <strong>yield</strong> 來表示，中斷時程式狀態會被保留，下次就恢復到該狀態繼續執行</p>
+</div>
+<div class="section" id="generator">
+<h2>Generator</h2>
+<p>generator 又稱為 semicoroutine</p>
+<p>雖然 generator 一樣可以中斷、繼續，但是 coroutine 可以指定從哪裡繼續執行，而 generator 不行，generator 只能回到上次中斷處</p>
+<p>但是 coroutine 可以用 generator 實作出來</p>
+</div>
+<div class="section" id="coroutines-in-python">
+<h2>Coroutines in Python</h2>
+<ul class="simple">
+<li><a class="reference external" href="http://www.jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/">Improve Your Python: 'yield' and Generators Explained</a></li>
+<li><a class="reference external" href="http://docs.python.org/3.4/library/asyncio-task.html">Tasks and coroutines</a></li>
+</ul>
+</div>
+<div class="section" id="reference">
+<h2>Reference</h2>
+<ul class="simple">
+<li><a class="reference external" href="https://electronic-blue.herokuapp.com/blog/2012/06/coroutine-an-introduction/">Coroutine: 入門篇</a></li>
+<li><a class="reference external" href="https://electronic-blue.herokuapp.com/blog/2012/06/implement-iterators-by-coroutine/">使用 Coroutine 實作 Iterator</a></li>
+<li><a class="reference external" href="https://electronic-blue.herokuapp.com/blog/2012/06/rewrite-state-machines-by-coroutine/">使用 Coroutine 改寫狀態機</a></li>
+<li><a class="reference external" href="https://electronic-blue.herokuapp.com/blog/2012/06/rewrite-state-machines-by-coroutine-part-2/">使用 Coroutine 改寫狀態機－續</a></li>
+<li><a class="reference external" href="http://blog.linux.org.tw/~jserv/archives/001848.html">使用 coroutine 實做 user-level thread</a></li>
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/Coroutine">Coroutine - wikipedia</a></li>
+</ul>
+</div>
+</div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'wdv4758h-blog';
+    var disqus_title = 'coroutine 概念';
+	var disqus_identifier = 'posts/2014/02/coroutine/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div> 	<!-- <hr> -->
+</div> <!-- /container -->
+<footer class="aw-footer bg-danger">
+	<div class="container"> <!-- footer -->
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+				<div class="row">
+					<div class="col-md-3">
+						<h4>Navigation</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="">DoVe</a></li>
+							<li><a href="//archives"><i class="fa fa-archive "></i> archive</a></li>
+							<li><a href="//tags"><i class="fa fa-tags "></i> tags</a></li>
+							<li><a href="/feeds/all.rss.xml"><i class="fa fa-rss "></i> rss</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Author</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="https://wdv4758h.github.com">Homepage</a></li>
+							<li><a href="https://github.com/wdv4758h/">Github</a></li>
+							<li><a href="https://plus.google.com/103751737509044116269/posts">Google+</a></li>
+							<li><a href="https://www.facebook.com/wdv4758h">Facebook</a></li>
+							<li><a href="https://www.linkedin.com/pub/chiu-hsiang-hsu/69/83/530">Linked-in</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Categories</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="/category/Django.html">Django (1)</a></li>
+							<li><a href="/category/Fuzzy.html">Fuzzy (1)</a></li>
+							<li><a href="/category/Misc.html">Misc (5)</a></li>
+							<li><a href="/category/Python.html">Python (5)</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Links</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="https://www.python.org/">Python</a></li>
+							<li><a href="https://www.djangoproject.com/">Django</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; wdv4758h 2014</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+</body>
+</html>

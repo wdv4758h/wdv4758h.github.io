@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Levenshtein distance — DoVe</title>
+	<meta name="description" content="Title: Levenshtein distance; Date: 2014-09-10; Author: wdv4758h">
+	<meta name="author" content="wdv4758h">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="/theme/html5.js"></script>
+		<![endif]-->
+	<link href="/theme/css/ipython.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/simplex/bootstrap.min.css" rel="stylesheet">
+	<link href="/theme/css/local.css" rel="stylesheet">
+	<link href="/theme/css/pygments.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+	<div class="page-header">
+		<h1><a href="">DoVe</a>
+			<br><small>Aquí hay gato encerrado. </small></h1>
+	</div>
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">Levenshtein distance</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">wdv4758h</h4>
+		</span>
+        <span itemprop="publish">publish: <time datetime="2014-09-10T01:06:00" itemprop="datePublished">Wed 10 September 2014</time></span>
+        <br>
+        <span itemprop="update">update: <time datetime="2014-09-10 01:16:00" itemprop="datePublished">Wed 10 September 2014</time></span>
+	</div>
+	<div>
+		Category:
+		<span itemprop="articleSection">
+			<a href="/category/fuzzy.html" rel="category">Fuzzy</a>
+		</span>
+	</div>
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="/tag/python.html" rel="tag">Python</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="/tag/fuzzy.html" rel="tag">Fuzzy</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><p>第一次碰這類的東西，做些筆記 XD</p>
+<div class="section" id="edit-distance">
+<h2>edit distance</h2>
+<p>edit distance = 更動多少次數後，兩字串會一樣</p>
+<p>計算方式有很多種</p>
+<table border="1" class="table table-bordered docutils">
+<colgroup>
+<col width="34%" />
+<col width="13%" />
+<col width="11%" />
+<col width="16%" />
+<col width="25%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Algorithm</th>
+<th class="head">insertion</th>
+<th class="head">deletion</th>
+<th class="head">substitution</th>
+<th class="head">transposition (換位)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Hamming distance</td>
+<td>X</td>
+<td>X</td>
+<td>O</td>
+<td>X</td>
+</tr>
+<tr><td>Longest Common Subsequence</td>
+<td>O</td>
+<td>O</td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr><td>Levenshtein distance</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>X</td>
+</tr>
+<tr><td>Damerau-Levenshtein distance</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="levenshtein-distance">
+<h2>Levenshtein distance</h2>
+<ul class="simple">
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/Levenshtein_distance">http://en.wikipedia.org/wiki/Levenshtein_distance</a></li>
+<li><a class="reference external" href="http://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance">http://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance</a></li>
+</ul>
+<p>Levenshtein distance 是用來評估兩 sequence 差別度的一種 string metric，
+兩個字串的 Levenshtein distance 就是一個字串變成另一個字串的最小字元編輯次數 (insert, delete, substitute)，
+由俄國科學家 Vladimir Levenshtein 在 1965 年提出</p>
+<ul class="simple">
+<li>substitution : s <strong>a</strong> t -&gt; s <strong>i</strong> t</li>
+<li>insertion : st -&gt; s <strong>i</strong> t</li>
+<li>deletion : si <strong>a</strong> t -&gt; sit</li>
+</ul>
+<p>看一段簡單的 Python code 來了解運算:</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">lev</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">a</span><span class="p">:</span> <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">b</span><span class="p">:</span> <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">lev</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">+</span> <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+               <span class="n">lev</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">b</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span>
+               <span class="n">lev</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+<p>傳入 min function 的有 3 個，
+第一個是兩邊都減一個字元，如果減去字元不一樣就把次數加 1 (substitute)，
+第二個是 a 減去一個字元並且次數加一，這可以看成 a 字串的 delete 或是在 b 前面 insert 了和 a match 的字元，
+第三個跟第二個雷同</p>
+<p>當然，這個寫法很沒有效率，做了很多次不必要的遞迴，用 CPython (Python 3.4) 下去跑測試，
+丟個簡單的字串當測試 <tt class="docutils literal"><span class="pre">lev('fasfasf',</span> 'afvq')</tt> 這個做法大約要 1.9 ms</p>
+<p>簡單地用 lru cache 來做 DP:</p>
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
+
+<span class="k">def</span> <span class="nf">lev</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+
+    <span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_lev</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">a</span><span class="p">:</span> <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">b</span><span class="p">:</span> <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">_lev</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">+</span> <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                   <span class="n">_lev</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">b</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span>
+                   <span class="n">_lev</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_lev</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+</pre></div>
+<p>利用 lru cache 來簡單地做 DP 後，剛剛的測試現在大約變成 370 µs</p>
+<p>當然，還有很多改進空間，像是</p>
+<ul class="simple">
+<li>自己實際寫 DP</li>
+<li>判斷字串相同就直接回傳 0 (對於有很多相同子字串的情況可以用字串比對的 cost 換掉一些遞迴)</li>
+<li>減去頭尾相同的子字串</li>
+</ul>
+<p>如果要速度的話: <a class="reference external" href="https://github.com/ztane/python-Levenshtein">python-Levenshtein</a>
+，C 寫的 Python extension，剛剛的測試丟下去大概會變成 300 ns 以內</p>
+<p>計算的 cost 大約會是 O(len(a) * len(b))，所以在幫助 fuzzy string searching 的時候，
+比較的字串同常會比較小，以便於提升速度</p>
+<div class="section" id="id1">
+<h3>其他性質</h3>
+<ul class="simple">
+<li>lower bound : 兩字串的長度差</li>
+<li>upper bound : 較長的字串的長度</li>
+<li>只有當字串相等時會是 0</li>
+<li>當字串長度相同時，Hamming distance 會是 Levenshtein distance 的 upper bound</li>
+<li>[三角不等式] 兩個字串的 Levenshtein distance 不會大於分別和第三個字串的 Levenshtein distance 的合</li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h3>使用情境</h3>
+<ul class="simple">
+<li>spell checkers</li>
+<li>OCR</li>
+<li>assist natural language translation based on translation memory</li>
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/Record_linkage">http://en.wikipedia.org/wiki/Record_linkage</a></li>
+</ul>
+</div>
+</div>
+</div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'wdv4758h-blog';
+    var disqus_title = 'Levenshtein distance';
+	var disqus_identifier = 'posts/2014/09/levenshtein-distance/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div> 	<!-- <hr> -->
+</div> <!-- /container -->
+<footer class="aw-footer bg-danger">
+	<div class="container"> <!-- footer -->
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+				<div class="row">
+					<div class="col-md-3">
+						<h4>Navigation</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="">DoVe</a></li>
+							<li><a href="//archives"><i class="fa fa-archive "></i> archive</a></li>
+							<li><a href="//tags"><i class="fa fa-tags "></i> tags</a></li>
+							<li><a href="/feeds/all.rss.xml"><i class="fa fa-rss "></i> rss</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Author</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="https://wdv4758h.github.com">Homepage</a></li>
+							<li><a href="https://github.com/wdv4758h/">Github</a></li>
+							<li><a href="https://plus.google.com/103751737509044116269/posts">Google+</a></li>
+							<li><a href="https://www.facebook.com/wdv4758h">Facebook</a></li>
+							<li><a href="https://www.linkedin.com/pub/chiu-hsiang-hsu/69/83/530">Linked-in</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Categories</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="/category/Django.html">Django (1)</a></li>
+							<li><a href="/category/Fuzzy.html">Fuzzy (1)</a></li>
+							<li><a href="/category/Misc.html">Misc (5)</a></li>
+							<li><a href="/category/Python.html">Python (5)</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Links</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="https://www.python.org/">Python</a></li>
+							<li><a href="https://www.djangoproject.com/">Django</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; wdv4758h 2014</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+</body>
+</html>

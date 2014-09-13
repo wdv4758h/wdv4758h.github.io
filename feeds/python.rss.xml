@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DoVe</title><link>/</link><description></description><atom:link href="/feeds/python.rss.xml" rel="self"></atom:link><lastBuildDate>Sat, 13 Sep 2014 15:20:00 +0800</lastBuildDate><item><title>Python coding style</title><link>/posts/2014/09/python-coding-style/</link><description>&lt;ul class="simple"&gt;
+&lt;li&gt;不能不提的 &lt;a class="reference external" href="http://legacy.python.org/dev/peps/pep-0008/"&gt;PEP8&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://google-styleguide.googlecode.com/svn/trunk/pyguide.html"&gt;Google Python Style Guide&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Sat, 13 Sep 2014 15:20:00 +0800</pubDate><guid>tag:,2014-09-13:posts/2014/09/python-coding-style/</guid><category>Python</category></item><item><title>Python 入門資源</title><link>/posts/2014/09/start/</link><description>&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://docs.google.com/presentation/d/1dpVLmJUiAgDygfmjdzJXIXGzzYGJhpvWmBwEKvSvrIU/edit"&gt;https://docs.google.com/presentation/d/1dpVLmJUiAgDygfmjdzJXIXGzzYGJhpvWmBwEKvSvrIU/edit&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="section" id="python-tutorial"&gt;
+&lt;h2&gt;Python 官方 tutorial&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://docs.python.org/3/tutorial/"&gt;https://docs.python.org/3/tutorial/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="learn-python-the-hard-way"&gt;
+&lt;h2&gt;Learn Python the Hard Way&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://learnpythonthehardway.org/book/"&gt;http://learnpythonthehardway.org/book/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;不錯的入門，但是目前 (第三版) 還是 Python 2&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.codecademy.com/en/tracks/python"&gt;http://www.codecademy.com/en/tracks/python&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.learnpython.org/"&gt;http://www.learnpython.org/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.codedata.com.tw/python/python-tutorial-the-1st-class-1-preface"&gt;http://www.codedata.com.tw/python/python-tutorial-the-1st-class-1-preface&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://pydoing.blogspot.tw/2012/12/Python-Guide.html"&gt;http://pydoing.blogspot.tw/2012/12/Python-Guide.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Fri, 12 Sep 2014 21:06:00 +0800</pubDate><guid>tag:,2014-09-12:posts/2014/09/start/</guid><category>Python</category></item><item><title>About Stackless Python</title><link>/posts/2014/02/stackless-python/</link><description>&lt;p&gt;Stackless Python 背後的由來以及現況 ~&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://stackoverflow.com/questions/588958/what-are-the-drawbacks-of-stackless-python/590412#590412"&gt;聽故事去&lt;/a&gt;&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Mon, 24 Feb 2014 19:44:00 +0800</pubDate><guid>tag:,2014-02-24:posts/2014/02/stackless-python/</guid><category>Python</category></item><item><title>Python - @wraps</title><link>/posts/2014/02/python-wraps/</link><description>&lt;p&gt;在這邊先假設看這篇文章的都知道 decorator&lt;/p&gt;
+&lt;p&gt;在使用 decorator 時，若沒有經過處理，可能會造成 function 的 property 改變，例如:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;test&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;this is in test function&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;haha&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+        &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;this is in haha function&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+
+        &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;haha&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;haha&lt;/span&gt;
+
+&lt;span class="nd"&gt;@test&lt;/span&gt;
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;func1&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;this is in func1&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+
+    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;func1&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;func1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__name__&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;,&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="n"&gt;func1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__doc__&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c"&gt;# OUTPUT :&lt;/span&gt;
+&lt;span class="c"&gt;#   haha , this is in haha function&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;可以看到 func1 的 &lt;cite&gt;__name__&lt;/cite&gt; 和 &lt;cite&gt;__doc__&lt;/cite&gt; 都改變了，這通常不是我們想要的，還有可能在 debug 的時候造成麻煩&lt;/p&gt;
+&lt;p&gt;因此 Python 有了 wraps 這個 decorator 去處理這個問題 (在 functools 裡)&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;functools&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;wraps&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;test&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;this is in test function&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+
+    &lt;span class="nd"&gt;@wraps&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;func&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;haha&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+        &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;this is in haha function&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+
+        &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;haha&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;haha&lt;/span&gt;
+
+&lt;span class="nd"&gt;@test&lt;/span&gt;
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;func1&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;this is in func1&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+
+    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;func1&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;func1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__name__&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;,&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;func1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__doc__&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c"&gt;# OUTPUT :&lt;/span&gt;
+&lt;span class="c"&gt;#   func1 , this is in func1&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;可以看到，加上了 &amp;#64;wraps 後維持了 function 本來的 property ~&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Thu, 06 Feb 2014 11:30:00 +0800</pubDate><guid>tag:,2014-02-06:posts/2014/02/python-wraps/</guid><category>Python</category></item><item><title>初次使用 Pelican</title><link>/posts/2014/02/pelican/</link><description>&lt;p&gt;首先，什麼是 &lt;a class="reference external" href="http://docs.getpelican.com/en/"&gt;Pelican&lt;/a&gt; 呢？
+Pelican 是個 Python 寫的靜態網站 generator，
+你可以使用 Markdown, reStructuredText, AsciiDoc 等 markup language 作為撰寫的格式，
+然後經由 Pelican 去生成靜態的網頁，經由這種方式，可以方便地使用你喜歡的文字編輯器去撰寫你的文章，
+還可以結合 Version Control 去管理，
+而由於生成的網頁是靜態的，所以可以放到 Github Pages 或者其他可以放置靜態網頁的地方去 Host，無疑是個很方便的模式。&lt;/p&gt;
+&lt;div class="section" id="id1"&gt;
+&lt;h2&gt;Pelican 初步設定&lt;/h2&gt;
+&lt;/div&gt;
+&lt;div class="section" id="theme"&gt;
+&lt;h2&gt;Theme&lt;/h2&gt;
+&lt;/div&gt;
+&lt;div class="section" id="disqus-support"&gt;
+&lt;h2&gt;Disqus Support&lt;/h2&gt;
+&lt;p&gt;Pelican 要支援 Disqus 非常簡單，首先只要在你的 Disqus 新增好你的網站，獲得你的 Disqul url 後，
+只要在你的 pelicanconf.py 裡新增 DISQUS_SITENAME = 'your-disqus-url' 即可：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;DISQUS_SITENAME&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;my-blog.disqus.com&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Sat, 01 Feb 2014 14:33:00 +0800</pubDate><guid>tag:,2014-02-01:posts/2014/02/pelican/</guid><category>pelican</category><category>Python</category></item></channel></rss>

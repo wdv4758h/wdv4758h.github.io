@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Chart.js 簡單的畫出 Chart — DoVe</title>
+	<meta name="description" content="Title: Chart.js 簡單的畫出 Chart; Date: 2014-02-22; Author: wdv4758h">
+	<meta name="author" content="wdv4758h">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="/theme/html5.js"></script>
+		<![endif]-->
+	<link href="/theme/css/ipython.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/simplex/bootstrap.min.css" rel="stylesheet">
+	<link href="/theme/css/local.css" rel="stylesheet">
+	<link href="/theme/css/pygments.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+	<div class="page-header">
+		<h1><a href="">DoVe</a>
+			<br><small>Aquí hay gato encerrado. </small></h1>
+	</div>
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">Chart.js 簡單的畫出 Chart</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">wdv4758h</h4>
+		</span>
+        <span itemprop="publish">publish: <time datetime="2014-02-22T14:06:00" itemprop="datePublished">Sat 22 February 2014</time></span>
+	</div>
+	<div>
+		Category:
+		<span itemprop="articleSection">
+			<a href="/category/misc.html" rel="category">Misc</a>
+		</span>
+	</div>
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="/tag/javascript.html" rel="tag">Javascript</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js"></script><p><a class="reference external" href="http://www.chartjs.org/">Chart.js</a> 是利用 HTML5 的 canvas 去畫的，
+而 Chart.js 這個 library 本身是 open source 的 (MIT license) (<a class="reference external" href="https://github.com/nnnick/Chart.js">Chart.js - github</a>)</p>
+<p>所以到底要怎麼用呢？</p>
+<p>其實要用這個 library 很簡單，
+首先要先把 Chart.js (或 Chart.min.js) include 進來 (這邊先用 CDN 上的做範例，要擺到自己機器上的再去修改 src)</p>
+<div class="highlight"><pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;//cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</pre></div>
+<p>再來是要有畫布啦 ~</p>
+<div class="highlight"><pre><span class="nt">&lt;canvas</span> <span class="na">id=</span><span class="s">&quot;myChart&quot;</span> <span class="na">width=</span><span class="s">&quot;400&quot;</span> <span class="na">height=</span><span class="s">&quot;400&quot;</span><span class="nt">&gt;&lt;/canvas&gt;</span>
+</pre></div>
+<p>接著是給資料然後畫圖 ~</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="nx">value</span><span class="o">:</span> <span class="mi">30</span><span class="p">,</span>
+        <span class="nx">color</span><span class="o">:</span><span class="s2">&quot;#F38630&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="nx">value</span> <span class="o">:</span> <span class="mi">50</span><span class="p">,</span>
+        <span class="nx">color</span> <span class="o">:</span> <span class="s2">&quot;#E0E4CC&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="nx">value</span> <span class="o">:</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="nx">color</span> <span class="o">:</span> <span class="s2">&quot;#69D2E7&quot;</span>
+    <span class="p">}</span>
+<span class="p">];</span>
+<span class="c1">//Get the context of the canvas element we want to select</span>
+<span class="kd">var</span> <span class="nx">ctx</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;myChart&quot;</span><span class="p">).</span><span class="nx">getContext</span><span class="p">(</span><span class="s2">&quot;2d&quot;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">myNewChart</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Chart</span><span class="p">(</span><span class="nx">ctx</span><span class="p">).</span><span class="nx">Pie</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+</pre></div>
+<canvas id="myChart" width="400" height="400"></canvas>
+<script>
+    var data = [
+        {
+            value: 30,
+            color:"#F38630"
+        },
+        {
+            value : 50,
+            color : "#E0E4CC"
+        },
+        {
+            value : 100,
+            color : "#69D2E7"
+        }
+    ];
+    var ctx = document.getElementById("myChart").getContext("2d");
+    var myNewChart = new Chart(ctx).Pie(data);
+</script><p>Chart.js 目前有六種 Charts，
+可以在 <a class="reference external" href="http://www.chartjs.org/docs/">官方文件</a> 看到相關的設定、資料格式，
+每個 Chart 除了本身的資料外，還有一些 option 可以調整，
+例如要不要 animation 啦、要不要顯示 label 啦 ... etc</p>
+<div class="section" id="chart">
+<h2>六種 Chart</h2>
+<div class="section" id="line-chart">
+<h3>Line Chart</h3>
+<canvas id="LineChart" width="800" height="400"></canvas>
+<script>
+var data = {
+    labels : ["January","February","March","April","May","June","July"],
+    datasets : [
+        {
+            fillColor : "rgba(220,220,220,0.5)",
+            strokeColor : "rgba(220,220,220,1)",
+            pointColor : "rgba(220,220,220,1)",
+            pointStrokeColor : "#fff",
+            data : [65,59,90,81,56,55,40]
+        },
+        {
+            fillColor : "rgba(151,187,205,0.5)",
+            strokeColor : "rgba(151,187,205,1)",
+            pointColor : "rgba(151,187,205,1)",
+            pointStrokeColor : "#fff",
+            data : [28,48,40,19,96,27,100]
+        }
+    ]
+};
+var ctx = document.getElementById("LineChart").getContext("2d");
+new Chart(ctx).Line(data);
+</script></div>
+<div class="section" id="bar-chart">
+<h3>Bar Chart</h3>
+<canvas id="BarChart" width="800" height="400"></canvas>
+<script>
+var data = {
+    labels : ["January","February","March","April","May","June","July"],
+    datasets : [
+        {
+            fillColor : "rgba(220,220,220,0.5)",
+            strokeColor : "rgba(220,220,220,1)",
+            data : [65,59,90,81,56,55,40]
+        },
+        {
+            fillColor : "rgba(151,187,205,0.5)",
+            strokeColor : "rgba(151,187,205,1)",
+            data : [28,48,40,19,96,27,100]
+        }
+    ]
+};
+var ctx = document.getElementById("BarChart").getContext("2d");
+new Chart(ctx).Bar(data);
+</script></div>
+<div class="section" id="radar-chart">
+<h3>Radar chart</h3>
+<canvas id="RadarChart" width="800" height="400"></canvas>
+<script>
+var data = {
+    labels : ["Eating","Drinking","Sleeping","Designing","Coding","Partying","Running"],
+    datasets : [
+        {
+            fillColor : "rgba(220,220,220,0.5)",
+            strokeColor : "rgba(220,220,220,1)",
+            pointColor : "rgba(220,220,220,1)",
+            pointStrokeColor : "#fff",
+            data : [65,59,90,81,56,55,40]
+        },
+        {
+            fillColor : "rgba(151,187,205,0.5)",
+            strokeColor : "rgba(151,187,205,1)",
+            pointColor : "rgba(151,187,205,1)",
+            pointStrokeColor : "#fff",
+            data : [28,48,40,19,96,27,100]
+        }
+    ]
+};
+var ctx = document.getElementById("RadarChart").getContext("2d");
+new Chart(ctx).Radar(data);
+</script></div>
+<div class="section" id="polar-area-chart">
+<h3>Polar area chart</h3>
+<canvas id="PolarChart" width="800" height="400"></canvas>
+<script>
+var data = [
+    {
+        value : 30,
+        color: "#D97041"
+    },
+    {
+        value : 90,
+        color: "#C7604C"
+    },
+    {
+        value : 24,
+        color: "#21323D"
+    },
+    {
+        value : 58,
+        color: "#9D9B7F"
+    },
+    {
+        value : 82,
+        color: "#7D4F6D"
+    },
+    {
+        value : 8,
+        color: "#584A5E"
+    }
+];
+var ctx = document.getElementById("PolarChart").getContext("2d");
+new Chart(ctx).PolarArea(data);
+</script></div>
+<div class="section" id="pie-chart">
+<h3>Pie chart</h3>
+<canvas id="PieChart" width="800" height="400"></canvas>
+<script>
+var data = [
+    {
+        value: 30,
+        color:"#F38630"
+    },
+    {
+        value : 50,
+        color : "#E0E4CC"
+    },
+    {
+        value : 100,
+        color : "#69D2E7"
+    }
+];
+var ctx = document.getElementById("PieChart").getContext("2d");
+new Chart(ctx).Pie(data);
+</script></div>
+<div class="section" id="doughnut-chart">
+<h3>Doughnut chart</h3>
+<canvas id="DoughnutChart" width="800" height="400"></canvas>
+<script>
+var data = [
+    {
+        value: 30,
+        color:"#F7464A"
+    },
+    {
+        value : 50,
+        color : "#E2EAE9"
+    },
+    {
+        value : 100,
+        color : "#D4CCC5"
+    },
+    {
+        value : 40,
+        color : "#949FB1"
+    },
+    {
+        value : 120,
+        color : "#4D5360"
+    }
+
+];
+var ctx = document.getElementById("DoughnutChart").getContext("2d");
+new Chart(ctx).Doughnut(data);
+</script></div>
+</div>
+<div class="section" id="ref">
+<h2>Ref</h2>
+<ul class="simple">
+<li><a class="reference external" href="http://www.chartjs.org/">Chart.js</a></li>
+</ul>
+</div>
+</div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'wdv4758h-blog';
+    var disqus_title = 'Chart.js 簡單的畫出 Chart';
+	var disqus_identifier = 'posts/2014/02/chart-js/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div> 	<!-- <hr> -->
+</div> <!-- /container -->
+<footer class="aw-footer bg-danger">
+	<div class="container"> <!-- footer -->
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+				<div class="row">
+					<div class="col-md-3">
+						<h4>Navigation</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="">DoVe</a></li>
+							<li><a href="//archives"><i class="fa fa-archive "></i> archive</a></li>
+							<li><a href="//tags"><i class="fa fa-tags "></i> tags</a></li>
+							<li><a href="/feeds/all.rss.xml"><i class="fa fa-rss "></i> rss</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Author</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="https://wdv4758h.github.com">Homepage</a></li>
+							<li><a href="https://github.com/wdv4758h/">Github</a></li>
+							<li><a href="https://plus.google.com/103751737509044116269/posts">Google+</a></li>
+							<li><a href="https://www.facebook.com/wdv4758h">Facebook</a></li>
+							<li><a href="https://www.linkedin.com/pub/chiu-hsiang-hsu/69/83/530">Linked-in</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Categories</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="/category/Django.html">Django (1)</a></li>
+							<li><a href="/category/Fuzzy.html">Fuzzy (1)</a></li>
+							<li><a href="/category/Misc.html">Misc (5)</a></li>
+							<li><a href="/category/Python.html">Python (5)</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Links</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="https://www.python.org/">Python</a></li>
+							<li><a href="https://www.djangoproject.com/">Django</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; wdv4758h 2014</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+</body>
+</html>
