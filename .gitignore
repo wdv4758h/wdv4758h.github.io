@@ -2,6 +2,7 @@
 output
 pelicanconf_local.py
 cache/
+*.pid
 
 #swap
 *.swp
