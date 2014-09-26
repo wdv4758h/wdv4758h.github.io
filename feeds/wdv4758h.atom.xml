@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Dv 名字很難念</title><link href="/" rel="alternate"></link><link href="/feeds/wdv4758h.atom.xml" rel="self"></link><id>/</id><updated>2014-09-26T12:27:00+08:00</updated><entry><title>Generational Garbage Collection for SpiderMonkey</title><link href="/posts/2014/09/ggc-spidermonkey/" rel="alternate"></link><updated>2014-09-26T12:27:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-09-26:posts/2014/09/ggc-spidermonkey/</id><summary type="html">&lt;p&gt;原文章 : &lt;a class="reference external" href="https://hacks.mozilla.org/2014/09/generational-garbage-collection-in-firefox/"&gt;Generational Garbage Collection in Firefox&lt;/a&gt;&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Dv 名字很難念</title><link href="/" rel="alternate"></link><link href="/feeds/wdv4758h.atom.xml" rel="self"></link><id>/</id><updated>2014-09-26T21:27:00+08:00</updated><entry><title>Incremental Garbage Collector</title><link href="/posts/2014/09/incremental-gc/" rel="alternate"></link><updated>2014-09-26T21:27:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-09-26:posts/2014/09/incremental-gc/</id><summary type="html">&lt;div class="section" id="pause-time"&gt;
+&lt;h2&gt;前情提要 - Pause Time&lt;/h2&gt;
+&lt;p&gt;在 CPython 中使用的是 reference count，所以當 count 變成 0 時就必須把空間回收，
+當一個巨大的 object 要被回收時，就會產生不小的 pause time，但是這個時間是 deterministic 的。
+reference count 有個問題就是 reference cycle，為了找出 cycle 就必須爬過所有 objects，
+但是這就會產生 nondeterministic GC pause。&lt;/p&gt;
+&lt;p&gt;reference count 是把回收的 cost 分開在各個時間點，而 tracing 的 GC 是把回收的 cost 集中在某一段時期，
+回收所需時間可能不低，在這之中得把程式 pause，可能會讓使用者感覺到停頓，
+而 Incremental GC 想做的就是把這段過程拆分成好幾個小步驟，
+分別在不同時間執行 (打散)，讓程式執行更平順。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="ref"&gt;
+&lt;h2&gt;Ref&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://tech.mozilla.com.tw/posts/1605/你丟我撿！神奇的-firefox-內部記憶體回收機制"&gt;你丟我撿！神奇的 Firefox 內部記憶體回收機制&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://blog.mozilla.org/dmandelin/2012/07/20/incremental-gc-now-in-firefox-aurora/"&gt;Incremental GC now in Firefox Aurora&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://blog.mozilla.org/javascript/2012/08/28/incremental-gc-in-firefox-16/"&gt;Incremental GC in Firefox 16!&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://morepypy.blogspot.tw/2013/10/incremental-garbage-collector-in-pypy.html"&gt;Incremental Garbage Collector in PyPy&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</summary><category term="Python"></category><category term="gc"></category></entry><entry><title>Generational Garbage Collection for SpiderMonkey</title><link href="/posts/2014/09/ggc-spidermonkey/" rel="alternate"></link><updated>2014-09-26T12:27:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-09-26:posts/2014/09/ggc-spidermonkey/</id><summary type="html">&lt;p&gt;原文章 : &lt;a class="reference external" href="https://hacks.mozilla.org/2014/09/generational-garbage-collection-in-firefox/"&gt;Generational Garbage Collection in Firefox&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;今天看到上面那篇 SpiderMonkey 的 Generational Garbage Collection 的文章，
 就讀一讀理解一下並做些紀錄&lt;/p&gt;
 &lt;div class="section" id="generational-garbage-collection"&gt;

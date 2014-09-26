@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/misc.rss.xml" rel="self"></atom:link><lastBuildDate>Sat, 22 Feb 2014 14:06:00 +0800</lastBuildDate><item><title>Chart.js 簡單的畫出 Chart</title><link>/posts/2014/02/chart-js/</link><description>&lt;script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js"&gt;&lt;/script&gt;&lt;p&gt;&lt;a class="reference external" href="http://www.chartjs.org/"&gt;Chart.js&lt;/a&gt; 是利用 HTML5 的 canvas 去畫的，
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/misc.rss.xml" rel="self"></atom:link><lastBuildDate>Fri, 26 Sep 2014 21:27:00 +0800</lastBuildDate><item><title>Incremental Garbage Collector</title><link>/posts/2014/09/incremental-gc/</link><description>&lt;div class="section" id="pause-time"&gt;
+&lt;h2&gt;前情提要 - Pause Time&lt;/h2&gt;
+&lt;p&gt;在 CPython 中使用的是 reference count，所以當 count 變成 0 時就必須把空間回收，
+當一個巨大的 object 要被回收時，就會產生不小的 pause time，但是這個時間是 deterministic 的。
+reference count 有個問題就是 reference cycle，為了找出 cycle 就必須爬過所有 objects，
+但是這就會產生 nondeterministic GC pause。&lt;/p&gt;
+&lt;p&gt;reference count 是把回收的 cost 分開在各個時間點，而 tracing 的 GC 是把回收的 cost 集中在某一段時期，
+回收所需時間可能不低，在這之中得把程式 pause，可能會讓使用者感覺到停頓，
+而 Incremental GC 想做的就是把這段過程拆分成好幾個小步驟，
+分別在不同時間執行 (打散)，讓程式執行更平順。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="ref"&gt;
+&lt;h2&gt;Ref&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://tech.mozilla.com.tw/posts/1605/你丟我撿！神奇的-firefox-內部記憶體回收機制"&gt;你丟我撿！神奇的 Firefox 內部記憶體回收機制&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://blog.mozilla.org/dmandelin/2012/07/20/incremental-gc-now-in-firefox-aurora/"&gt;Incremental GC now in Firefox Aurora&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://blog.mozilla.org/javascript/2012/08/28/incremental-gc-in-firefox-16/"&gt;Incremental GC in Firefox 16!&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://morepypy.blogspot.tw/2013/10/incremental-garbage-collector-in-pypy.html"&gt;Incremental Garbage Collector in PyPy&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Fri, 26 Sep 2014 21:27:00 +0800</pubDate><guid>tag:,2014-09-26:posts/2014/09/incremental-gc/</guid><category>Python</category><category>gc</category></item><item><title>Chart.js 簡單的畫出 Chart</title><link>/posts/2014/02/chart-js/</link><description>&lt;script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js"&gt;&lt;/script&gt;&lt;p&gt;&lt;a class="reference external" href="http://www.chartjs.org/"&gt;Chart.js&lt;/a&gt; 是利用 HTML5 的 canvas 去畫的，
 而 Chart.js 這個 library 本身是 open source 的 (MIT license) (&lt;a class="reference external" href="https://github.com/nnnick/Chart.js"&gt;Chart.js - github&lt;/a&gt;)&lt;/p&gt;
 &lt;p&gt;所以到底要怎麼用呢？&lt;/p&gt;
 &lt;p&gt;其實要用這個 library 很簡單，

@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Tags — Dv 名字很難念</title>
-	<meta name="description" content="The Tags page lists all tags used to classify the posts. Each post has at least one tag helping readers find out easily what they are looking for.">
+	<title>Incremental Garbage Collector — Dv 名字很難念</title>
+	<meta name="description" content="Title: Incremental Garbage Collector; Date: 2014-09-26; Author: wdv4758h">
 	<meta name="author" content="wdv4758h">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -16,36 +16,6 @@
 	<link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/simplex/bootstrap.min.css" rel="stylesheet">
 	<link href="/theme/css/local.css" rel="stylesheet">
 	<link href="/theme/css/pygments.css" rel="stylesheet">
-<style type="text/css" media="screen">
-ul.tagcloud {
-	list-style: none;
-	padding: 0;
-	padding-top: 7em;
-	padding-bottom: 7em;
-	width: 50%;
-	margin-left: 25%;
-}
-
-ul.tagcloud li {
-	display: inline-block;
-}
-
-li.tag-1 {
-	font-size: 150%;
-}
-
-li.tag-2 {
-	font-size: 120%;
-}
-
-li.tag-3 {
-	font-size: 100%;
-}
-
-li.tag-4 {
-	font-size: 80%;
-}
-</style>
 </head>
 <body>
 <div class="container">
@@ -55,22 +25,65 @@ li.tag-4 {
 	</div>
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
-<h1>Tags</h1>
-<div class="text-center">
-<ul class="tagcloud">
-	<li class="tag-4"><a href="/tag/javascript.html">Javascript</a></li>
-	<li class="tag-4"><a href="/tag/pelican.html">pelican</a></li>
-	<li class="tag-2"><a href="/tag/program.html">program</a></li>
-	<li class="tag-0"><a href="/tag/python.html">Python</a></li>
-	<li class="tag-4"><a href="/tag/fuzzy.html">Fuzzy</a></li>
-	<li class="tag-4"><a href="/tag/closure.html">closure</a></li>
-	<li class="tag-4"><a href="/tag/ajax.html">ajax</a></li>
-	<li class="tag-4"><a href="/tag/coroutine.html">coroutine</a></li>
-	<li class="tag-4"><a href="/tag/recall.html">recall</a></li>
-	<li class="tag-4"><a href="/tag/django.html">Django</a></li>
-	<li class="tag-2"><a href="/tag/gc.html">gc</a></li>
-	<li class="tag-4"><a href="/tag/xmlhttprequest.html">XMLHttpRequest</a></li>
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">Incremental Garbage Collector</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">wdv4758h</h4>
+		</span>
+        <span itemprop="publish">publish: <time datetime="2014-09-26T21:27:00" itemprop="datePublished">Fri 26 September 2014</time></span>
+	</div>
+	<div>
+		Category:
+		<span itemprop="articleSection">
+			<a href="/category/misc.html" rel="category">Misc</a>
+		</span>
+	</div>
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="/tag/python.html" rel="tag">Python</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="/tag/gc.html" rel="tag">gc</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><div class="section" id="pause-time">
+<h2>前情提要 - Pause Time</h2>
+<p>在 CPython 中使用的是 reference count，所以當 count 變成 0 時就必須把空間回收，
+當一個巨大的 object 要被回收時，就會產生不小的 pause time，但是這個時間是 deterministic 的。
+reference count 有個問題就是 reference cycle，為了找出 cycle 就必須爬過所有 objects，
+但是這就會產生 nondeterministic GC pause。</p>
+<p>reference count 是把回收的 cost 分開在各個時間點，而 tracing 的 GC 是把回收的 cost 集中在某一段時期，
+回收所需時間可能不低，在這之中得把程式 pause，可能會讓使用者感覺到停頓，
+而 Incremental GC 想做的就是把這段過程拆分成好幾個小步驟，
+分別在不同時間執行 (打散)，讓程式執行更平順。</p>
+</div>
+<div class="section" id="ref">
+<h2>Ref</h2>
+<ul class="simple">
+<li><a class="reference external" href="http://tech.mozilla.com.tw/posts/1605/你丟我撿！神奇的-firefox-內部記憶體回收機制">你丟我撿！神奇的 Firefox 內部記憶體回收機制</a></li>
+<li><a class="reference external" href="https://blog.mozilla.org/dmandelin/2012/07/20/incremental-gc-now-in-firefox-aurora/">Incremental GC now in Firefox Aurora</a></li>
+<li><a class="reference external" href="https://blog.mozilla.org/javascript/2012/08/28/incremental-gc-in-firefox-16/">Incremental GC in Firefox 16!</a></li>
+<li><a class="reference external" href="http://morepypy.blogspot.tw/2013/10/incremental-garbage-collector-in-pypy.html">Incremental Garbage Collector in PyPy</a></li>
 </ul>
+</div>
+</div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'wdv4758h-blog';
+    var disqus_title = 'Incremental Garbage Collector';
+	var disqus_identifier = 'posts/2014/09/incremental-gc/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
 		</div>
 	</div> 	<!-- <hr> -->
