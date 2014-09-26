@@ -93,7 +93,7 @@
 所以某些 code 可能在 GGC 裡會變慢一些&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-</summary><category term="Python"></category><category term="gc"></category></entry><entry><title>Python coding style</title><link href="/posts/2014/09/python-coding-style/" rel="alternate"></link><updated>2014-09-13T15:20:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-09-13:posts/2014/09/python-coding-style/</id><summary type="html">&lt;ul class="simple"&gt;
+</summary><category term="gc"></category></entry><entry><title>Python coding style</title><link href="/posts/2014/09/python-coding-style/" rel="alternate"></link><updated>2014-09-13T15:20:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-09-13:posts/2014/09/python-coding-style/</id><summary type="html">&lt;ul class="simple"&gt;
 &lt;li&gt;不能不提的 &lt;a class="reference external" href="http://legacy.python.org/dev/peps/pep-0008/"&gt;PEP8&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="https://google-styleguide.googlecode.com/svn/trunk/pyguide.html"&gt;Google Python Style Guide&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
