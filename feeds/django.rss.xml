@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DoVe</title><link>/</link><description></description><atom:link href="/feeds/django.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 20 Feb 2014 00:10:00 +0800</lastBuildDate><item><title>自製 template tags 和 filters</title><link>/posts/2014/02/django-templatetags/</link><description>&lt;div class="section" id="id1"&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/django.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 20 Feb 2014 00:10:00 +0800</lastBuildDate><item><title>自製 template tags 和 filters</title><link>/posts/2014/02/django-templatetags/</link><description>&lt;div class="section" id="id1"&gt;
 &lt;h2&gt;起手式&lt;/h2&gt;
 &lt;p&gt;要建立自己的 template tags 之前，要先在一個 app 資料架底下建立 &amp;quot;templatetags&amp;quot; 資料夾，
 如果這些 tags 是跟 app A 有關的話，那很理所當然可以放在 app A 資料夾下的 &amp;quot;templatetags&amp;quot;，

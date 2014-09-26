@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DoVe</title><link>/</link><description></description><atom:link href="/feeds/wdv4758h.rss.xml" rel="self"></atom:link><lastBuildDate>Fri, 26 Sep 2014 12:27:00 +0800</lastBuildDate><item><title>Generational Garbage Collection for SpiderMonkey</title><link>/posts/2014/09/ggc-spidermonkey/</link><description>&lt;p&gt;原文章 : &lt;a class="reference external" href="https://hacks.mozilla.org/2014/09/generational-garbage-collection-in-firefox/"&gt;Generational Garbage Collection in Firefox&lt;/a&gt;&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/wdv4758h.rss.xml" rel="self"></atom:link><lastBuildDate>Fri, 26 Sep 2014 12:27:00 +0800</lastBuildDate><item><title>Generational Garbage Collection for SpiderMonkey</title><link>/posts/2014/09/ggc-spidermonkey/</link><description>&lt;p&gt;原文章 : &lt;a class="reference external" href="https://hacks.mozilla.org/2014/09/generational-garbage-collection-in-firefox/"&gt;Generational Garbage Collection in Firefox&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;今天看到上面那篇 SpiderMonkey 的 Generational Garbage Collection 的文章，
 就讀一讀理解一下並做些紀錄&lt;/p&gt;
 &lt;div class="section" id="generational-garbage-collection"&gt;

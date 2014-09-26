@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>DoVe</title><link href="/" rel="alternate"></link><link href="/feeds/fuzzy.atom.xml" rel="self"></link><id>/</id><updated>2014-09-10T01:16:00+08:00</updated><entry><title>Levenshtein distance</title><link href="/posts/2014/09/levenshtein-distance/" rel="alternate"></link><updated>2014-09-10T01:16:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-09-10:posts/2014/09/levenshtein-distance/</id><summary type="html">&lt;p&gt;第一次碰這類的東西，做些筆記 XD&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Dv 名字很難念</title><link href="/" rel="alternate"></link><link href="/feeds/fuzzy.atom.xml" rel="self"></link><id>/</id><updated>2014-09-10T01:16:00+08:00</updated><entry><title>Levenshtein distance</title><link href="/posts/2014/09/levenshtein-distance/" rel="alternate"></link><updated>2014-09-10T01:16:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-09-10:posts/2014/09/levenshtein-distance/</id><summary type="html">&lt;p&gt;第一次碰這類的東西，做些筆記 XD&lt;/p&gt;
 &lt;div class="section" id="edit-distance"&gt;
 &lt;h2&gt;edit distance&lt;/h2&gt;
 &lt;p&gt;edit distance = 更動多少次數後，兩字串會一樣&lt;/p&gt;

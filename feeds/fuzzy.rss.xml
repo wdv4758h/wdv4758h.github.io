@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DoVe</title><link>/</link><description></description><atom:link href="/feeds/fuzzy.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 10 Sep 2014 01:16:00 +0800</lastBuildDate><item><title>Levenshtein distance</title><link>/posts/2014/09/levenshtein-distance/</link><description>&lt;p&gt;第一次碰這類的東西，做些筆記 XD&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/fuzzy.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 10 Sep 2014 01:16:00 +0800</lastBuildDate><item><title>Levenshtein distance</title><link>/posts/2014/09/levenshtein-distance/</link><description>&lt;p&gt;第一次碰這類的東西，做些筆記 XD&lt;/p&gt;
 &lt;div class="section" id="edit-distance"&gt;
 &lt;h2&gt;edit distance&lt;/h2&gt;
 &lt;p&gt;edit distance = 更動多少次數後，兩字串會一樣&lt;/p&gt;
