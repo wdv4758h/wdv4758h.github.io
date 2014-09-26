@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 AUTHOR = 'wdv4758h'
-SITENAME = 'DoVe'
+SITENAME = 'Dv 名字很難念'
 SITEURL = 'https://wdv4758h.github.io'
 TIMEZONE = 'Asia/Taipei'
 
