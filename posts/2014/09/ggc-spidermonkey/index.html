@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Generational Garbage Collection for SpiderMonkey — DoVe</title>
+	<meta name="description" content="Title: Generational Garbage Collection for SpiderMonkey; Date: 2014-09-26; Author: wdv4758h">
+	<meta name="author" content="wdv4758h">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="/theme/html5.js"></script>
+		<![endif]-->
+	<link href="/theme/css/ipython.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/simplex/bootstrap.min.css" rel="stylesheet">
+	<link href="/theme/css/local.css" rel="stylesheet">
+	<link href="/theme/css/pygments.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+	<div class="page-header">
+		<h1><a href="">DoVe</a>
+			<br><small>Aquí hay gato encerrado. </small></h1>
+	</div>
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">Generational Garbage Collection for SpiderMonkey</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">wdv4758h</h4>
+		</span>
+        <span itemprop="publish">publish: <time datetime="2014-09-26T12:27:00" itemprop="datePublished">Fri 26 September 2014</time></span>
+	</div>
+	<div>
+		Category:
+		<span itemprop="articleSection">
+			<a href="/category/python.html" rel="category">Python</a>
+		</span>
+	</div>
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="/tag/python.html" rel="tag">Python</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="/tag/gc.html" rel="tag">gc</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><p>原文章 : <a class="reference external" href="https://hacks.mozilla.org/2014/09/generational-garbage-collection-in-firefox/">Generational Garbage Collection in Firefox</a></p>
+<p>今天看到上面那篇 SpiderMonkey 的 Generational Garbage Collection 的文章，
+就讀一讀理解一下並做些紀錄</p>
+<div class="section" id="generational-garbage-collection">
+<h2>Generational garbage collection</h2>
+<p>Generational garbage collection 的核心觀念就是 &quot;大多數的物件的生命都很短&quot;，
+所以就修改原本的 GC 設計，依照不同的存在時間有不同的處理方式，
+對於 Tracing 的 GC 會需要去掃過物件來檢查是否有物件已經成為 Garbage，
+當程式會製造出大量的物件時，檢查的時間就會上升，這時如果用已經存在的時間來區分，
+而做不同的處理方式時，多數的短期物件就可以更快的被回收，也不必頻繁檢查會長期存在的物件。</p>
+<p>原文章裡的 SpiderMonkey 利用了這種方式來讓 temporary objects 的 penalty 下降</p>
+</div>
+<div class="section" id="nursery-tenured">
+<h2>Nursery &amp; Tenured</h2>
+<p>多數的 objects 都會 allocate 到一個叫做 Nursery 的 memory region，
+當 Nursery 滿的時候，只檢查 Nursery 裡的 objects，此時多數的 short-lived temporary objects 就會被清掉，
+而這樣的檢查相對於原本 (檢查全部的 objects) 也來的快</p>
+<p>此時，依然存活的 objects 就會被放到 Tenured region</p>
+<p>Tenured heap 仍然會回收 grabage，但是頻率會比 Nursery 來的低</p>
+<p>最終然會需要原整的 GC，但是頻率也會比 Nursery GC 來的低</p>
+<p>所以就分成下面這種情況</p>
+<table border="1" class="table table-bordered docutils">
+<colgroup>
+<col width="40%" />
+<col width="24%" />
+<col width="22%" />
+<col width="14%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Garbage Collection</th>
+<th class="head">Scan Place</th>
+<th class="head">frequency</th>
+<th class="head">speed</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>minor GCs</td>
+<td>Nursery</td>
+<td>high</td>
+<td>fast</td>
+</tr>
+<tr><td>major GCs</td>
+<td>full heap</td>
+<td>low</td>
+<td>slow</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="table table-bordered docutils">
+<colgroup>
+<col width="68%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">memory region</th>
+<th class="head">age</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Nursery</td>
+<td>young</td>
+</tr>
+<tr><td>Tenured</td>
+<td>old</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="problem">
+<h2>Problem</h2>
+<p>Tenured object 裡面可能有指向 Nursery object 的資料
+(Nursery objects 因為某些 Tenured objects 而持續 alive)</p>
+<div class="section" id="id1">
+<h3>解法一</h3>
+<p>掃過整個 Tenured heap 來找出指到 Nursery objects 的 pointer，
+但是這麼做的話就違背了 GGC 的設計本意，所以需要更 cheap 的解決方案</p>
+</div>
+<div class="section" id="id2">
+<h3>解法二</h3>
+<p>先注意到，在 heap graph 中 Tenured 指向 Nursery 的 edges 不會存在很久，
+因為接下來 minor GC 就會把 Nursery 中的 survivors 移到 Tenured heap</p>
+<p>所以我們在意的是從上次 minor/major GC 後，有更動過的 Tenured objects，
+而這些 objects 的數量相對來說就會比較少</p>
+<p>因此我們做的是在更動 Tenured objects 時，檢查是否有 Nursery pointers，
+如果有的話就把這些 cross-generational edges 紀錄到 <strong>store buffer</strong> ，
+這樣的事情稱為 write barrier</p>
+<p>在 minor GC 時，我們就跑過一遍 store buffer 裡的資料並且把裡面的 Nursery objects 標記為存在</p>
+<p>(edge 的來源都需要被使用，因為當 Nursery objects 被標記為存在之後，將會移往 Tenured area，
+所以原本的 Tenured (裡面有指向 Nursery 的 pointer) 也需要被 update</p>
+<p>minor GC 需要的執行時間決定於新 cross-generational edges 和 Nursery 裡的 objects 數量，
+當然，追蹤 store buffer records 或是單純的檢查是否要新增 record 都會讓 normal heap access 有些許的效能損失，
+所以某些 code 可能在 GGC 裡會變慢一些</p>
+</div>
+</div>
+</div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'wdv4758h-blog';
+    var disqus_title = 'Generational Garbage Collection for SpiderMonkey';
+	var disqus_identifier = 'posts/2014/09/ggc-spidermonkey/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div> 	<!-- <hr> -->
+</div> <!-- /container -->
+<footer class="aw-footer bg-danger">
+	<div class="container"> <!-- footer -->
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+				<div class="row">
+					<div class="col-md-3">
+						<h4>Navigation</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="">DoVe</a></li>
+							<li><a href="//archives"><i class="fa fa-archive "></i> archive</a></li>
+							<li><a href="//tags"><i class="fa fa-tags "></i> tags</a></li>
+							<li><a href="/feeds/all.rss.xml"><i class="fa fa-rss "></i> rss</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Author</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="https://wdv4758h.github.com">Homepage</a></li>
+							<li><a href="https://github.com/wdv4758h/">Github</a></li>
+							<li><a href="https://plus.google.com/103751737509044116269/posts">Google+</a></li>
+							<li><a href="https://www.facebook.com/wdv4758h">Facebook</a></li>
+							<li><a href="https://www.linkedin.com/pub/chiu-hsiang-hsu/69/83/530">Linked-in</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Categories</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="/category/Django.html">Django (1)</a></li>
+							<li><a href="/category/Fuzzy.html">Fuzzy (1)</a></li>
+							<li><a href="/category/Misc.html">Misc (5)</a></li>
+							<li><a href="/category/Python.html">Python (5)</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Links</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="https://www.python.org/">Python</a></li>
+							<li><a href="https://www.djangoproject.com/">Django</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; wdv4758h 2014</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+</body>
+</html>
