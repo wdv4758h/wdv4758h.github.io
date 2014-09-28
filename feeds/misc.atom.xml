@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Dv 名字很難念</title><link href="/" rel="alternate"></link><link href="/feeds/misc.atom.xml" rel="self"></link><id>/</id><updated>2014-09-26T21:27:00+08:00</updated><entry><title>Incremental Garbage Collector</title><link href="/posts/2014/09/incremental-gc/" rel="alternate"></link><updated>2014-09-26T21:27:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-09-26:posts/2014/09/incremental-gc/</id><summary type="html">&lt;div class="section" id="pause-time"&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Dv 名字很難念</title><link href="/" rel="alternate"></link><link href="/feeds/misc.atom.xml" rel="self"></link><id>/</id><updated>2014-09-28T13:25:00+08:00</updated><entry><title>People who make VMs</title><link href="/posts/2014/09/vm-people/" rel="alternate"></link><updated>2014-09-28T13:25:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-09-28:posts/2014/09/vm-people/</id><summary type="html">&lt;p&gt;剛剛碰巧看到一個 &lt;a class="reference external" href="http://stackoverflow.com/questions/5168718/what-blocks-ruby-python-to-get-javascript-v8-speed/5172833#5172833"&gt;StackOverflow 上的回應&lt;/a&gt; ，
+原來 V8 的 team 和 HotSpot JVM 的有很大重複，還有其他像是 Self VM、Animorphic Smalltalk VM、OOVM 都是，
+而其中的 tech lead 叫 Lars Bak。&lt;/p&gt;
+&lt;p&gt;Lars Bak 是 Dart 語言的創始人 (Dart 語言是 Google 想用來取代 Javascript 的一個語言) 也是 V8 和 Java HostSpot JVM 的領導，對於 VM 的技術有非常多的經驗，住在丹麥的 Aarhus 的農舍。&lt;/p&gt;
+&lt;p&gt;剛好有找到一篇報導，請見下面連結&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;dl class="first docutils"&gt;
+&lt;dt&gt;&lt;a class="reference external" href="http://www.ft.com/cms/s/0/03775904-177c-11de-8c9d-0000779fd2ac.html"&gt;The genius behind Google's browser&lt;/a&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.hksilicon.com/kb/articles/6993/Lars-BakGoogle-Chrome"&gt;對岸翻譯版&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</summary><category term="vm"></category></entry><entry><title>Incremental Garbage Collector</title><link href="/posts/2014/09/incremental-gc/" rel="alternate"></link><updated>2014-09-26T21:27:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-09-26:posts/2014/09/incremental-gc/</id><summary type="html">&lt;div class="section" id="pause-time"&gt;
 &lt;h2&gt;前情提要 - Pause Time&lt;/h2&gt;
 &lt;p&gt;在 CPython 中使用的是 reference count，所以當 count 變成 0 時就必須把空間回收，
 當一個巨大的 object 要被回收時，就會產生不小的 pause time，但是這個時間是 deterministic 的。
