@@ -1,8 +1,8 @@
 :title: Generational Garbage Collection for SpiderMonkey
 :slug: ggc-spidermonkey
 :date: 2014-09-26 12:27
-:category: Python
-:tags: Python, gc
+:category: GC
+:tags: gc
 :author: wdv4758h
 :summary: GGC has now been enabled in the SpiderMonkey in Firefox 32
 
