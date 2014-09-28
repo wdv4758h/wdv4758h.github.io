@@ -42,11 +42,12 @@ SOCIAL = (('You can add links in your config file', '#'),
           ('Another social link', '#'),)
 
 DISQUS_SITENAME = 'wdv4758h-blog'
+GOOGLE_ANALYTICS = 'UA-42810012-2'
 
 DEFAULT_PAGINATION = 10
 
 # Uncomment following line if you want document-relative URLs when developing
-# RELATIVE_URLS = True
+RELATIVE_URLS = True
 
 MENUITEMS = [('archive', '/archives'), ('tags', '/tags')]
 
