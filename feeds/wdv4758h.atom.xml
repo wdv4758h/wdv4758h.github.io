@@ -1,5 +1,234 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Dv 名字很難念</title><link href="/" rel="alternate"></link><link href="/feeds/wdv4758h.atom.xml" rel="self"></link><id>/</id><updated>2014-09-28T13:25:00+08:00</updated><entry><title>People who make VMs</title><link href="/posts/2014/09/vm-people/" rel="alternate"></link><updated>2014-09-28T13:25:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-09-28:posts/2014/09/vm-people/</id><summary type="html">&lt;p&gt;剛剛碰巧看到一個 &lt;a class="reference external" href="http://stackoverflow.com/questions/5168718/what-blocks-ruby-python-to-get-javascript-v8-speed/5172833#5172833"&gt;StackOverflow 上的回應&lt;/a&gt; ，
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Dv 名字很難念</title><link href="/" rel="alternate"></link><link href="/feeds/wdv4758h.atom.xml" rel="self"></link><id>/</id><updated>2014-10-10T16:20:00+08:00</updated><entry><title>Pythoner 讀 「松本行弘的程式世界」 - part 1</title><link href="/posts/2014/10/pythoner-read-ruby-book-1/" rel="alternate"></link><updated>2014-10-10T16:20:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-10-10:posts/2014/10/pythoner-read-ruby-book-1/</id><summary type="html">&lt;p&gt;這邊是讀了書上內容的節錄和獨後自己查的資料&lt;/p&gt;
+&lt;p&gt;目前心得 : 可以看到一些觀念，但是有些例子就 ... (尤其是少部份有提到 Python 的)&lt;/p&gt;
+&lt;div class="section" id="ch-14-1-functional-programming"&gt;
+&lt;h2&gt;ch 14-1 - functional programming&lt;/h2&gt;
+&lt;p&gt;是的沒錯，我第一個翻的章節是 chapter 14 ...&lt;/p&gt;
+&lt;p&gt;Fortran 設計者為 John Backus (John Backus 還發明了 BNF)，
+其在 1997 年 Turing Award 上發表的語言 &amp;quot;FP&amp;quot; 被認為是 Functional Programming 的起點&lt;/p&gt;
+&lt;p&gt;Feature:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p class="first"&gt;Higher-order function&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;dl class="first docutils"&gt;
+&lt;dt&gt;pure function (no side effect)&lt;/dt&gt;
+&lt;dd&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;Referential transparency&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="section" id="lisp"&gt;
+&lt;h3&gt;Lisp&lt;/h3&gt;
+&lt;p&gt;Lisp 的基礎是 Alonzo Church 提的 lambda calculus，也支援 Higher-order function&lt;/p&gt;
+&lt;p&gt;Lisp 具有一些 functional 的特性，但不是純粹的 functional&lt;/p&gt;
+&lt;p&gt;Lisp 最大的特色是 S-expression&lt;/p&gt;
+&lt;p&gt;另一個特色是 list (LISP = LISt Processing)，Lisp 把節點稱為 cons cell，
+cons 是從建立新 cell 的 function : cons (construct) 而來，
+而一開始的 Lisp 環境把第一個資料放在 address register，第二個放在 data register，
+所以 car = content of address register、cdr = content of data register，
+構成 list 的資料成為 atom (symbol or number)&lt;/p&gt;
+&lt;p&gt;cons cell:&lt;/p&gt;
+&lt;table border="1" class="table table-bordered docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="50%" /&gt;
+&lt;col width="50%" /&gt;
+&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;car&lt;/td&gt;
+&lt;td&gt;cdr&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Lisp 的 list 底下結構是 singly linked-list&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="haskell"&gt;
+&lt;h3&gt;Haskell&lt;/h3&gt;
+&lt;p&gt;Haskell Curry 的 Combinatory logic 和 Alonzo Church 的 lambda calculus 幾乎相同的東西&lt;/p&gt;
+&lt;p&gt;Haskell feature:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;no side effect&lt;/li&gt;
+&lt;li&gt;Higher-order function&lt;/li&gt;
+&lt;li&gt;partial function application&lt;/li&gt;
+&lt;li&gt;lazy evaluation&lt;/li&gt;
+&lt;li&gt;type inference&lt;/li&gt;
+&lt;li&gt;list comprehension&lt;/li&gt;
+&lt;li&gt;block by indent&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Haskell 有靜態多型的型別系統和 type inference，可以在接近 duck typing 的情況下，
+在編譯時完成 type checking&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="ocaml"&gt;
+&lt;h3&gt;OCaml&lt;/h3&gt;
+&lt;p&gt;OCaml 歷史比 Haskell 早，誕生於法國&lt;/p&gt;
+&lt;p&gt;和 Haskell 相比有些不同:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;has side effect&lt;/li&gt;
+&lt;li&gt;no lazy evaluation&lt;/li&gt;
+&lt;li&gt;module system&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;OCaml 想要 lazy evaluation 時可以明確標示&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="erlang"&gt;
+&lt;h3&gt;Erlang&lt;/h3&gt;
+&lt;p&gt;Erlang 是為了平行處理而設計的，設計受到 Prolog 影響&lt;/p&gt;
+&lt;p&gt;dynamic type, no lazy evaluation&lt;/p&gt;
+&lt;p&gt;以 actor 理論為基礎&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="ruby"&gt;
+&lt;h3&gt;Ruby&lt;/h3&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Block&lt;/li&gt;
+&lt;li&gt;Proc object&lt;/li&gt;
+&lt;li&gt;lambda&lt;/li&gt;
+&lt;li&gt;enumerator&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://awaxman11.github.io/blog/2013/08/05/what-is-the-difference-between-a-block/"&gt;What Is the Difference Between a Block, a Proc, and a Lambda in Ruby?&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="o"&gt;].&lt;/span&gt;&lt;span class="n"&gt;each&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="o"&gt;].&lt;/span&gt;&lt;span class="n"&gt;each&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+    &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;         &lt;span class="c1"&gt;# block is everything between the do and end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+
+&lt;span class="n"&gt;lam&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;lambda&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="o"&gt;].&lt;/span&gt;&lt;span class="n"&gt;each&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;lam&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="nb"&gt;p&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Proc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;new&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="o"&gt;].&lt;/span&gt;&lt;span class="n"&gt;each&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="nb"&gt;p&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;     &lt;span class="c1"&gt;# The &amp;#39;&amp;amp;&amp;#39; tells ruby to turn the proc into a block&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="ch-14-2-code-generation"&gt;
+&lt;h3&gt;ch 14-2 Code Generation&lt;/h3&gt;
+&lt;p&gt;nothing&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="ch-14-3-memory-management"&gt;
+&lt;h3&gt;ch 14-3 Memory Management&lt;/h3&gt;
+&lt;p&gt;因為一些概念之前有看過了，所以這邊算是複習和加強 XD&lt;/p&gt;
+&lt;p&gt;Garbage Collection 的誕生是在 1960 年代，
+起因於 Lisp 需要產生大量 cons cell object，不能明確管理各個 object&lt;/p&gt;
+&lt;p&gt;GC 衡量:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p class="first"&gt;GC 所佔的時間比例&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;dl class="first docutils"&gt;
+&lt;dt&gt;Pause Time&lt;/dt&gt;
+&lt;dd&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;平均 pause time&lt;/li&gt;
+&lt;li&gt;最長的 pause time&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="section" id="no-gc"&gt;
+&lt;h4&gt;no GC&lt;/h4&gt;
+&lt;p&gt;例如 C 或 C++，programmer 自己管理 memory，自己 malloc/free、new/delete&lt;/p&gt;
+&lt;p&gt;programmer 沒把程式寫好會造成:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;dangling pointer (因為把還在用的 free 掉了)&lt;/li&gt;
+&lt;li&gt;memory leak (該 free 的沒 free 到)&lt;/li&gt;
+&lt;li&gt;double free&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;要檢查這些問題可以使用 valgrind&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="gc-algorithm"&gt;
+&lt;h4&gt;GC algorithm&lt;/h4&gt;
+&lt;table border="1" class="table table-bordered docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="18%" /&gt;
+&lt;col width="50%" /&gt;
+&lt;col width="31%" /&gt;
+&lt;/colgroup&gt;
+&lt;thead valign="bottom"&gt;
+&lt;tr&gt;&lt;th class="head"&gt;Algorithm&lt;/th&gt;
+&lt;th class="head"&gt;Description&lt;/th&gt;
+&lt;th class="head"&gt;Problem&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;reference counting&lt;/td&gt;
+&lt;td&gt;用一數字紀錄被 reference 的次數，最容易實作&lt;/td&gt;
+&lt;td&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;cycle reference&lt;/li&gt;
+&lt;li&gt;不適合平行處理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;mark &amp;amp; sweep&lt;/td&gt;
+&lt;td&gt;把 trace 的到的 objects 做標記，沒標到的清掉&lt;/td&gt;
+&lt;td&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;objects 量上升時，速度容易下降&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;mark &amp;amp; compact&lt;/td&gt;
+&lt;td&gt;把 trace 的到的 objects 做標記，
+接著把標過的集合起來，
+如此一來 memory 操作就有了區域性，
+讓快取之類的機制效率提高&lt;/td&gt;
+&lt;td&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;比 mark &amp;amp; sweep 慢&lt;/li&gt;
+&lt;li&gt;不能使用保守 GC&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;copying&lt;/td&gt;
+&lt;td&gt;把還在用的複製一份到新的 memory 區域 (會分成新和舊)，
+接著把舊區域整個清掉&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;table border="1" class="table table-bordered docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="15%" /&gt;
+&lt;col width="85%" /&gt;
+&lt;/colgroup&gt;
+&lt;thead valign="bottom"&gt;
+&lt;tr&gt;&lt;th class="head"&gt;Algorithm&lt;/th&gt;
+&lt;th class="head"&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;Generational&lt;/td&gt;
+&lt;td&gt;多數 objects 會在短時間內變成 garbage，所以可以用 age 做不同處理，
+會分成 minor GC 和 major GC，
+有 write barrier (紀錄 old object 裡用到 young object 的狀況，這紀錄稱為 remembered set)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Conservative&lt;/td&gt;
+&lt;td&gt;&lt;p class="first"&gt;在 C 這種本來沒有 GC 的語言，compile 後就沒有區分 integer 和 pointer 的資訊，
+因為 CPU 不需要，這時可以使用 Conservative 實作，概念是 &amp;quot;碰到 address 相同時，
+代表可能被引用，視為存活&amp;quot;&lt;/p&gt;
+&lt;p class="last"&gt;(heap 會整個被掃過)&lt;/p&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Incremental&lt;/td&gt;
+&lt;td&gt;把 GC 操作切割，以降低每次 GC 的最長時間，也用了 write barrier&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Concurrent&lt;/td&gt;
+&lt;td&gt;機制和 Incremental GC 類似，利用 write barrier 維持狀態資訊，實作時也可能有專用的 GC thread&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Bitmap Marking&lt;/td&gt;
+&lt;td&gt;Linux 這類 Unix-like 在 fork 時 memory addres 是 copy-on-write 的，
+可以避免不必要的 page copy，但是和 GC 的搭配不太好，GC 在改動時就會大量複製，
+Bitmap Marking 就是用來降低複製 page 的次數，不時直接對 object 做標記，
+而是有另外的空間用於標記，所以複製的只有標記用的 Bitmap&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="ch-14-4-ruby-with-c"&gt;
+&lt;h2&gt;ch 14-4 Ruby with C&lt;/h2&gt;
+&lt;p&gt;介紹 Ruby 如何和 C 一起用&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="ch-14-5-open-source"&gt;
+&lt;h2&gt;ch 14-5 Open Source&lt;/h2&gt;
+&lt;p&gt;Open Source 發展簡史&lt;/p&gt;
+&lt;/div&gt;
+</summary><category term="book"></category></entry><entry><title>People who make VMs</title><link href="/posts/2014/09/vm-people/" rel="alternate"></link><updated>2014-09-28T13:25:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-09-28:posts/2014/09/vm-people/</id><summary type="html">&lt;p&gt;剛剛碰巧看到一個 &lt;a class="reference external" href="http://stackoverflow.com/questions/5168718/what-blocks-ruby-python-to-get-javascript-v8-speed/5172833#5172833"&gt;StackOverflow 上的回應&lt;/a&gt; ，
 原來 V8 的 team 和 HotSpot JVM 的有很大重複，還有其他像是 Self VM、Animorphic Smalltalk VM、OOVM 都是，
 而其中的 tech lead 叫 Lars Bak。&lt;/p&gt;
 &lt;p&gt;Lars Bak 是 Dart 語言的創始人 (Dart 語言是 Google 想用來取代 Javascript 的一個語言) 也是 V8 和 Java HostSpot JVM 的領導，對於 VM 的技術有非常多的經驗，住在丹麥的 Aarhus 的農舍。&lt;/p&gt;

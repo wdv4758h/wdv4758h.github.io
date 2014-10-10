@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Pythoner 讀 「松本行弘的程式世界」 - part 1 — Dv 名字很難念</title>
+	<meta name="description" content="Title: Pythoner 讀 「松本行弘的程式世界」 - part 1; Date: 2014-10-10; Author: wdv4758h">
+	<meta name="author" content="wdv4758h">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="/theme/html5.js"></script>
+		<![endif]-->
+	<link href="/theme/css/ipython.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/simplex/bootstrap.min.css" rel="stylesheet">
+	<link href="/theme/css/local.css" rel="stylesheet">
+	<link href="/theme/css/pygments.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+	<div class="page-header">
+		<h1><a href="/">Dv 名字很難念</a>
+			<br><small>Aquí hay gato encerrado. </small></h1>
+	</div>
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">Pythoner 讀 「松本行弘的程式世界」 - part 1</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">wdv4758h</h4>
+		</span>
+        <span itemprop="publish">publish: <time datetime="2014-10-10T16:20:00" itemprop="datePublished">Fri 10 October 2014</time></span>
+	</div>
+	<div>
+		Category:
+		<span itemprop="articleSection">
+			<a href="/category/misc.html" rel="category">Misc</a>
+		</span>
+	</div>
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="/tag/book.html" rel="tag">book</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><p>這邊是讀了書上內容的節錄和獨後自己查的資料</p>
+<p>目前心得 : 可以看到一些觀念，但是有些例子就 ... (尤其是少部份有提到 Python 的)</p>
+<div class="section" id="ch-14-1-functional-programming">
+<h2>ch 14-1 - functional programming</h2>
+<p>是的沒錯，我第一個翻的章節是 chapter 14 ...</p>
+<p>Fortran 設計者為 John Backus (John Backus 還發明了 BNF)，
+其在 1997 年 Turing Award 上發表的語言 &quot;FP&quot; 被認為是 Functional Programming 的起點</p>
+<p>Feature:</p>
+<ul>
+<li><p class="first">Higher-order function</p>
+</li>
+<li><dl class="first docutils">
+<dt>pure function (no side effect)</dt>
+<dd><ul class="first last simple">
+<li>Referential transparency</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="section" id="lisp">
+<h3>Lisp</h3>
+<p>Lisp 的基礎是 Alonzo Church 提的 lambda calculus，也支援 Higher-order function</p>
+<p>Lisp 具有一些 functional 的特性，但不是純粹的 functional</p>
+<p>Lisp 最大的特色是 S-expression</p>
+<p>另一個特色是 list (LISP = LISt Processing)，Lisp 把節點稱為 cons cell，
+cons 是從建立新 cell 的 function : cons (construct) 而來，
+而一開始的 Lisp 環境把第一個資料放在 address register，第二個放在 data register，
+所以 car = content of address register、cdr = content of data register，
+構成 list 的資料成為 atom (symbol or number)</p>
+<p>cons cell:</p>
+<table border="1" class="table table-bordered docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>car</td>
+<td>cdr</td>
+</tr>
+</tbody>
+</table>
+<p>Lisp 的 list 底下結構是 singly linked-list</p>
+</div>
+<div class="section" id="haskell">
+<h3>Haskell</h3>
+<p>Haskell Curry 的 Combinatory logic 和 Alonzo Church 的 lambda calculus 幾乎相同的東西</p>
+<p>Haskell feature:</p>
+<ul class="simple">
+<li>no side effect</li>
+<li>Higher-order function</li>
+<li>partial function application</li>
+<li>lazy evaluation</li>
+<li>type inference</li>
+<li>list comprehension</li>
+<li>block by indent</li>
+</ul>
+<p>Haskell 有靜態多型的型別系統和 type inference，可以在接近 duck typing 的情況下，
+在編譯時完成 type checking</p>
+</div>
+<div class="section" id="ocaml">
+<h3>OCaml</h3>
+<p>OCaml 歷史比 Haskell 早，誕生於法國</p>
+<p>和 Haskell 相比有些不同:</p>
+<ul class="simple">
+<li>has side effect</li>
+<li>no lazy evaluation</li>
+<li>module system</li>
+</ul>
+<p>OCaml 想要 lazy evaluation 時可以明確標示</p>
+</div>
+<div class="section" id="erlang">
+<h3>Erlang</h3>
+<p>Erlang 是為了平行處理而設計的，設計受到 Prolog 影響</p>
+<p>dynamic type, no lazy evaluation</p>
+<p>以 actor 理論為基礎</p>
+</div>
+<div class="section" id="ruby">
+<h3>Ruby</h3>
+<ul class="simple">
+<li>Block</li>
+<li>Proc object</li>
+<li>lambda</li>
+<li>enumerator</li>
+<li><a class="reference external" href="http://awaxman11.github.io/blog/2013/08/05/what-is-the-difference-between-a-block/">What Is the Difference Between a Block, a Proc, and a Lambda in Ruby?</a></li>
+</ul>
+<div class="highlight"><pre><span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">].</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">x</span><span class="o">*</span><span class="mi">2</span> <span class="p">}</span>
+
+<span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span>
+    <span class="nb">puts</span> <span class="n">x</span><span class="o">*</span><span class="mi">2</span>         <span class="c1"># block is everything between the do and end</span>
+<span class="k">end</span>
+
+<span class="n">lam</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">x</span><span class="o">*</span><span class="mi">2</span> <span class="p">}</span>
+<span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">].</span><span class="n">each</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lam</span><span class="p">)</span>
+
+<span class="nb">p</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">x</span><span class="o">*</span><span class="mi">2</span> <span class="p">}</span>
+<span class="o">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="o">].</span><span class="n">each</span><span class="p">(</span><span class="o">&amp;</span><span class="nb">p</span><span class="p">)</span>     <span class="c1"># The &#39;&amp;&#39; tells ruby to turn the proc into a block</span>
+</pre></div>
+</div>
+<div class="section" id="ch-14-2-code-generation">
+<h3>ch 14-2 Code Generation</h3>
+<p>nothing</p>
+</div>
+<div class="section" id="ch-14-3-memory-management">
+<h3>ch 14-3 Memory Management</h3>
+<p>因為一些概念之前有看過了，所以這邊算是複習和加強 XD</p>
+<p>Garbage Collection 的誕生是在 1960 年代，
+起因於 Lisp 需要產生大量 cons cell object，不能明確管理各個 object</p>
+<p>GC 衡量:</p>
+<ul>
+<li><p class="first">GC 所佔的時間比例</p>
+</li>
+<li><dl class="first docutils">
+<dt>Pause Time</dt>
+<dd><ul class="first last simple">
+<li>平均 pause time</li>
+<li>最長的 pause time</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="section" id="no-gc">
+<h4>no GC</h4>
+<p>例如 C 或 C++，programmer 自己管理 memory，自己 malloc/free、new/delete</p>
+<p>programmer 沒把程式寫好會造成:</p>
+<ul class="simple">
+<li>dangling pointer (因為把還在用的 free 掉了)</li>
+<li>memory leak (該 free 的沒 free 到)</li>
+<li>double free</li>
+</ul>
+<p>要檢查這些問題可以使用 valgrind</p>
+</div>
+<div class="section" id="gc-algorithm">
+<h4>GC algorithm</h4>
+<table border="1" class="table table-bordered docutils">
+<colgroup>
+<col width="18%" />
+<col width="50%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Algorithm</th>
+<th class="head">Description</th>
+<th class="head">Problem</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>reference counting</td>
+<td>用一數字紀錄被 reference 的次數，最容易實作</td>
+<td><ul class="first last simple">
+<li>cycle reference</li>
+<li>不適合平行處理</li>
+</ul>
+</td>
+</tr>
+<tr><td>mark &amp; sweep</td>
+<td>把 trace 的到的 objects 做標記，沒標到的清掉</td>
+<td><ul class="first last simple">
+<li>objects 量上升時，速度容易下降</li>
+</ul>
+</td>
+</tr>
+<tr><td>mark &amp; compact</td>
+<td>把 trace 的到的 objects 做標記，
+接著把標過的集合起來，
+如此一來 memory 操作就有了區域性，
+讓快取之類的機制效率提高</td>
+<td><ul class="first last simple">
+<li>比 mark &amp; sweep 慢</li>
+<li>不能使用保守 GC</li>
+</ul>
+</td>
+</tr>
+<tr><td>copying</td>
+<td>把還在用的複製一份到新的 memory 區域 (會分成新和舊)，
+接著把舊區域整個清掉</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="table table-bordered docutils">
+<colgroup>
+<col width="15%" />
+<col width="85%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Algorithm</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Generational</td>
+<td>多數 objects 會在短時間內變成 garbage，所以可以用 age 做不同處理，
+會分成 minor GC 和 major GC，
+有 write barrier (紀錄 old object 裡用到 young object 的狀況，這紀錄稱為 remembered set)</td>
+</tr>
+<tr><td>Conservative</td>
+<td><p class="first">在 C 這種本來沒有 GC 的語言，compile 後就沒有區分 integer 和 pointer 的資訊，
+因為 CPU 不需要，這時可以使用 Conservative 實作，概念是 &quot;碰到 address 相同時，
+代表可能被引用，視為存活&quot;</p>
+<p class="last">(heap 會整個被掃過)</p>
+</td>
+</tr>
+<tr><td>Incremental</td>
+<td>把 GC 操作切割，以降低每次 GC 的最長時間，也用了 write barrier</td>
+</tr>
+<tr><td>Concurrent</td>
+<td>機制和 Incremental GC 類似，利用 write barrier 維持狀態資訊，實作時也可能有專用的 GC thread</td>
+</tr>
+<tr><td>Bitmap Marking</td>
+<td>Linux 這類 Unix-like 在 fork 時 memory addres 是 copy-on-write 的，
+可以避免不必要的 page copy，但是和 GC 的搭配不太好，GC 在改動時就會大量複製，
+Bitmap Marking 就是用來降低複製 page 的次數，不時直接對 object 做標記，
+而是有另外的空間用於標記，所以複製的只有標記用的 Bitmap</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="section" id="ch-14-4-ruby-with-c">
+<h2>ch 14-4 Ruby with C</h2>
+<p>介紹 Ruby 如何和 C 一起用</p>
+</div>
+<div class="section" id="ch-14-5-open-source">
+<h2>ch 14-5 Open Source</h2>
+<p>Open Source 發展簡史</p>
+</div>
+</div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'wdv4758h-blog';
+    var disqus_title = 'Pythoner 讀 「松本行弘的程式世界」 - part 1';
+	var disqus_identifier = 'posts/2014/10/pythoner-read-ruby-book-1/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div> 	<!-- <hr> -->
+</div> <!-- /container -->
+<footer class="aw-footer bg-danger">
+	<div class="container"> <!-- footer -->
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+				<div class="row">
+					<div class="col-md-3">
+						<h4>Navigation</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="">Dv 名字很難念</a></li>
+							<li><a href="//archives"><i class="fa fa-archive "></i> archive</a></li>
+							<li><a href="//tags"><i class="fa fa-tags "></i> tags</a></li>
+							<li><a href="/feeds/all.rss.xml"><i class="fa fa-rss "></i> rss</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Author</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="https://wdv4758h.github.com">Homepage</a></li>
+							<li><a href="https://github.com/wdv4758h/">Github</a></li>
+							<li><a href="https://plus.google.com/103751737509044116269/posts">Google+</a></li>
+							<li><a href="https://www.facebook.com/wdv4758h">Facebook</a></li>
+							<li><a href="https://www.linkedin.com/pub/chiu-hsiang-hsu/69/83/530">Linked-in</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Categories</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="/category/Django.html">Django (1)</a></li>
+							<li><a href="/category/Fuzzy.html">Fuzzy (1)</a></li>
+							<li><a href="/category/GC.html">GC (1)</a></li>
+							<li><a href="/category/Misc.html">Misc (8)</a></li>
+							<li><a href="/category/Python.html">Python (4)</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Links</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="https://www.python.org/">Python</a></li>
+							<li><a href="https://www.djangoproject.com/">Django</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; wdv4758h 2014</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-4510606-3', 'aboutwilson.net');
+ga('require', 'displayfeatures');
+ga('require', 'linkid', 'linkid.js');
+ga('send', 'pageview');
+
+</script>
+</body>
+</html>
