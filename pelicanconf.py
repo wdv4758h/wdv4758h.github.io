@@ -49,7 +49,7 @@ DEFAULT_PAGINATION = 10
 # Uncomment following line if you want document-relative URLs when developing
 RELATIVE_URLS = True
 
-MENUITEMS = [('archive', '/archives'), ('tags', '/tags')]
+MENUITEMS = [('archive', 'archives'), ('tags', 'tags')]
 
 # Plugin
 
