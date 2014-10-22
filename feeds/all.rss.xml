@@ -10,7 +10,7 @@ virtualenv env-pypy3 -p /usr/bin/pypy3
 &lt;div class="section" id="what-s-rpython"&gt;
 &lt;h2&gt;What's RPython&lt;/h2&gt;
 &lt;p&gt;RPython is a subset of Python&lt;/p&gt;
-&lt;table border="1" class="docutils"&gt;
+&lt;table border="1" class="table table-bordered docutils"&gt;
 &lt;colgroup&gt;
 &lt;col width="17%" /&gt;
 &lt;col width="83%" /&gt;
@@ -53,7 +53,7 @@ so the return type is determined by analysis the arguments (when the function is
 &lt;h3&gt;RPythonic&lt;/h3&gt;
 &lt;div class="section" id="flow-restrictions"&gt;
 &lt;h4&gt;Flow restrictions&lt;/h4&gt;
-&lt;table border="1" class="docutils"&gt;
+&lt;table border="1" class="table table-bordered docutils"&gt;
 &lt;colgroup&gt;
 &lt;col width="20%" /&gt;
 &lt;col width="80%" /&gt;
@@ -85,7 +85,7 @@ so the return type is determined by analysis the arguments (when the function is
 &lt;/div&gt;
 &lt;div class="section" id="object-restrictions"&gt;
 &lt;h4&gt;Object restrictions&lt;/h4&gt;
-&lt;table border="1" class="docutils"&gt;
+&lt;table border="1" class="table table-bordered docutils"&gt;
 &lt;colgroup&gt;
 &lt;col width="20%" /&gt;
 &lt;col width="80%" /&gt;
