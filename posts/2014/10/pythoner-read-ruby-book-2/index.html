@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Pythoner 讀 「松本行弘的程式世界」 - part 2 — Dv 名字很難念</title>
+	<meta name="description" content="Title: Pythoner 讀 「松本行弘的程式世界」 - part 2; Date: 2014-10-10; Author: wdv4758h">
+	<meta name="author" content="wdv4758h">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="/theme/html5.js"></script>
+		<![endif]-->
+	<link href="/theme/css/ipython.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/simplex/bootstrap.min.css" rel="stylesheet">
+	<link href="/theme/css/local.css" rel="stylesheet">
+	<link href="/theme/css/pygments.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+	<div class="page-header">
+		<h1><a href="/">Dv 名字很難念</a>
+			<br><small>Aquí hay gato encerrado. </small></h1>
+	</div>
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">Pythoner 讀 「松本行弘的程式世界」 - part 2</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">wdv4758h</h4>
+		</span>
+        <span itemprop="publish">publish: <time datetime="2014-10-10T20:50:00" itemprop="datePublished">Fri 10 October 2014</time></span>
+	</div>
+	<div>
+		Category:
+		<span itemprop="articleSection">
+			<a href="/category/misc.html" rel="category">Misc</a>
+		</span>
+	</div>
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="/tag/book.html" rel="tag">book</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><div class="section" id="ch-2-5-duck-typing">
+<h2>ch 2-5 Duck Typing</h2>
+<p>duck typing 實在很常聽到，尤其自己常寫的是 Python XD</p>
+<p>在講到 type 時，常聽到的有 static 和 dynamic，static 的話不用執行就可以知道，
+dynamic 的話要執行下去才能確認</p>
+<p>硬體看得懂的是二進位數字，其他寫程式用到的型別都是建立在這之上的，
+如果沒有做成更好用的 type 的話會造成程式撰寫上的負擔，
+於是 Fortran 提供了型別 (整數資料、浮點數陣列等等)，
+於是有了 static type (宣告型別)</p>
+<div class="section" id="lisp-dynamic-type">
+<h3>Lisp &amp; Dynamic type</h3>
+<p>在 Fortran 出現後幾年，出現了 Lisp，
+1958 年的 Lisp 只有兩種型別 : list、atom，不是 list 的都是 atom</p>
+<ul class="simple">
+<li>cons cell</li>
+<li>car, cdr</li>
+<li>S-expression</li>
+</ul>
+<p>Lisp 的 list 裡事先無法知道 cons cell 裡面指到的是 cons cell 還是 atom，
+本質上可說是 polymorphism 的 data structure，
+所以 Lisp 採用的是 &quot;資料本身還有描述自己型別的資訊&quot;，又稱為動態型別</p>
+<pre class="literal-block">
+  cons cell
+
++-----+-----+
+| car | cdr |
++-----+-----+
+   |     |
+   |     |
+ +---+  +-----+-----+
+ | 5 |  | car | cdr |
+ +---+  +-----+-----+
+ atom      |     |
+           |     |
+        +----+  nil
+        | 13 |  atom
+        +----+
+         atom
+</pre>
+<p>Static Type 起自 Fortran、Dynamic Type 起自 Lisp，
+在最初的物件導向語言 Simula 裡，出現了和 Dynamic Type 類似的型別 Ref (Simula 中除了物件之外都是靜態型別)，
+之後從 Simula 的物件導向概念延生出的 Smalltalk 和 Lisp 一樣全面採用動態型別，
+1980 年代前半，受到 Simula 影響而誕生了 C++，重要概念 : &quot;subclass 可以視為 base class 的 instance&quot;</p>
+<p>Duck Typing 的概念是: &quot;走路像鴨子，看起來像鴨子，那就可以把他當成鴨子&quot;</p>
+<p>Dynamic Type 裡避免名去檢查型別，而改以檢查是否有某 method</p>
+</div>
+</div>
+</div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'wdv4758h-blog';
+    var disqus_title = 'Pythoner 讀 「松本行弘的程式世界」 - part 2';
+	var disqus_identifier = 'posts/2014/10/pythoner-read-ruby-book-2/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div> 	<!-- <hr> -->
+</div> <!-- /container -->
+<footer class="aw-footer bg-danger">
+	<div class="container"> <!-- footer -->
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+				<div class="row">
+					<div class="col-md-3">
+						<h4>Navigation</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="">Dv 名字很難念</a></li>
+							<li><a href="/archives"><i class="fa fa-archive "></i> archive</a></li>
+							<li><a href="/tags"><i class="fa fa-tags "></i> tags</a></li>
+							<li><a href="/feeds/all.rss.xml"><i class="fa fa-rss "></i> rss</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Author</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="https://wdv4758h.github.com">Homepage</a></li>
+							<li><a href="https://github.com/wdv4758h/">Github</a></li>
+							<li><a href="https://plus.google.com/103751737509044116269/posts">Google+</a></li>
+							<li><a href="https://www.facebook.com/wdv4758h">Facebook</a></li>
+							<li><a href="https://www.linkedin.com/pub/chiu-hsiang-hsu/69/83/530">Linked-in</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Categories</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="/category/Django.html">Django (1)</a></li>
+							<li><a href="/category/Fuzzy.html">Fuzzy (1)</a></li>
+							<li><a href="/category/GC.html">GC (1)</a></li>
+							<li><a href="/category/Misc.html">Misc (12)</a></li>
+							<li><a href="/category/Python.html">Python (8)</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Links</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="https://www.python.org/">Python</a></li>
+							<li><a href="https://www.djangoproject.com/">Django</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; wdv4758h 2014</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-42810012-2', 'auto');
+  ga('send', 'pageview');
+</script>
+</body>
+</html>

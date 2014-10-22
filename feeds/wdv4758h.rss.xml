@@ -1,5 +1,315 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/wdv4758h.rss.xml" rel="self"></atom:link><lastBuildDate>Fri, 10 Oct 2014 16:20:00 +0800</lastBuildDate><item><title>Pythoner 讀 「松本行弘的程式世界」 - part 1</title><link>/posts/2014/10/pythoner-read-ruby-book-1/</link><description>&lt;p&gt;這邊是讀了書上內容的節錄和獨後自己查的資料&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/wdv4758h.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 22 Oct 2014 13:10:00 +0800</lastBuildDate><item><title>Python virtualenv upgrade</title><link>/posts/2014/10/python-virtualenv-upgrade/</link><description>&lt;p&gt;If you want to upgrade main Python program in virtualenv,
+then just run the creation command again.&lt;/p&gt;
+&lt;p&gt;ex:&lt;/p&gt;
+&lt;pre class="code sh literal-block"&gt;
+virtualenv env
+virtualenv env-pypy3 -p /usr/bin/pypy3
+&lt;/pre&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Wed, 22 Oct 2014 13:10:00 +0800</pubDate><guid>tag:,2014-10-22:posts/2014/10/python-virtualenv-upgrade/</guid><category>Python</category></item><item><title>RPython Intro.</title><link>/posts/2014/10/RPython/</link><description>&lt;div class="section" id="what-s-rpython"&gt;
+&lt;h2&gt;What's RPython&lt;/h2&gt;
+&lt;p&gt;RPython is a subset of Python&lt;/p&gt;
+&lt;table border="1" class="docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="17%" /&gt;
+&lt;col width="83%" /&gt;
+&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;Language&lt;/td&gt;
+&lt;td&gt;RPython&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Type&lt;/td&gt;
+&lt;td&gt;Static (not Manifest Typing, but Type Inference)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://stackoverflow.com/questions/7161856/what-is-statically-typed-in-rpython"&gt;http://stackoverflow.com/questions/7161856/what-is-statically-typed-in-rpython&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Not all code in the PyPy repository is RPython.
+For example, there are code generators (e.g. in rlib.parsing) that run at compile time and produce RPython code,
+but are not RPython (frequently with a &amp;quot;NOT_RPYTHON&amp;quot; docstring, by the way).
+Also, large parts of the standard library are written in full Python (mostly taken straight from CPython).&lt;/p&gt;
+&lt;div class="section" id="type-inference-static-typing"&gt;
+&lt;h3&gt;Type Inference &amp;amp; Static Typing&lt;/h3&gt;
+&lt;p&gt;Types are not stated explicitly, they are infered, so RPython is static typing.&lt;/p&gt;
+&lt;p&gt;Static typing doesn't mean the type has to be written out (that's &lt;strong&gt;manifest typing&lt;/strong&gt;),
+it means each expression has a single type that never changes.&lt;/p&gt;
+&lt;div class="section" id="analysis"&gt;
+&lt;h4&gt;Analysis&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;We cann't infer a (non-generic) type for a function like above,
+the return type depends on arguments,
+so the return type is determined by analysis the arguments (when the function is called)&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="build-a-python-vm-with-rpython"&gt;
+&lt;h2&gt;build a Python VM with RPython&lt;/h2&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Tue, 21 Oct 2014 08:50:00 +0800</pubDate><guid>tag:,2014-10-21:posts/2014/10/RPython/</guid><category>PyPy</category></item><item><title>Try the jitviewer</title><link>/posts/2014/10/jitviewer/</link><description>&lt;div class="section" id="the-jitviewer"&gt;
+&lt;h2&gt;the jitviewer&lt;/h2&gt;
+&lt;div class="section" id="target"&gt;
+&lt;h3&gt;target&lt;/h3&gt;
+&lt;p&gt;analysis log from PyPy, and display Python bytecode &amp;amp; jit operations via the web&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="install"&gt;
+&lt;h3&gt;install&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;jitviewer is a PyPy2 only program now (it need rpython)&lt;/strong&gt;&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;create the virtual environment&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;virtualenv env-pypy -p /usr/bin/pypy
+&lt;/pre&gt;&lt;/div&gt;
+&lt;ol class="arabic simple" start="2"&gt;
+&lt;li&gt;active the virtual environment&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;source &lt;/span&gt;env-pypy/bin/activate
+&lt;/pre&gt;&lt;/div&gt;
+&lt;ol class="arabic simple" start="3"&gt;
+&lt;li&gt;get the PyPy2 source code (for rpython)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;wget https://bitbucket.org/pypy/pypy/downloads/pypy-2.4.0-src.tar.bz2
+tar -xvf pypy-2.4.0-src.tar.bz2
+&lt;/pre&gt;&lt;/div&gt;
+&lt;ol class="arabic simple" start="4"&gt;
+&lt;li&gt;install jitviewer&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;pip install jitviewer
+&lt;/pre&gt;&lt;/div&gt;
+&lt;ol class="arabic simple" start="5"&gt;
+&lt;li&gt;set the env&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;setenv PYTHONPATH pypy-2.4.0-src
+&lt;/pre&gt;&lt;/div&gt;
+&lt;ol class="arabic simple" start="6"&gt;
+&lt;li&gt;run the sample&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;jitviewer.py --log log
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="create-log-of-pypy"&gt;
+&lt;h3&gt;create log of PyPy&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;setenv PYPYLOG jit-log-opt,jit-backend-counts:myprogram.log
+pypy -c your_program.py
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="with-pypy3"&gt;
+&lt;h3&gt;with PyPy3&lt;/h3&gt;
+&lt;p&gt;As jitviewer is a PyPy2 only program now (2014-10-15),
+you should run your program by PyPy3 and output the log,
+then use jitviewer with PyPy2 to analysis the log.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="expect-in-the-future"&gt;
+&lt;h3&gt;expect in the future&lt;/h3&gt;
+&lt;p&gt;There are something that I think it should have ...&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p class="first"&gt;PyPy3 compatibility&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;jitviewer with PyPy3 is not working now,
+the smaller part is the syntax in jitviewer (something like print function),
+the bigger part is the rpython module ...&lt;/p&gt;
+&lt;p&gt;At the moment, rpython has a lot of Python 2 only syntax (even in PyPy3 source code).&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;CPython compatibility&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;This means to remove the depenency of rpython.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="note"&gt;
+&lt;h3&gt;note&lt;/h3&gt;
+&lt;p&gt;The PyPy does not modify the output of Python bytecodes,
+so the Python bytecodes output from CPython's dis module or PyPy's are the same.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Wed, 15 Oct 2014 17:20:00 +0800</pubDate><guid>tag:,2014-10-15:posts/2014/10/jitviewer/</guid><category>book</category></item><item><title>PTT - Python 版 - transpose 問題</title><link>/posts/2014/10/ptt-python-transpose/</link><description>&lt;p&gt;這篇在解 PTT Python 版上的一個問題 (#1KEG5cfG)&lt;/p&gt;
+&lt;p&gt;基本上就是要做 transpose，但是資料長度不依，
+所以就來試試囉 : &lt;a class="reference external" href="https://gist.github.com/wdv4758h/1f4090ee9b0035dbcee0"&gt;https://gist.github.com/wdv4758h/1f4090ee9b0035dbcee0&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;以下都以 Python 3 為考量，而且以 zip 為出發點來解這個問題。&lt;/p&gt;
+&lt;p&gt;如果是一個完整 n x m 的資料，
+類似的工作可以用 zip 就完成。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;transpose&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;zip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;transpose&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;現在的狀況不是完整 n x m 的資料，而是長短不一的，
+一種解是用 itertools 裡的 zip_longest，
+參數是 iterables 還有 fillvalue (預設是 None)，
+fillvalue 會拿來填滿資料短缺的部份。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;itertools&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;it&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;transpose&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;it&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zip_longest&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c"&gt;# 跟前面文章借測資&lt;/span&gt;
+
+&lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+&lt;span class="k"&gt;del&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="k"&gt;del&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;transpose&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;這邊會把不夠的地方都補 None，
+所以輸出會是:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+(0, 0, 0, 0, 0, 0, 0, 0)
+(1, 1, 1, 1, 1, 1, 1, None)
+(2, 2, 2, 2, 2, 2, None, None)
+(3, 3, 3, 3, 3, 3, None, None)
+(4, 4, 4, 4, 4, None, None, None)
+(5, 5, 5, 5, None, None, None, None)
+(6, 6, 6, None, None, None, None, None)
+(7, 7, 7, None, None, None, None, None)
+(8, 8, None, None, None, None, None, None)
+(9, None, None, None, None, None, None, None)
+&lt;/pre&gt;
+&lt;p&gt;如果前面那種剛好符合需求，那就可以開心的拿來用了，
+如果真的不想要看到多補的那些資料，就再把結果處理過。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;transpose&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;tuple&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;it&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;filterfalse&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+                &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;it&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zip_longest&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;transpose&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;如此一來結果就變成:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+(0, 0, 0, 0, 0, 0, 0, 0)
+(1, 1, 1, 1, 1, 1, 1)
+(2, 2, 2, 2, 2, 2)
+(3, 3, 3, 3, 3, 3)
+(4, 4, 4, 4, 4)
+(5, 5, 5, 5)
+(6, 6, 6)
+(7, 7, 7)
+(8, 8)
+(9,)
+&lt;/pre&gt;
+&lt;p&gt;不過上面處理是以輸入 data 裡沒有 None 為前提的 XD
+資料裡面可能有 None 的話就另外用別的值囉。&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Sat, 11 Oct 2014 23:33:00 +0800</pubDate><guid>tag:,2014-10-11:posts/2014/10/ptt-python-transpose/</guid><category>python</category></item><item><title>Pythoner 讀 「松本行弘的程式世界」 - part 3</title><link>/posts/2014/10/pythoner-read-ruby-book-3/</link><description>&lt;div class="section" id="ch-8-regular-expression"&gt;
+&lt;h2&gt;ch 8 Regular Expression&lt;/h2&gt;
+&lt;p&gt;毫無反應就是 regular expression&lt;/p&gt;
+&lt;p&gt;書上是介紹 Ruby 裡的 re，基本上長的就是 Perl 樣 (X&lt;/p&gt;
+&lt;p&gt;基本 re 觀念都差不多&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;# Ruby&lt;/span&gt;
+
+&lt;span class="s1"&gt;&amp;#39;&amp;lt;ul&amp;gt;&amp;lt;li&amp;gt;a&amp;lt;/li&amp;gt;b&amp;lt;/ul&amp;gt;&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sr"&gt;/(&amp;lt;.*?&amp;gt;)/&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&amp;lt;ul&amp;gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&amp;lt;li&amp;gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;a&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&amp;lt;/li&amp;gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;b&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&amp;lt;/ul&amp;gt;&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# Python&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;re&lt;/span&gt;
+&lt;span class="n"&gt;re&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;(&amp;lt;.*?&amp;gt;)&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&amp;lt;ul&amp;gt;&amp;lt;li&amp;gt;a&amp;lt;/li&amp;gt;b&amp;lt;/ul&amp;gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&amp;lt;ul&amp;gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&amp;lt;li&amp;gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&amp;lt;/li&amp;gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&amp;lt;/ul&amp;gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;書上提到 Ruby 1.9 的 re 使用了 &lt;a class="reference external" href="http://en.wikipedia.org/wiki/Oniguruma"&gt;Oniguruma&lt;/a&gt; 這個 engine，
+Ruby 2.0 後轉到 Oniguruma 的 fork : &lt;a class="reference external" href="https://github.com/k-takata/Onigmo"&gt;Onigmo&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Python 的話可以看 &lt;a class="reference external" href="https://docs.python.org/3/library/re.html"&gt;re 的 document&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;這章節最後最後提到 DSL (Domain Specific Language)&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="ch-9-1-integer"&gt;
+&lt;h2&gt;ch 9-1 Integer&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;在 C 裡，型態為 int 的狀態下，5 / 2 的結果會是 2&lt;/li&gt;
+&lt;li&gt;int 有大小上限&lt;/li&gt;
+&lt;li&gt;bitwise operation&lt;/li&gt;
+&lt;li&gt;bitmask&lt;/li&gt;
+&lt;li&gt;2's complement&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="ch-9-2-float"&gt;
+&lt;h2&gt;ch 9-2 Float&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;fixed point number (不好用)&lt;/li&gt;
+&lt;li&gt;IEEE 754&lt;/li&gt;
+&lt;li&gt;電腦中的浮點數沒有結合律 (誤差會擴大)&lt;/li&gt;
+&lt;li&gt;誤差會累積&lt;/li&gt;
+&lt;li&gt;Inf, 0, NaN&lt;/li&gt;
+&lt;li&gt;運算的值的絕對值相差過大時，計算會造成誤差&lt;/li&gt;
+&lt;li&gt;cancellation error (相減兩個相近的數字時造成的誤差)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="mf"&gt;10000001.0&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mf"&gt;0.12345678&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mf"&gt;0.11111111&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;10000000.0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="mf"&gt;1.234567889943719&lt;/span&gt;
+
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="mf"&gt;10000001.0&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;10000000.0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mf"&gt;0.12345678&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mf"&gt;0.11111111&lt;/span&gt;
+&lt;span class="mf"&gt;1.23456789&lt;/span&gt;
+
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="mf"&gt;0.0123456&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mf"&gt;0.0123444&lt;/span&gt;
+&lt;span class="mf"&gt;1.1999999999998123e-06&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Sat, 11 Oct 2014 20:50:00 +0800</pubDate><guid>tag:,2014-10-11:posts/2014/10/pythoner-read-ruby-book-3/</guid><category>book</category></item><item><title>Pythoner 讀 「松本行弘的程式世界」 - part 2</title><link>/posts/2014/10/pythoner-read-ruby-book-2/</link><description>&lt;div class="section" id="ch-2-5-duck-typing"&gt;
+&lt;h2&gt;ch 2-5 Duck Typing&lt;/h2&gt;
+&lt;p&gt;duck typing 實在很常聽到，尤其自己常寫的是 Python XD&lt;/p&gt;
+&lt;p&gt;在講到 type 時，常聽到的有 static 和 dynamic，static 的話不用執行就可以知道，
+dynamic 的話要執行下去才能確認&lt;/p&gt;
+&lt;p&gt;硬體看得懂的是二進位數字，其他寫程式用到的型別都是建立在這之上的，
+如果沒有做成更好用的 type 的話會造成程式撰寫上的負擔，
+於是 Fortran 提供了型別 (整數資料、浮點數陣列等等)，
+於是有了 static type (宣告型別)&lt;/p&gt;
+&lt;div class="section" id="lisp-dynamic-type"&gt;
+&lt;h3&gt;Lisp &amp;amp; Dynamic type&lt;/h3&gt;
+&lt;p&gt;在 Fortran 出現後幾年，出現了 Lisp，
+1958 年的 Lisp 只有兩種型別 : list、atom，不是 list 的都是 atom&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;cons cell&lt;/li&gt;
+&lt;li&gt;car, cdr&lt;/li&gt;
+&lt;li&gt;S-expression&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Lisp 的 list 裡事先無法知道 cons cell 裡面指到的是 cons cell 還是 atom，
+本質上可說是 polymorphism 的 data structure，
+所以 Lisp 採用的是 &amp;quot;資料本身還有描述自己型別的資訊&amp;quot;，又稱為動態型別&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+  cons cell
+
++-----+-----+
+| car | cdr |
++-----+-----+
+   |     |
+   |     |
+ +---+  +-----+-----+
+ | 5 |  | car | cdr |
+ +---+  +-----+-----+
+ atom      |     |
+           |     |
+        +----+  nil
+        | 13 |  atom
+        +----+
+         atom
+&lt;/pre&gt;
+&lt;p&gt;Static Type 起自 Fortran、Dynamic Type 起自 Lisp，
+在最初的物件導向語言 Simula 裡，出現了和 Dynamic Type 類似的型別 Ref (Simula 中除了物件之外都是靜態型別)，
+之後從 Simula 的物件導向概念延生出的 Smalltalk 和 Lisp 一樣全面採用動態型別，
+1980 年代前半，受到 Simula 影響而誕生了 C++，重要概念 : &amp;quot;subclass 可以視為 base class 的 instance&amp;quot;&lt;/p&gt;
+&lt;p&gt;Duck Typing 的概念是: &amp;quot;走路像鴨子，看起來像鴨子，那就可以把他當成鴨子&amp;quot;&lt;/p&gt;
+&lt;p&gt;Dynamic Type 裡避免名去檢查型別，而改以檢查是否有某 method&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Fri, 10 Oct 2014 20:50:00 +0800</pubDate><guid>tag:,2014-10-10:posts/2014/10/pythoner-read-ruby-book-2/</guid><category>book</category></item><item><title>血月之 Stellarium</title><link>/posts/2014/10/stellarium/</link><description>&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://stellarium.org/"&gt;Stellarium&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;月全蝕的時候從朋友那知道的 Open Source 軟體，
+看起來蠻棒的 XD&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Fri, 10 Oct 2014 19:13:00 +0800</pubDate><guid>tag:,2014-10-10:posts/2014/10/stellarium/</guid><category></category></item><item><title>心理學概論 之 Chomsky</title><link>/posts/2014/10/psychology-intro-chomsky/</link><description>&lt;p&gt;這禮拜二在上心理學概論的時候，上到打瞌睡 zzz，
+都是因為整天都有課 (晚上也有)，前面又上完體育課很累 ...&lt;/p&gt;
+&lt;p&gt;就在半睡半醒中，突然聽到了 Chomsky !&lt;/p&gt;
+&lt;p&gt;頓時精神力上升，腦中馬上浮現 Chomsky Normal Form，
+馬上抬頭看一下 slide，上面寫著 Noam Chomsky，
+立馬 Google ...&lt;/p&gt;
+&lt;p&gt;果然是同個人啊 ...&lt;/p&gt;
+&lt;p&gt;在上心理學的時候可以想到正規也是個奇妙的狀況 Orz&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Fri, 10 Oct 2014 18:30:00 +0800</pubDate><guid>tag:,2014-10-10:posts/2014/10/psychology-intro-chomsky/</guid><category>psychology</category></item><item><title>Pythoner 讀 「松本行弘的程式世界」 - part 1</title><link>/posts/2014/10/pythoner-read-ruby-book-1/</link><description>&lt;p&gt;這邊是讀了書上內容的節錄和獨後自己查的資料&lt;/p&gt;
 &lt;p&gt;目前心得 : 可以看到一些觀念，但是有些例子就 ... (尤其是少部份有提到 Python 的)&lt;/p&gt;
 &lt;div class="section" id="ch-14-1-functional-programming"&gt;
 &lt;h2&gt;ch 14-1 - functional programming&lt;/h2&gt;

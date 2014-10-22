@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>PTT - Python 版 - transpose 問題 — Dv 名字很難念</title>
+	<meta name="description" content="Title: PTT - Python 版 - transpose 問題; Date: 2014-10-11; Author: wdv4758h">
+	<meta name="author" content="wdv4758h">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="/theme/html5.js"></script>
+		<![endif]-->
+	<link href="/theme/css/ipython.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/simplex/bootstrap.min.css" rel="stylesheet">
+	<link href="/theme/css/local.css" rel="stylesheet">
+	<link href="/theme/css/pygments.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+	<div class="page-header">
+		<h1><a href="/">Dv 名字很難念</a>
+			<br><small>Aquí hay gato encerrado. </small></h1>
+	</div>
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">PTT - Python 版 - transpose 問題</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">wdv4758h</h4>
+		</span>
+        <span itemprop="publish">publish: <time datetime="2014-10-11T23:33:00" itemprop="datePublished">Sat 11 October 2014</time></span>
+	</div>
+	<div>
+		Category:
+		<span itemprop="articleSection">
+			<a href="/category/python.html" rel="category">Python</a>
+		</span>
+	</div>
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="/tag/python.html" rel="tag">python</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><p>這篇在解 PTT Python 版上的一個問題 (#1KEG5cfG)</p>
+<p>基本上就是要做 transpose，但是資料長度不依，
+所以就來試試囉 : <a class="reference external" href="https://gist.github.com/wdv4758h/1f4090ee9b0035dbcee0">https://gist.github.com/wdv4758h/1f4090ee9b0035dbcee0</a></p>
+<p>以下都以 Python 3 為考量，而且以 zip 為出發點來解這個問題。</p>
+<p>如果是一個完整 n x m 的資料，
+類似的工作可以用 zip 就完成。</p>
+<div class="highlight"><pre><span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">)]</span>
+
+<span class="k">def</span> <span class="nf">transpose</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">data</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">transpose</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+<p>現在的狀況不是完整 n x m 的資料，而是長短不一的，
+一種解是用 itertools 裡的 zip_longest，
+參數是 iterables 還有 fillvalue (預設是 None)，
+fillvalue 會拿來填滿資料短缺的部份。</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">itertools</span> <span class="kn">as</span> <span class="nn">it</span>
+
+<span class="k">def</span> <span class="nf">transpose</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">it</span><span class="o">.</span><span class="n">zip_longest</span><span class="p">(</span><span class="o">*</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c"># 跟前面文章借測資</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+<span class="k">del</span> <span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<span class="k">del</span> <span class="n">data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">transpose</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+<p>這邊會把不夠的地方都補 None，
+所以輸出會是:</p>
+<pre class="literal-block">
+(0, 0, 0, 0, 0, 0, 0, 0)
+(1, 1, 1, 1, 1, 1, 1, None)
+(2, 2, 2, 2, 2, 2, None, None)
+(3, 3, 3, 3, 3, 3, None, None)
+(4, 4, 4, 4, 4, None, None, None)
+(5, 5, 5, 5, None, None, None, None)
+(6, 6, 6, None, None, None, None, None)
+(7, 7, 7, None, None, None, None, None)
+(8, 8, None, None, None, None, None, None)
+(9, None, None, None, None, None, None, None)
+</pre>
+<p>如果前面那種剛好符合需求，那就可以開心的拿來用了，
+如果真的不想要看到多補的那些資料，就再把結果處理過。</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">transpose</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">it</span><span class="o">.</span><span class="n">filterfalse</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">it</span><span class="o">.</span><span class="n">zip_longest</span><span class="p">(</span><span class="o">*</span><span class="n">data</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">transpose</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+<p>如此一來結果就變成:</p>
+<pre class="literal-block">
+(0, 0, 0, 0, 0, 0, 0, 0)
+(1, 1, 1, 1, 1, 1, 1)
+(2, 2, 2, 2, 2, 2)
+(3, 3, 3, 3, 3, 3)
+(4, 4, 4, 4, 4)
+(5, 5, 5, 5)
+(6, 6, 6)
+(7, 7, 7)
+(8, 8)
+(9,)
+</pre>
+<p>不過上面處理是以輸入 data 裡沒有 None 為前提的 XD
+資料裡面可能有 None 的話就另外用別的值囉。</p>
+</div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'wdv4758h-blog';
+    var disqus_title = 'PTT - Python 版 - transpose 問題';
+	var disqus_identifier = 'posts/2014/10/ptt-python-transpose/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div> 	<!-- <hr> -->
+</div> <!-- /container -->
+<footer class="aw-footer bg-danger">
+	<div class="container"> <!-- footer -->
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+				<div class="row">
+					<div class="col-md-3">
+						<h4>Navigation</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="">Dv 名字很難念</a></li>
+							<li><a href="/archives"><i class="fa fa-archive "></i> archive</a></li>
+							<li><a href="/tags"><i class="fa fa-tags "></i> tags</a></li>
+							<li><a href="/feeds/all.rss.xml"><i class="fa fa-rss "></i> rss</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Author</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="https://wdv4758h.github.com">Homepage</a></li>
+							<li><a href="https://github.com/wdv4758h/">Github</a></li>
+							<li><a href="https://plus.google.com/103751737509044116269/posts">Google+</a></li>
+							<li><a href="https://www.facebook.com/wdv4758h">Facebook</a></li>
+							<li><a href="https://www.linkedin.com/pub/chiu-hsiang-hsu/69/83/530">Linked-in</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Categories</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="/category/Django.html">Django (1)</a></li>
+							<li><a href="/category/Fuzzy.html">Fuzzy (1)</a></li>
+							<li><a href="/category/GC.html">GC (1)</a></li>
+							<li><a href="/category/Misc.html">Misc (12)</a></li>
+							<li><a href="/category/Python.html">Python (8)</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Links</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="https://www.python.org/">Python</a></li>
+							<li><a href="https://www.djangoproject.com/">Django</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; wdv4758h 2014</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-42810012-2', 'auto');
+  ga('send', 'pageview');
+</script>
+</body>
+</html>

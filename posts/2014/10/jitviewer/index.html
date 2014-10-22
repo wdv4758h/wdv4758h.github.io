@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Try the jitviewer — Dv 名字很難念</title>
+	<meta name="description" content="Title: Try the jitviewer; Date: 2014-10-15; Author: wdv4758h">
+	<meta name="author" content="wdv4758h">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="/theme/html5.js"></script>
+		<![endif]-->
+	<link href="/theme/css/ipython.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/simplex/bootstrap.min.css" rel="stylesheet">
+	<link href="/theme/css/local.css" rel="stylesheet">
+	<link href="/theme/css/pygments.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+	<div class="page-header">
+		<h1><a href="/">Dv 名字很難念</a>
+			<br><small>Aquí hay gato encerrado. </small></h1>
+	</div>
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">Try the jitviewer</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">wdv4758h</h4>
+		</span>
+        <span itemprop="publish">publish: <time datetime="2014-10-15T17:20:00" itemprop="datePublished">Wed 15 October 2014</time></span>
+	</div>
+	<div>
+		Category:
+		<span itemprop="articleSection">
+			<a href="/category/python.html" rel="category">Python</a>
+		</span>
+	</div>
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="/tag/book.html" rel="tag">book</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><div class="section" id="the-jitviewer">
+<h2>the jitviewer</h2>
+<div class="section" id="target">
+<h3>target</h3>
+<p>analysis log from PyPy, and display Python bytecode &amp; jit operations via the web</p>
+</div>
+<div class="section" id="install">
+<h3>install</h3>
+<p><strong>jitviewer is a PyPy2 only program now (it need rpython)</strong></p>
+<ol class="arabic simple">
+<li>create the virtual environment</li>
+</ol>
+<div class="highlight"><pre>virtualenv env-pypy -p /usr/bin/pypy
+</pre></div>
+<ol class="arabic simple" start="2">
+<li>active the virtual environment</li>
+</ol>
+<div class="highlight"><pre><span class="nb">source </span>env-pypy/bin/activate
+</pre></div>
+<ol class="arabic simple" start="3">
+<li>get the PyPy2 source code (for rpython)</li>
+</ol>
+<div class="highlight"><pre>wget https://bitbucket.org/pypy/pypy/downloads/pypy-2.4.0-src.tar.bz2
+tar -xvf pypy-2.4.0-src.tar.bz2
+</pre></div>
+<ol class="arabic simple" start="4">
+<li>install jitviewer</li>
+</ol>
+<div class="highlight"><pre>pip install jitviewer
+</pre></div>
+<ol class="arabic simple" start="5">
+<li>set the env</li>
+</ol>
+<div class="highlight"><pre>setenv PYTHONPATH pypy-2.4.0-src
+</pre></div>
+<ol class="arabic simple" start="6">
+<li>run the sample</li>
+</ol>
+<div class="highlight"><pre>jitviewer.py --log log
+</pre></div>
+</div>
+<div class="section" id="create-log-of-pypy">
+<h3>create log of PyPy</h3>
+<div class="highlight"><pre>setenv PYPYLOG jit-log-opt,jit-backend-counts:myprogram.log
+pypy -c your_program.py
+</pre></div>
+</div>
+<div class="section" id="with-pypy3">
+<h3>with PyPy3</h3>
+<p>As jitviewer is a PyPy2 only program now (2014-10-15),
+you should run your program by PyPy3 and output the log,
+then use jitviewer with PyPy2 to analysis the log.</p>
+</div>
+<div class="section" id="expect-in-the-future">
+<h3>expect in the future</h3>
+<p>There are something that I think it should have ...</p>
+<ul>
+<li><p class="first">PyPy3 compatibility</p>
+<blockquote>
+<p>jitviewer with PyPy3 is not working now,
+the smaller part is the syntax in jitviewer (something like print function),
+the bigger part is the rpython module ...</p>
+<p>At the moment, rpython has a lot of Python 2 only syntax (even in PyPy3 source code).</p>
+</blockquote>
+</li>
+<li><p class="first">CPython compatibility</p>
+<blockquote>
+<p>This means to remove the depenency of rpython.</p>
+</blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="note">
+<h3>note</h3>
+<p>The PyPy does not modify the output of Python bytecodes,
+so the Python bytecodes output from CPython's dis module or PyPy's are the same.</p>
+</div>
+</div>
+</div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'wdv4758h-blog';
+    var disqus_title = 'Try the jitviewer';
+	var disqus_identifier = 'posts/2014/10/jitviewer/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div> 	<!-- <hr> -->
+</div> <!-- /container -->
+<footer class="aw-footer bg-danger">
+	<div class="container"> <!-- footer -->
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+				<div class="row">
+					<div class="col-md-3">
+						<h4>Navigation</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="">Dv 名字很難念</a></li>
+							<li><a href="/archives"><i class="fa fa-archive "></i> archive</a></li>
+							<li><a href="/tags"><i class="fa fa-tags "></i> tags</a></li>
+							<li><a href="/feeds/all.rss.xml"><i class="fa fa-rss "></i> rss</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Author</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="https://wdv4758h.github.com">Homepage</a></li>
+							<li><a href="https://github.com/wdv4758h/">Github</a></li>
+							<li><a href="https://plus.google.com/103751737509044116269/posts">Google+</a></li>
+							<li><a href="https://www.facebook.com/wdv4758h">Facebook</a></li>
+							<li><a href="https://www.linkedin.com/pub/chiu-hsiang-hsu/69/83/530">Linked-in</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Categories</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="/category/Django.html">Django (1)</a></li>
+							<li><a href="/category/Fuzzy.html">Fuzzy (1)</a></li>
+							<li><a href="/category/GC.html">GC (1)</a></li>
+							<li><a href="/category/Misc.html">Misc (12)</a></li>
+							<li><a href="/category/Python.html">Python (8)</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Links</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="https://www.python.org/">Python</a></li>
+							<li><a href="https://www.djangoproject.com/">Django</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; wdv4758h 2014</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-42810012-2', 'auto');
+  ga('send', 'pageview');
+</script>
+</body>
+</html>
