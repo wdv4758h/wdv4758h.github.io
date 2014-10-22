@@ -6,7 +6,8 @@ then just run the creation command again.&lt;/p&gt;
 virtualenv env
 virtualenv env-pypy3 -p /usr/bin/pypy3
 &lt;/pre&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Wed, 22 Oct 2014 13:10:00 +0800</pubDate><guid>tag:,2014-10-22:posts/2014/10/python-virtualenv-upgrade/</guid><category>Python</category></item><item><title>RPython Intro.</title><link>/posts/2014/10/RPython/</link><description>&lt;div class="section" id="what-s-rpython"&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Wed, 22 Oct 2014 13:10:00 +0800</pubDate><guid>tag:,2014-10-22:posts/2014/10/python-virtualenv-upgrade/</guid><category>Python</category></item><item><title>RPython Intro.</title><link>/posts/2014/10/RPython/</link><description>&lt;p&gt;(not complete)&lt;/p&gt;
+&lt;div class="section" id="what-s-rpython"&gt;
 &lt;h2&gt;What's RPython&lt;/h2&gt;
 &lt;p&gt;RPython is a subset of Python&lt;/p&gt;
 &lt;table border="1" class="docutils"&gt;
@@ -30,6 +31,9 @@ virtualenv env-pypy3 -p /usr/bin/pypy3
 For example, there are code generators (e.g. in rlib.parsing) that run at compile time and produce RPython code,
 but are not RPython (frequently with a &amp;quot;NOT_RPYTHON&amp;quot; docstring, by the way).
 Also, large parts of the standard library are written in full Python (mostly taken straight from CPython).&lt;/p&gt;
+&lt;p&gt;To make a C code generator, code on interpreter level has to restrict to a subset of Python.
+(Code on application level cat still use full Python)&lt;/p&gt;
+&lt;p&gt;PyPy is &lt;strong&gt;not source-to-source translations&lt;/strong&gt;, it start translation from live &lt;strong&gt;python code objects&lt;/strong&gt; .&lt;/p&gt;
 &lt;div class="section" id="type-inference-static-typing"&gt;
 &lt;h3&gt;Type Inference &amp;amp; Static Typing&lt;/h3&gt;
 &lt;p&gt;Types are not stated explicitly, they are infered, so RPython is static typing.&lt;/p&gt;
@@ -43,6 +47,74 @@ it means each expression has a single type that never changes.&lt;/p&gt;
 &lt;p&gt;We cann't infer a (non-generic) type for a function like above,
 the return type depends on arguments,
 so the return type is determined by analysis the arguments (when the function is called)&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="rpythonic"&gt;
+&lt;h3&gt;RPythonic&lt;/h3&gt;
+&lt;div class="section" id="flow-restrictions"&gt;
+&lt;h4&gt;Flow restrictions&lt;/h4&gt;
+&lt;table border="1" class="docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="20%" /&gt;
+&lt;col width="80%" /&gt;
+&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;variable&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;constant&lt;/td&gt;
+&lt;td&gt;globals are considered constants (global instances don't have this restriction)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;control structures&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;range&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;definitions&lt;/td&gt;
+&lt;td&gt;run-time definition of classes or functions is not allowed&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;generators&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;exceptions&lt;/td&gt;
+&lt;td&gt;fully supported&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class="section" id="object-restrictions"&gt;
+&lt;h4&gt;Object restrictions&lt;/h4&gt;
+&lt;table border="1" class="docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="20%" /&gt;
+&lt;col width="80%" /&gt;
+&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;int, float, bool&lt;/td&gt;
+&lt;td&gt;works&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;strings&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;tuple&lt;/td&gt;
+&lt;td&gt;no variable-length tuples&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;lists&lt;/td&gt;
+&lt;td&gt;annotator can figure out most of the time that your list is fixed-size,
+even when you use list comprehension&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;dicts&lt;/td&gt;
+&lt;td&gt;unique key type only&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;functions&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class="section" id="integer-types"&gt;
+&lt;h4&gt;Integer Types&lt;/h4&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
