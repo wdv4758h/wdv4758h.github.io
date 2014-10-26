@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Python coding style — Dv 名字很難念</title>
-	<meta name="description" content="Title: Python coding style; Date: 2014-09-13; Author: wdv4758h">
+	<title>[FP] Referential Transparency — Dv 名字很難念</title>
+	<meta name="description" content="Title: [FP] Referential Transparency; Date: 2014-10-26; Author: wdv4758h">
 	<meta name="author" content="wdv4758h">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -27,36 +27,65 @@
 		<div class="col-md-8 col-md-offset-2">
 <div class="article" itemscope itemtype="http://schema.org/BlogPosting">
 	<div class="text-center article-header">
-		<h1 itemprop="name headline" class="article-title">Python coding style</h1>
+		<h1 itemprop="name headline" class="article-title">[FP] Referential Transparency</h1>
 		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
 			<h4 itemprop="name">wdv4758h</h4>
 		</span>
-        <span itemprop="publish">publish: <time datetime="2014-09-13T15:20:00" itemprop="datePublished">Sat 13 September 2014</time></span>
+        <span itemprop="publish">publish: <time datetime="2014-10-26T11:20:00" itemprop="datePublished">Sun 26 October 2014</time></span>
 	</div>
 	<div>
 		Category:
 		<span itemprop="articleSection">
-			<a href="/category/python.html" rel="category">Python</a>
+			<a href="/category/functional.html" rel="category">Functional</a>
 		</span>
 	</div>
 	<div>
 		Tags:
 		<span itemprop="keywords">
-			<a href="/tag/python.html" rel="tag">Python</a>
+			<a href="/tag/funcitonal.html" rel="tag">funcitonal</a>
 		</span>
 	</div>
-	<div itemprop="articleBody" class="article-body"><ul class="simple">
-<li>不能不提的 <a class="reference external" href="http://legacy.python.org/dev/peps/pep-0008/">PEP8</a></li>
-<li><a class="reference external" href="https://google-styleguide.googlecode.com/svn/trunk/pyguide.html">Google Python Style Guide</a></li>
+	<div itemprop="articleBody" class="article-body"><p>Short : <strong>no side effect</strong></p>
+<hr class="docutils" />
+<ul class="simple">
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/Referential_transparency_%28computer_science%29">Referential Transparency - wikipedia</a></li>
 </ul>
+<p>Referential Transparency means a expression won't change the behavior of a program</p>
+<p>For example :</p>
+<div class="highlight"><pre><span class="c1">// C code</span>
+
+<span class="c1">// this is not referential transparency</span>
+<span class="c1">// it&#39;s referential opaqueness</span>
+<span class="c1">// function will modify the variable outside the function</span>
+<span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">*</span><span class="n">x</span> <span class="o">+=</span> <span class="mi">3</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// this is referential transparency</span>
+<span class="c1">// function won&#39;t modify the variable outside the function</span>
+<span class="kt">int</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">+</span><span class="mi">3</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+<p>if a function is referential transparency, then it can be optimized by many ways,
+ex:</p>
+<ul class="simple">
+<li>memoization</li>
+<li>common subexpression elimination</li>
+<li>lazy evaluation</li>
+<li>parallelization</li>
+</ul>
+<p>only referentially transparent functions can be memoized (cache the results)</p>
+<p>a referentially transparent expression is <strong>deterministic</strong>
+(the same results with the same input)</p>
 </div>
 	<hr>
 	<h2>Comments</h2>
 <div id="disqus_thread"></div>
 <script type="text/javascript">
     var disqus_shortname = 'wdv4758h-blog';
-    var disqus_title = 'Python coding style';
-	var disqus_identifier = 'posts/2014/09/python-coding-style/';
+    var disqus_title = '[FP] Referential Transparency';
+	var disqus_identifier = 'posts/2014/10/referential-transparency/';
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

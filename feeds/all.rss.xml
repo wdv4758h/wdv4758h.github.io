@@ -1,5 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 22 Oct 2014 13:10:00 +0800</lastBuildDate><item><title>Python virtualenv upgrade</title><link>/posts/2014/10/python-virtualenv-upgrade/</link><description>&lt;p&gt;If you want to upgrade main Python program in virtualenv,
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Sun, 26 Oct 2014 11:20:00 +0800</lastBuildDate><item><title>[FP] Referential Transparency</title><link>/posts/2014/10/referential-transparency/</link><description>&lt;p&gt;Short : &lt;strong&gt;no side effect&lt;/strong&gt;&lt;/p&gt;
+&lt;hr class="docutils" /&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Referential_transparency_%28computer_science%29"&gt;Referential Transparency - wikipedia&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Referential Transparency means a expression won't change the behavior of a program&lt;/p&gt;
+&lt;p&gt;For example :&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;// C code&lt;/span&gt;
+
+&lt;span class="c1"&gt;// this is not referential transparency&lt;/span&gt;
+&lt;span class="c1"&gt;// it&amp;#39;s referential opaqueness&lt;/span&gt;
+&lt;span class="c1"&gt;// function will modify the variable outside the function&lt;/span&gt;
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="c1"&gt;// this is referential transparency&lt;/span&gt;
+&lt;span class="c1"&gt;// function won&amp;#39;t modify the variable outside the function&lt;/span&gt;
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;if a function is referential transparency, then it can be optimized by many ways,
+ex:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;memoization&lt;/li&gt;
+&lt;li&gt;common subexpression elimination&lt;/li&gt;
+&lt;li&gt;lazy evaluation&lt;/li&gt;
+&lt;li&gt;parallelization&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;only referentially transparent functions can be memoized (cache the results)&lt;/p&gt;
+&lt;p&gt;a referentially transparent expression is &lt;strong&gt;deterministic&lt;/strong&gt;
+(the same results with the same input)&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Sun, 26 Oct 2014 11:20:00 +0800</pubDate><guid>tag:,2014-10-26:posts/2014/10/referential-transparency/</guid><category>funcitonal</category></item><item><title>Python virtualenv upgrade</title><link>/posts/2014/10/python-virtualenv-upgrade/</link><description>&lt;p&gt;If you want to upgrade main Python program in virtualenv,
 then just run the creation command again.&lt;/p&gt;
 &lt;p&gt;ex:&lt;/p&gt;
 &lt;pre class="code sh literal-block"&gt;

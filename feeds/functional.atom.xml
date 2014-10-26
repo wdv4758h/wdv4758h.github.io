@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Dv 名字很難念</title><link href="/" rel="alternate"></link><link href="/feeds/functional.atom.xml" rel="self"></link><id>/</id><updated>2014-10-26T11:20:00+08:00</updated><entry><title>[FP] Referential Transparency</title><link href="/posts/2014/10/referential-transparency/" rel="alternate"></link><updated>2014-10-26T11:20:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-10-26:posts/2014/10/referential-transparency/</id><summary type="html">&lt;p&gt;Short : &lt;strong&gt;no side effect&lt;/strong&gt;&lt;/p&gt;
+&lt;hr class="docutils" /&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Referential_transparency_%28computer_science%29"&gt;Referential Transparency - wikipedia&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Referential Transparency means a expression won't change the behavior of a program&lt;/p&gt;
+&lt;p&gt;For example :&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;// C code&lt;/span&gt;
+
+&lt;span class="c1"&gt;// this is not referential transparency&lt;/span&gt;
+&lt;span class="c1"&gt;// it&amp;#39;s referential opaqueness&lt;/span&gt;
+&lt;span class="c1"&gt;// function will modify the variable outside the function&lt;/span&gt;
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="c1"&gt;// this is referential transparency&lt;/span&gt;
+&lt;span class="c1"&gt;// function won&amp;#39;t modify the variable outside the function&lt;/span&gt;
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;if a function is referential transparency, then it can be optimized by many ways,
+ex:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;memoization&lt;/li&gt;
+&lt;li&gt;common subexpression elimination&lt;/li&gt;
+&lt;li&gt;lazy evaluation&lt;/li&gt;
+&lt;li&gt;parallelization&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;only referentially transparent functions can be memoized (cache the results)&lt;/p&gt;
+&lt;p&gt;a referentially transparent expression is &lt;strong&gt;deterministic&lt;/strong&gt;
+(the same results with the same input)&lt;/p&gt;
+</summary><category term="funcitonal"></category></entry></feed>
