@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>closure 概念 — Dv 名字很難念</title>
-	<meta name="description" content="Title: closure 概念; Date: 2014-02-07; Author: wdv4758h">
+	<title>[FP] predicate — Dv 名字很難念</title>
+	<meta name="description" content="Title: [FP] predicate; Date: 2014-10-28; Author: wdv4758h">
 	<meta name="author" content="wdv4758h">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -27,61 +27,95 @@
 		<div class="col-md-8 col-md-offset-2">
 <div class="article" itemscope itemtype="http://schema.org/BlogPosting">
 	<div class="text-center article-header">
-		<h1 itemprop="name headline" class="article-title">closure 概念</h1>
+		<h1 itemprop="name headline" class="article-title">[FP] predicate</h1>
 		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
 			<h4 itemprop="name">wdv4758h</h4>
 		</span>
-        <span itemprop="publish">publish: <time datetime="2014-02-07T21:06:00" itemprop="datePublished">Fri 07 February 2014</time></span>
+        <span itemprop="publish">publish: <time datetime="2014-10-28T11:20:00" itemprop="datePublished">Tue 28 October 2014</time></span>
 	</div>
 	<div>
 		Category:
 		<span itemprop="articleSection">
-			<a href="/category/misc.html" rel="category">Misc</a>
+			<a href="/category/functional.html" rel="category">Functional</a>
 		</span>
 	</div>
 	<div>
 		Tags:
 		<span itemprop="keywords">
-			<a href="/tag/closure.html" rel="tag">closure</a>
-		</span>
-		<span itemprop="keywords">
-			<a href="/tag/program.html" rel="tag">program</a>
+			<a href="/tag/funcitonal.html" rel="tag">funcitonal</a>
 		</span>
 	</div>
-	<div itemprop="articleBody" class="article-body"><p>Closure 擁有非區域變數且非參數的變數</p>
-<div class="highlight"><pre><span class="c1">// Javascript</span>
-<span class="kd">function</span> <span class="nx">func</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
-    <span class="kd">function</span> <span class="nx">f</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="nx">y</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nx">f</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="kd">var</span> <span class="nx">test</span> <span class="o">=</span> <span class="nx">func</span><span class="p">();</span>
-<span class="nx">func</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>   <span class="c1">// 20</span>
-<span class="nx">func</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>    <span class="c1">// 15</span>
-</pre></div>
-<p>這個例子可以看到 x 是個 func 的區域變數，但是在 f 當中又用到 x，
-對於 f 來說 x 既不是區域變數又不是參數</p>
-<div class="highlight"><pre><span class="c"># Python 3</span>
-<span class="k">def</span> <span class="nf">gen</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">inc</span><span class="p">):</span>
-        <span class="n">nonlocal</span> <span class="n">num</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">num</span> <span class="o">+</span> <span class="n">inc</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">func</span>
-
-<span class="n">s</span> <span class="o">=</span> <span class="n">gen</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">s</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>    <span class="c"># 12</span>
-<span class="n">s</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>    <span class="c"># 15</span>
-</pre></div>
-<div class="section" id="reference">
-<h2>Reference</h2>
+	<div itemprop="articleBody" class="article-body"><p>short :</p>
+<p>A <strong>predicate</strong> is a box that takes an argument and returns a <strong>Boolean value</strong>. For example, &quot;x -&gt; x is even&quot;.</p>
+<p>A <strong>function</strong> is a box that takes an argument and returns a <strong>value</strong>. For example, &quot;x -&gt; x*x&quot;</p>
+<hr class="docutils" />
+<div class="section" id="predicate-in-natural-language">
+<h2>Predicate (謂語) in natural language</h2>
+<p>Subject + Predicate : The dog + barks.</p>
+<p>The predicate identifies and describes the action of the sentence.</p>
+</div>
+<div class="section" id="predicate-in-functional">
+<h2>Predicate in Functional</h2>
+<p>A predicate is a function that returns the <strong>Boolean value</strong></p>
+</div>
+<div class="section" id="in-python">
+<h2>In Python</h2>
 <ul class="simple">
-<li><a class="reference external" href="https://en.wikipedia.org/wiki/Closure_(computer_programming)">Closure (computer programming) - Wikipedia</a></li>
-<li><a class="reference external" href="http://www.kvzhuang.net/posts/109906-javascript-closure">[JavaScript] Closure 概念</a></li>
-<li><a class="reference external" href="http://www.kvzhuang.net/posts/109890-closure-javascript-closure-private">[Closure] JavaScript使用 Closure模擬出 Private Member</a></li>
-<li><a class="reference external" href="http://openhome.cc/Gossip/JavaScript/Closure.html">JavaScript Essence: Closure</a></li>
+<li><a class="reference external" href="https://docs.python.org/3/howto/functional.html">Python - Functional Programming How To</a></li>
+</ul>
+<div class="highlight"><pre><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">filter(predicate, iter)</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="k">def</span> <span class="nf">is_even</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+
+<span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="n">is_even</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)))</span>
+
+<span class="c"># there are more in iterools</span>
+</pre></div>
+</div>
+<div class="section" id="in-prolog">
+<h2>In Prolog</h2>
+<p>Prolog's BNF</p>
+<div class="highlight"><pre>&lt;program&gt; ::= &lt;clause list&gt; &lt;query&gt; | &lt;query&gt;
+&lt;clause list&gt; ::= &lt;clause&gt; | &lt;clause list&gt; &lt;clause&gt;
+&lt;clause&gt; ::= &lt;predicate&gt; . | &lt;predicate&gt; :- &lt;predicate list&gt;.
+&lt;predicate list&gt; ::= &lt;predicate&gt; | &lt;predicate list&gt; , &lt;predicate&gt;
+&lt;predicate&gt; ::= &lt;atom&gt; | &lt;atom&gt; ( &lt;term list&gt; )
+&lt;term list&gt; ::= &lt;term&gt; | &lt;term list&gt; , &lt;term&gt;
+&lt;term&gt; ::= &lt;numeral&gt; | &lt;atom&gt; | &lt;variable&gt; | &lt;structure&gt;
+&lt;structure&gt; ::= &lt;atom&gt; ( &lt;term list&gt; )
+&lt;query&gt; ::= ?- &lt;predicate list&gt;.
+&lt;atom&gt; ::= &lt;small atom&gt; | &#39; &lt;string&gt; &#39;
+&lt;small atom&gt; ::= &lt;lowercase letter&gt; | &lt;small atom&gt; &lt;character&gt;
+&lt;variable&gt; ::= &lt;uppercase letter&gt; | &lt;variable&gt; &lt;character&gt;
+&lt;lowercase letter&gt; ::= a | b | c | ... | x | y | z
+&lt;uppercase letter&gt; ::= A | B | C | ... | X | Y | Z | _
+&lt;numeral&gt; ::= &lt;digit&gt; | &lt;numeral&gt; &lt;digit&gt;
+&lt;digit&gt; ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+&lt;character&gt; ::= &lt;lowercase letter&gt; | &lt;uppercase letter&gt; | &lt;digit&gt; | &lt;special&gt;
+&lt;special&gt; ::= + | - | * | / | \ | ^ | ~ | : | . | ? | | # | $ | &amp;
+&lt;string&gt; ::= &lt;character&gt; | &lt;string&gt; &lt;character&gt;
+</pre></div>
+<p>Prolog has two types of <strong>clause (子句)</strong> : (clause = facts | rules)</p>
+<ul class="simple">
+<li>facts</li>
+</ul>
+<div class="highlight"><pre><span class="nf">cat</span><span class="p">(</span><span class="s-Atom">tom</span><span class="p">).</span>
+</pre></div>
+<ul class="simple">
+<li>rules</li>
+</ul>
+<div class="highlight"><pre><span class="nf">animal</span><span class="p">(</span><span class="s-Atom">tom</span><span class="p">)</span> <span class="p">:-</span> <span class="nf">cat</span><span class="p">(</span><span class="s-Atom">tom</span><span class="p">).</span>
+</pre></div>
+<p>Both facts and rules are composed of predicates.</p>
+</div>
+<div class="section" id="links">
+<h2>Links</h2>
+<ul class="simple">
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/Functional_predicate">Functional predicate - wikipedia</a></li>
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/Prolog">Prolog - wikipedia</a></li>
 </ul>
 </div>
 </div>
@@ -90,8 +124,8 @@
 <div id="disqus_thread"></div>
 <script type="text/javascript">
     var disqus_shortname = 'wdv4758h-blog';
-    var disqus_title = 'closure 概念';
-	var disqus_identifier = 'posts/2014/02/closure/';
+    var disqus_title = '[FP] predicate';
+	var disqus_identifier = 'posts/2014/10/predicate/';
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
