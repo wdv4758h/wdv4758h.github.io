@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/misc.rss.xml" rel="self"></atom:link><lastBuildDate>Sat, 11 Oct 2014 20:50:00 +0800</lastBuildDate><item><title>Pythoner 讀 「松本行弘的程式世界」 - part 3</title><link>/posts/2014/10/pythoner-read-ruby-book-3/</link><description>&lt;div class="section" id="ch-8-regular-expression"&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/misc.rss.xml" rel="self"></atom:link><lastBuildDate>Tue, 04 Nov 2014 23:51:00 +0800</lastBuildDate><item><title>ZIP unsupported compression method 99</title><link>/posts/2014/11/zip-unsupported-99/</link><description>&lt;div class="line-block"&gt;
+&lt;div class="line"&gt;前陣子朋友碰到有設密碼的 zip 檔不能用 unzip 來解開，&lt;/div&gt;
+&lt;div class="line"&gt;會出現 &amp;quot;does not support compression method 99&amp;quot; 的錯誤，&lt;/div&gt;
+&lt;div class="line"&gt;原因是這些檔案用 AES 加密，&lt;/div&gt;
+&lt;div class="line"&gt;對 unzip 來說是新 method 所以不支援，&lt;/div&gt;
+&lt;div class="line"&gt;這時候只好用其他支援的工具解開啦，&lt;/div&gt;
+&lt;div class="line"&gt;例如 : 7z&lt;/div&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Tue, 04 Nov 2014 23:51:00 +0800</pubDate><guid>tag:,2014-11-04:posts/2014/11/zip-unsupported-99/</guid><category>zip</category></item><item><title>Pythoner 讀 「松本行弘的程式世界」 - part 3</title><link>/posts/2014/10/pythoner-read-ruby-book-3/</link><description>&lt;div class="section" id="ch-8-regular-expression"&gt;
 &lt;h2&gt;ch 8 Regular Expression&lt;/h2&gt;
 &lt;p&gt;毫無反應就是 regular expression&lt;/p&gt;
 &lt;p&gt;書上是介紹 Ruby 裡的 re，基本上長的就是 Perl 樣 (X&lt;/p&gt;
