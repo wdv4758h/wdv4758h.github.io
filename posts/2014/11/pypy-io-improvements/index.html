@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>People who make VMs — Dv 名字很難念</title>
-	<meta name="description" content="Title: People who make VMs; Date: 2014-09-28; Author: wdv4758h">
+	<title>[PyPy] IO improvements — Dv 名字很難念</title>
+	<meta name="description" content="Title: [PyPy] IO improvements; Date: 2014-11-06; Author: wdv4758h">
 	<meta name="author" content="wdv4758h">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -27,47 +27,55 @@
 		<div class="col-md-8 col-md-offset-2">
 <div class="article" itemscope itemtype="http://schema.org/BlogPosting">
 	<div class="text-center article-header">
-		<h1 itemprop="name headline" class="article-title">People who make VMs</h1>
+		<h1 itemprop="name headline" class="article-title">[PyPy] IO improvements</h1>
 		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
 			<h4 itemprop="name">wdv4758h</h4>
 		</span>
-        <span itemprop="publish">publish: <time datetime="2014-09-28T13:25:00" itemprop="datePublished">Sun 28 September 2014</time></span>
+        <span itemprop="publish">publish: <time datetime="2014-11-06T00:15:00" itemprop="datePublished">Thu 06 November 2014</time></span>
 	</div>
 	<div>
 		Category:
 		<span itemprop="articleSection">
-			<a href="/category/misc.html" rel="category">Misc</a>
+			<a href="/category/python.html" rel="category">Python</a>
 		</span>
 	</div>
 	<div>
 		Tags:
 		<span itemprop="keywords">
-			<a href="/tag/vm.html" rel="tag">vm</a>
+			<a href="/tag/pypy.html" rel="tag">pypy</a>
 		</span>
 	</div>
-	<div itemprop="articleBody" class="article-body"><p>剛剛碰巧看到一個 <a class="reference external" href="http://stackoverflow.com/questions/5168718/what-blocks-ruby-python-to-get-javascript-v8-speed/5172833#5172833">StackOverflow 上的回應</a> ，
-原來 V8 的 team 和 HotSpot JVM 的有很大重複，還有其他像是 Self VM、Animorphic Smalltalk VM、OOVM 都是，
-而其中的 tech lead 叫 Lars Bak。</p>
-<p>Lars Bak 是 Dart 語言的創始人 (Dart 語言是 Google 想用來取代 Javascript 的一個語言) 也是 V8 和 Java HostSpot JVM 的領導，對於 VM 的技術有非常多的經驗，住在丹麥的 Aarhus 的農舍。</p>
-<p>剛好有找到一篇報導，請見下面連結</p>
-<ul>
-<li><dl class="first docutils">
-<dt><a class="reference external" href="http://www.ft.com/cms/s/0/03775904-177c-11de-8c9d-0000779fd2ac.html">The genius behind Google's browser</a></dt>
-<dd><ul class="first last simple">
-<li><a class="reference external" href="http://www.hksilicon.com/kb/articles/6993/Lars-BakGoogle-Chrome">對岸翻譯版</a></li>
-</ul>
-</dd>
-</dl>
-</li>
-</ul>
+	<div itemprop="articleBody" class="article-body"><p>剛剛看到 <a class="reference external" href="http://morepypy.blogspot.tw/2014/11/pypy-io-improvements.html">PyPy status blog 上的新文章</a> ，
+以下是大概的內容</p>
+<p>PyPy 在 Warsaw (為波蘭的首都及最大的城市) 的 sprint 順利結束了 (wrapped up)，
+有些 branch (gc_no_cleanup_nursery, gc-incminimark-pinning) 已經順利 merge 回 master (improve I/O &amp; GC)</p>
+<div class="section" id="gc-no-cleanup-nursery">
+<h2>改變一 - gc_no_cleanup_nursery</h2>
+<p>PyPy GC 會把 new objects allocate 在 young object area (就是 GC 上慣稱的 <strong>nursery</strong> 啦)，
+每經過一個 minor collection 都要把 nursery 清理。簡單起見，GC 通常會把整個 nursery 清成 0。</p>
+<p>這樣作法對於 cache 會有 bad effects，因為你一次把一大塊 memory 清成 0，
+而且把一些不需要清成 0 的資料也清了 (例如 large strings)。對於這個問題，
+可以用 incremental nursery zeroing 來減輕，
+但是 gc_no_cleanup_nursery 這個 branch 把 zeroing 整個拿掉，
+因此提升了 <strong>string handling</strong> 和 <strong>recursive code</strong> 的效率 (因為 jitframes 也不再需要把 memory 清成 0)</p>
+</div>
+<div class="section" id="gc-incminimark-pinning">
+<h2>改變二 - gc-incminimark-pinning</h2>
+<p>隨著時間的過去 PyPy GC 會把 objects 在 memory 裡做移動，也就是說 memory address 會改變，
+因此要把 pointer 傳給 C function 時，必須確保指到 objects 不會被 GC 移動。</p>
+<p>PyPy 2.4 以前，用 copying the data into or from a non-movable buffer 來解決，
+顯然這沒有效率。這個 branch 使用了 &quot;pinning&quot; 的概念，
+這讓程式可以知會 GC 某些 objects 在一段時間內不允許被移動。
+這會讓 GC 的複雜度稍微上升，但是可以大幅提升 I/O performance。</p>
+</div>
 </div>
 	<hr>
 	<h2>Comments</h2>
 <div id="disqus_thread"></div>
 <script type="text/javascript">
     var disqus_shortname = 'wdv4758h-blog';
-    var disqus_title = 'People who make VMs';
-	var disqus_identifier = 'posts/2014/09/vm-people/';
+    var disqus_title = '[PyPy] IO improvements';
+	var disqus_identifier = 'posts/2014/11/pypy-io-improvements/';
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

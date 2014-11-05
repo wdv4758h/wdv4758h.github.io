@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/wdv4758h.rss.xml" rel="self"></atom:link><lastBuildDate>Tue, 04 Nov 2014 23:51:00 +0800</lastBuildDate><item><title>ZIP unsupported compression method 99</title><link>/posts/2014/11/zip-unsupported-99/</link><description>&lt;div class="line-block"&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/wdv4758h.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 06 Nov 2014 00:15:00 +0800</lastBuildDate><item><title>[PyPy] IO improvements</title><link>/posts/2014/11/pypy-io-improvements/</link><description>&lt;p&gt;剛剛看到 &lt;a class="reference external" href="http://morepypy.blogspot.tw/2014/11/pypy-io-improvements.html"&gt;PyPy status blog 上的新文章&lt;/a&gt; ，
+以下是大概的內容&lt;/p&gt;
+&lt;p&gt;PyPy 在 Warsaw (為波蘭的首都及最大的城市) 的 sprint 順利結束了 (wrapped up)，
+有些 branch (gc_no_cleanup_nursery, gc-incminimark-pinning) 已經順利 merge 回 master (improve I/O &amp;amp; GC)&lt;/p&gt;
+&lt;div class="section" id="gc-no-cleanup-nursery"&gt;
+&lt;h2&gt;改變一 - gc_no_cleanup_nursery&lt;/h2&gt;
+&lt;p&gt;PyPy GC 會把 new objects allocate 在 young object area (就是 GC 上慣稱的 &lt;strong&gt;nursery&lt;/strong&gt; 啦)，
+每經過一個 minor collection 都要把 nursery 清理。簡單起見，GC 通常會把整個 nursery 清成 0。&lt;/p&gt;
+&lt;p&gt;這樣作法對於 cache 會有 bad effects，因為你一次把一大塊 memory 清成 0，
+而且把一些不需要清成 0 的資料也清了 (例如 large strings)。對於這個問題，
+可以用 incremental nursery zeroing 來減輕，
+但是 gc_no_cleanup_nursery 這個 branch 把 zeroing 整個拿掉，
+因此提升了 &lt;strong&gt;string handling&lt;/strong&gt; 和 &lt;strong&gt;recursive code&lt;/strong&gt; 的效率 (因為 jitframes 也不再需要把 memory 清成 0)&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="gc-incminimark-pinning"&gt;
+&lt;h2&gt;改變二 - gc-incminimark-pinning&lt;/h2&gt;
+&lt;p&gt;隨著時間的過去 PyPy GC 會把 objects 在 memory 裡做移動，也就是說 memory address 會改變，
+因此要把 pointer 傳給 C function 時，必須確保指到 objects 不會被 GC 移動。&lt;/p&gt;
+&lt;p&gt;PyPy 2.4 以前，用 copying the data into or from a non-movable buffer 來解決，
+顯然這沒有效率。這個 branch 使用了 &amp;quot;pinning&amp;quot; 的概念，
+這讓程式可以知會 GC 某些 objects 在一段時間內不允許被移動。
+這會讓 GC 的複雜度稍微上升，但是可以大幅提升 I/O performance。&lt;/p&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Thu, 06 Nov 2014 00:15:00 +0800</pubDate><guid>tag:,2014-11-06:posts/2014/11/pypy-io-improvements/</guid><category>pypy</category></item><item><title>ZIP unsupported compression method 99</title><link>/posts/2014/11/zip-unsupported-99/</link><description>&lt;div class="line-block"&gt;
 &lt;div class="line"&gt;前陣子朋友碰到有設密碼的 zip 檔不能用 unzip 來解開，&lt;/div&gt;
 &lt;div class="line"&gt;會出現 &amp;quot;does not support compression method 99&amp;quot; 的錯誤，&lt;/div&gt;
 &lt;div class="line"&gt;原因是這些檔案用 AES 加密，&lt;/div&gt;
