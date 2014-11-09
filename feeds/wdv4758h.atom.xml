@@ -1,5 +1,277 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Dv 名字很難念</title><link href="/" rel="alternate"></link><link href="/feeds/wdv4758h.atom.xml" rel="self"></link><id>/</id><updated>2014-11-06T00:15:00+08:00</updated><entry><title>[PyPy] IO improvements</title><link href="/posts/2014/11/pypy-io-improvements/" rel="alternate"></link><updated>2014-11-06T00:15:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-11-06:posts/2014/11/pypy-io-improvements/</id><summary type="html">&lt;p&gt;剛剛看到 &lt;a class="reference external" href="http://morepypy.blogspot.tw/2014/11/pypy-io-improvements.html"&gt;PyPy status blog 上的新文章&lt;/a&gt; ，
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Dv 名字很難念</title><link href="/" rel="alternate"></link><link href="/feeds/wdv4758h.atom.xml" rel="self"></link><id>/</id><updated>2014-11-10T01:17:00+08:00</updated><entry><title>[WIP][Software Testing] Intro.</title><link href="/posts/2014/11/software-testing-intro/" rel="alternate"></link><updated>2014-11-10T01:17:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-11-10:posts/2014/11/software-testing-intro/</id><summary type="html">&lt;p&gt;Note: &lt;strong&gt;本篇仍在未完成狀態&lt;/strong&gt;&lt;/p&gt;
+&lt;hr class="docutils" /&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://people.cs.nctu.edu.tw/~skhuang/st2014/"&gt;課程講義&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;期中考: 第 5,6,7,8,9 章 (boundary value, equivalence class, decision table, path testing, data flow testing)&lt;/p&gt;
+&lt;div class="section" id="intro"&gt;
+&lt;h2&gt;Intro.&lt;/h2&gt;
+&lt;div class="section" id="white-black"&gt;
+&lt;h3&gt;white &amp;amp; black&lt;/h3&gt;
+&lt;p&gt;測試大概可以分成 &lt;strong&gt;白箱測試 (white-box testing)&lt;/strong&gt; 與 &lt;strong&gt;黑箱測試 (black-box testing)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;white-box testing 又可以稱為 &lt;strong&gt;透明箱測試 (glass box testing)&lt;/strong&gt;，
+因為可以看到內部結構，因此又稱為 &lt;strong&gt;結構測試 (structural testing)&lt;/strong&gt; 或 &lt;strong&gt;邏輯驅動測試 (logic-driven testing)&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="test-case-adequacy-criteria"&gt;
+&lt;h3&gt;test case adequacy criteria&lt;/h3&gt;
+&lt;p&gt;test case adequacy criteria 討論的是 &amp;quot;需要多少的測試才足夠&amp;quot;，
+這可以由涵蓋的 control-flow &amp;amp; data-flow 比例來衡量&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;dl class="first docutils"&gt;
+&lt;dt&gt;control-flow coverage (測量可以經過多少 execution path)&lt;/dt&gt;
+&lt;dd&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;statement coverage&lt;/li&gt;
+&lt;li&gt;branch coverage&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;dl class="first docutils"&gt;
+&lt;dt&gt;data-flow coverage (definition &amp;amp; use &amp;amp; kill)&lt;/dt&gt;
+&lt;dd&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;all-du-paths (definition &amp;amp; use)&lt;/li&gt;
+&lt;li&gt;all-uses&lt;/li&gt;
+&lt;li&gt;all-defs
++ 如果每條 variable 的 dc-paths 都包含的話&lt;/li&gt;
+&lt;li&gt;all-c-uses (computation)&lt;/li&gt;
+&lt;li&gt;all-p-uses (predicate)&lt;/li&gt;
+&lt;li&gt;all-c-uses/some-p-uses&lt;/li&gt;
+&lt;li&gt;all-p-uses/some-c-uses&lt;/li&gt;
+&lt;li&gt;dc-paths (definition &amp;amp; clear)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;test case 難寫通常也代表著程式太複雜，因此要降低結構複雜度，再來是避免 non-determinism&lt;/p&gt;
+&lt;hr class="docutils" /&gt;
+&lt;p&gt;Apps-Weyuker hierarchy of data flow coverage metrics :&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+                    +-----------+
+                    | All-Paths |
+                    +-----------+
+                        |
+                    +--------------+
+                    | All-DU-Paths |
+                    +--------------+
+                        |
+                    +----------+
+                    | All-Uses |
+                    +----------+
+                        |
+                        |
+         |¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯|
+         |                              |
++------------------------+      +------------------------+
+| All C-Uses some P-Uses |      | All P-Uses some C-Uses |
++------------------------+      +------------------------+
+                                        |
+                                        |
+                        |¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯|
+                        |                        |
+                    +----------+            +------------+
+                    | All-Defs |            | All P-Uses |
+                    +----------+            +------------+
+                                                 |
+                                            +-----------+
+                                            | All Edges |
+                                            +-----------+
+                                                 |
+                                            +-----------+
+                                            | All Nodes |
+                                            +-----------+
+&lt;/pre&gt;
+&lt;table border="1" class="table table-bordered docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="13%" /&gt;
+&lt;col width="87%" /&gt;
+&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;P-use&lt;/td&gt;
+&lt;td&gt;use in predicate&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;C-use&lt;/td&gt;
+&lt;td&gt;use in computation&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;O-use&lt;/td&gt;
+&lt;td&gt;use for output&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;L-use&lt;/td&gt;
+&lt;td&gt;use for location (pointers, subscripts)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;I-use&lt;/td&gt;
+&lt;td&gt;iteration (internal counters, loop indices)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;I-def&lt;/td&gt;
+&lt;td&gt;defined by input&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;A-def&lt;/td&gt;
+&lt;td&gt;defined by assignment&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr class="docutils" /&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Program_slicing"&gt;Wikipedia - Program Slicing&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://github.com/romanofski/programslice"&gt;https://github.com/romanofski/programslice&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.researchgate.net/publication/261261093_Static_Slicing_for_Python_First-Class_Objects"&gt;http://www.researchgate.net/publication/261261093_Static_Slicing_for_Python_First-Class_Objects&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table border="1" class="table table-bordered docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="17%" /&gt;
+&lt;col width="10%" /&gt;
+&lt;col width="11%" /&gt;
+&lt;col width="63%" /&gt;
+&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;Spyder&lt;/td&gt;
+&lt;td&gt;ANSI C&lt;/td&gt;
+&lt;td&gt;Dynamic&lt;/td&gt;
+&lt;td&gt;&lt;a class="reference external" href="http://spaf.cerias.purdue.edu/Students/spyder.html"&gt;http://spaf.cerias.purdue.edu/Students/spyder.html&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Unravel&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;CodeSonar&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Indus/Kaveri&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;JSlice&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;SeeSlice&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Programslice&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class="section" id="decision-to-decision-path-dd-path"&gt;
+&lt;h3&gt;decision-to-decision path (DD-path)&lt;/h3&gt;
+&lt;/div&gt;
+&lt;div class="section" id="coverage-py"&gt;
+&lt;h3&gt;coverage.py&lt;/h3&gt;
+&lt;p&gt;&lt;tt class="docutils literal"&gt;coverage report &lt;span class="pre"&gt;-m&lt;/span&gt;&lt;/tt&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;coverageg report -m
+
+Name    Stmts   Miss  Cover   Missing
+-------------------------------------
+hw1        58      2    97%   49-50
+&lt;span class="nb"&gt;test       &lt;/span&gt;21      0   100%
+-------------------------------------
+TOTAL      79      2    97%
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="ch5-boundary-value-testing"&gt;
+&lt;h2&gt;Ch5 - Boundary Value Testing&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://docs.google.com/presentation/d/1m05eRr-mqSQIrOb6V3rDLxb3Rtj8gO5CkxphlGSv06I/edit#slide=id.g3a0892a38_030"&gt;Ch5 課程講義&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="ch6-equivalence-class-testing"&gt;
+&lt;h2&gt;Ch6 - Equivalence Class Testing&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;weak normal&lt;/li&gt;
+&lt;li&gt;strong normal&lt;/li&gt;
+&lt;li&gt;weak robust&lt;/li&gt;
+&lt;li&gt;strong robust&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="ch7-decision-table-based-testing"&gt;
+&lt;h2&gt;Ch7 - Decision Table-based Testing&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://docs.google.com/presentation/d/1zUOofTArt4Q-APf-Ne3kE_JUt5gXZFzQTIqBL0VOJqA/edit#slide=id.g4821ca451_016"&gt;CH7 課程講義&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="ch8-path-testing"&gt;
+&lt;h2&gt;Ch8 - Path Testing&lt;/h2&gt;
+&lt;div class="section" id="program-graphs"&gt;
+&lt;h3&gt;Program Graphs&lt;/h3&gt;
+&lt;p&gt;用 imperative 寫出來的程式的 program graphs 會是&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;directed graph&lt;/li&gt;
+&lt;li&gt;nodes are statement fragements&lt;/li&gt;
+&lt;li&gt;edges are flow of control&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="dd-paths"&gt;
+&lt;h3&gt;DD-Paths&lt;/h3&gt;
+&lt;/div&gt;
+&lt;div class="section" id="test-coverage-metrics"&gt;
+&lt;h3&gt;Test Coverage Metrics&lt;/h3&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;node coverage&lt;/li&gt;
+&lt;li&gt;edge coverage&lt;/li&gt;
+&lt;li&gt;chain coverage&lt;/li&gt;
+&lt;li&gt;path coverage&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://bitbucket.org/ned/coveragepy"&gt;https://bitbucket.org/ned/coveragepy&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="miller-s-coverage-metrics"&gt;
+&lt;h3&gt;Miller's Coverage Metrics&lt;/h3&gt;
+&lt;p&gt;Todo&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="do-178b"&gt;
+&lt;h3&gt;DO-178B&lt;/h3&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="ch9-data-flow-testing"&gt;
+&lt;h2&gt;Ch9 - Data Flow Testing&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Define/Use Testing&lt;/li&gt;
+&lt;li&gt;Slice-Based Testing&lt;/li&gt;
+&lt;li&gt;Program Slicing Tools&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;重點: 變數在哪裡拿到 values、在哪裡被使用&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;unifying structure of &lt;strong&gt;test coverage&lt;/strong&gt; metrics&lt;/li&gt;
+&lt;li&gt;program slice (1979 - Mark Weiser)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="section" id="define-reference-anomalies"&gt;
+&lt;h3&gt;define/reference anomalies&lt;/h3&gt;
+&lt;p&gt;檢查以下 issue&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;只有定義但沒有被使用的變數&lt;/li&gt;
+&lt;li&gt;變數未定義就使用&lt;/li&gt;
+&lt;li&gt;變數定義了多次&lt;/li&gt;
+&lt;li&gt;變數在使用之前就被 deallocate&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="defining-node"&gt;
+&lt;h3&gt;defining node&lt;/h3&gt;
+&lt;/div&gt;
+&lt;div class="section" id="usage-node"&gt;
+&lt;h3&gt;usage node&lt;/h3&gt;
+&lt;/div&gt;
+&lt;div class="section" id="p-use-c-use"&gt;
+&lt;h3&gt;P-use &amp;amp; C-use&lt;/h3&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="ref"&gt;
+&lt;h2&gt;Ref&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://teddy-chen-tw.blogspot.tw/2014/06/blog-post.html"&gt;白箱測試與黑箱測試（上）&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</summary><category term="testing"></category></entry><entry><title>[PyPy] IO improvements</title><link href="/posts/2014/11/pypy-io-improvements/" rel="alternate"></link><updated>2014-11-06T00:15:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-11-06:posts/2014/11/pypy-io-improvements/</id><summary type="html">&lt;p&gt;剛剛看到 &lt;a class="reference external" href="http://morepypy.blogspot.tw/2014/11/pypy-io-improvements.html"&gt;PyPy status blog 上的新文章&lt;/a&gt; ，
 以下是大概的內容&lt;/p&gt;
 &lt;p&gt;PyPy 在 Warsaw (為波蘭的首都及最大的城市) 的 sprint 順利結束了 (wrapped up)，
 有些 branch (gc_no_cleanup_nursery, gc-incminimark-pinning) 已經順利 merge 回 master (improve I/O &amp;amp; GC)&lt;/p&gt;
