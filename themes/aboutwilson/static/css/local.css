@@ -102,3 +102,15 @@ div.collapseheader {
 	cursor: pointer;
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
+
+/* title style */
+div.article-body h2 {
+    border-bottom-style: solid;
+    padding-bottom: 10px;
+}
+
+div.article-body h3 {
+    border-bottom-style: solid;
+    padding-bottom: 8px;
+    width: 80%;
+}
