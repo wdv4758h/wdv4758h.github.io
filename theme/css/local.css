@@ -107,10 +107,24 @@ div.collapseheader {
 div.article-body h2 {
     border-bottom-style: solid;
     padding-bottom: 10px;
+    margin-bottom: 30px;
 }
 
 div.article-body h3 {
     border-bottom-style: solid;
+    border-bottom-color: rgba(24, 57, 240, 1);
+    border-bottom-right-radius: 20px 30px;
     padding-bottom: 8px;
+    margin-bottom: 20px;
     width: 80%;
+}
+
+
+div.article-body h4 {
+    border-bottom-style: solid;
+    border-bottom-color: green;
+    border-bottom-right-radius: 40%;
+    padding-bottom: 4px;
+    margin-bottom: 10px;
+    width: 70%;
 }
