@@ -51,7 +51,7 @@ test case 難寫通常也代表著程式太複雜，因此要降低結構複雜�
 
 ----
 
-Apps-Weyuker hierarchy of data flow coverage metrics :
+Rapps-Weyuker hierarchy of data flow coverage metrics :
 
 ::
 

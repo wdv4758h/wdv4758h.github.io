@@ -141,14 +141,16 @@ Process of Research
 
 決定論 (Determinism) : Doctrine that all events - physical, behavioral, andmental - are "determined" by specific causal factors that are potentially knowable
 
+.. table::
+    :class: table table-bordered
 
-+--------+-----------------------------------+
-| step 1 | Initial phase of research: Theory |
-+--------+-----------------------------------+
-| step 2 | Develop ahypothesis 假說          |
-+--------+-----------------------------------+
-| step 3 | Design the study 研究設計         |
-+--------+-----------------------------------+
+    +--------+-----------------------------------+
+    | step 1 | Initial phase of research: Theory |
+    +--------+-----------------------------------+
+    | step 2 | Develop ahypothesis 假說          |
+    +--------+-----------------------------------+
+    | step 3 | Design the study 研究設計         |
+    +--------+-----------------------------------+
 
 Scientific Method
 ++++++++++++++++++++
@@ -176,7 +178,7 @@ Operational definition
 
 ex: 「花生果醬三明治」的操作性定義是「使用抹刀先將花生醬塗抹到一片麵包上，再將果醬塗抹在花生醬上，最後蓋上另一片厚度相同的麵包後所得到的成果。」
 
-Researdch Variable
+Research Variable
 ++++++++++++++++++++
 
 - Independent Variable (獨變項/自變項) (研究者操弄的變數)
@@ -209,9 +211,13 @@ Experimental Methods
       + 每個參與者可以自己控制
 
 - Sample 樣本
+
   * Population 中被選為受試者的 subset
+
 - Representative Sample 代表性樣本
+
   * Population 中被選為受試者的 subset 中和特徵非常符合的部份
+
 - Population 母群
 
 Alternative explanations
@@ -360,8 +366,17 @@ Brain Structure
     * Reticular Formation (網狀組織)
 - Spinal cord (脊髓)
     * pathway for neural fibers traveling to and from brain
-- Cerebral cortex (大腦皮值)
+- Cerebral cortex (大腦皮質)
     * involve in complex mental processes
+
+Sleep Cycle
+------------------------------
+
+- Stage 1
+- Stage 2
+- Stage 3
+- Stage 4
+- Rapid EyeMovements (REM)
 
 Ch5 - Mind, Consciousness, and AlternateStates
 ==============================================
