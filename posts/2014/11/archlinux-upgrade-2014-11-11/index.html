@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>XMLHttpRequest — Dv 名字很難念</title>
-	<meta name="description" content="Title: XMLHttpRequest; Date: 2014-02-11; Author: wdv4758h">
+	<title>Arch Linux upgrade (11/11) — Dv 名字很難念</title>
+	<meta name="description" content="Title: Arch Linux upgrade (11/11); Date: 2014-11-12; Author: wdv4758h">
 	<meta name="author" content="wdv4758h">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -27,11 +27,13 @@
 		<div class="col-md-8 col-md-offset-2">
 <div class="article" itemscope itemtype="http://schema.org/BlogPosting">
 	<div class="text-center article-header">
-		<h1 itemprop="name headline" class="article-title">XMLHttpRequest</h1>
+		<h1 itemprop="name headline" class="article-title">Arch Linux upgrade (11/11)</h1>
 		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
 			<h4 itemprop="name">wdv4758h</h4>
 		</span>
-        <span itemprop="publish">publish: <time datetime="2014-02-11T00:06:00" itemprop="datePublished">Tue 11 February 2014</time></span>
+        <span itemprop="publish">publish: <time datetime="2014-11-12T00:06:00" itemprop="datePublished">Wed 12 November 2014</time></span>
+        <br>
+        <span itemprop="update">update: <time datetime="2014-11-12 00:06:00" itemprop="datePublished">Wed 12 November 2014</time></span>
 	</div>
 	<div>
 		Category:
@@ -42,89 +44,21 @@
 	<div>
 		Tags:
 		<span itemprop="keywords">
-			<a href="/tag/xmlhttprequest.html" rel="tag">XMLHttpRequest</a>
-		</span>
-		<span itemprop="keywords">
-			<a href="/tag/ajax.html" rel="tag">ajax</a>
+			<a href="/tag/linux.html" rel="tag">linux</a>
 		</span>
 	</div>
-	<div itemprop="articleBody" class="article-body"><p>有了 XMLHttpRequest 就讓我們可以利用 Javascript 去做 request</p>
-<p>以下直接用一段 Javascript 去說明</p>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
-<span class="nx">req</span><span class="p">.</span><span class="nx">onreadystatechange</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
-    <span class="k">if</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">===</span> <span class="mi">4</span><span class="p">){</span>
-        <span class="nx">alert</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">responseText</span><span class="p">);</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-<span class="nx">req</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s2">&quot;test.html&quot;</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-<span class="nx">req</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
-</pre></div>
-<p>首先是建立 XMLHttpRequest 物件，再來撰寫 readyState 改變時所要做的動作 ( <strong>onreadystatechange</strong> )，
-open method 去指定要做的 request，再來呼叫 send method 送出</p>
-<div class="section" id="xmlhttprequest">
-<h2>在收到回應後，XMLHttpRequest 物件會設定的一些屬性</h2>
-<div class="section" id="readystate">
-<h3>readyState</h3>
-<ul>
-<li><p class="first">0 (UNSENT)</p>
-<blockquote>
-<p>The object has been constructed.</p>
-</blockquote>
-</li>
-<li><p class="first">1 (OPENED)</p>
-<blockquote>
-<p>The open() method has been successfully invoked. During this state request headers can be set using setRequestHeader() and the request can be made using the send() method.</p>
-</blockquote>
-</li>
-<li><p class="first">2 (HEADERS_RECEIVED)</p>
-<blockquote>
-<p>All redirects (if any) have been followed and all HTTP headers of the final response have been received. Several response members of the object are now available.</p>
-</blockquote>
-</li>
-<li><p class="first">3 (LOADING)</p>
-<blockquote>
-<p>The response entity body is being received.</p>
-</blockquote>
-</li>
-<li><p class="first">4 (DONE)</p>
-<blockquote>
-<p>The data transfer has been completed or something went wrong during the transfer (e.g. infinite redirects).</p>
-</blockquote>
-</li>
-</ul>
-<p>因此才在 onreadystatechange 裡做了 readyState 判斷，
-on readyState change 顧名思義就是 readyState 有變動時會去 call 這個 method，
-所以加上 readyState 的判斷後變成只有處理完後 &quot;readyState 是 4 &quot; 時才做動作</p>
-</div>
-<div class="section" id="status">
-<h3>Status</h3>
-<p>就是 HTTP 的 Status Code</p>
-</div>
-<div class="section" id="responsetext">
-<h3>responseText</h3>
-<p>收到的內容</p>
-</div>
-<div class="section" id="responsexml">
-<h3>responseXML</h3>
-<p>收到的內容 (XML 格式)</p>
-</div>
-</div>
-<div class="section" id="ref">
-<h2>Ref</h2>
-<ul class="simple">
-<li><a class="reference external" href="https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest">XMLHttpRequest - MDN</a></li>
-<li><a class="reference external" href="https://en.wikipedia.org/wiki/XMLHttpRequest">XMLHttpRequest - Wikipedia</a></li>
-<li><a class="reference external" href="https://en.wikipedia.org/wiki/Ajax_%28programming%29">Ajax (programming)</a></li>
-</ul>
-</div>
+	<div itemprop="articleBody" class="article-body"><p>It has been a while since last time I upgrade my notebook,
+now I upgrade many software in my notebook including the Linux Kernel,
+everything works well after upgrade :)</p>
+<p>I love rolling release :P</p>
 </div>
 	<hr>
 	<h2>Comments</h2>
 <div id="disqus_thread"></div>
 <script type="text/javascript">
     var disqus_shortname = 'wdv4758h-blog';
-    var disqus_title = 'XMLHttpRequest';
-	var disqus_identifier = 'posts/2014/02/XMLHttpRequest/';
+    var disqus_title = 'Arch Linux upgrade (11/11)';
+	var disqus_identifier = 'posts/2014/11/archlinux-upgrade-2014-11-11/';
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
