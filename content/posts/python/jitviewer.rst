@@ -2,7 +2,7 @@
 :slug: jitviewer
 :date: 2014-10-15 17:20
 :category: Python
-:tags: book
+:tags: PyPy, Python
 :author: wdv4758h
 :summary: something about PyPy jitviewer
 
