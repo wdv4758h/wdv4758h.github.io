@@ -1,5 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Dv 名字很難念</title><link href="/" rel="alternate"></link><link href="/feeds/wdv4758h.atom.xml" rel="self"></link><id>/</id><updated>2014-11-12T00:06:00+08:00</updated><entry><title>Arch Linux upgrade (11/11)</title><link href="/posts/2014/11/archlinux-upgrade-2014-11-11/" rel="alternate"></link><updated>2014-11-12T00:06:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-11-12:posts/2014/11/archlinux-upgrade-2014-11-11/</id><summary type="html">&lt;p&gt;It has been a while since last time I upgrade my notebook,
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Dv 名字很難念</title><link href="/" rel="alternate"></link><link href="/feeds/wdv4758h.atom.xml" rel="self"></link><id>/</id><updated>2014-12-01T02:38:00+08:00</updated><entry><title>[JCConf] OpenJDK vs. Dalvik/ART virtual machine</title><link href="/posts/2014/12/openjdk-vs-dalvik-and-art-vm/" rel="alternate"></link><updated>2014-12-01T02:38:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-12-01:posts/2014/12/openjdk-vs-dalvik-and-art-vm/</id><summary type="html">&lt;p&gt;&lt;a class="reference external" href="http://jcconf.tw/openjdk-vs-dalvik.html"&gt;JCConf 官網連結 (有 Video)&lt;/a&gt;&lt;/p&gt;
+&lt;div class="section" id="preface"&gt;
+&lt;h2&gt;Preface&lt;/h2&gt;
+&lt;p&gt;這裡不提&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;JVM tuning&lt;/li&gt;
+&lt;li&gt;JNI, GC, invokedynamic&lt;/li&gt;
+&lt;li&gt;Production tweaking&lt;/li&gt;
+&lt;li&gt;Android Programming&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="content"&gt;
+&lt;h2&gt;Content&lt;/h2&gt;
+&lt;pre class="literal-block"&gt;
+                                                   +----------------+
+                                                   | CLDC-HI (Java) |
+                                                   +----------------+
+                                                           ^
+                                                           |
++----------------+  +---------------------------+  +-------------------+
+| Self VM (Self) |-&amp;gt;| Strongtalk VM (Smalltalk) |-&amp;gt;| HotSpot VM (Java) |
++----------------+  +---------------------------+  +-------------------+
+        |                          |
+        |                          |
+        |                          |
+        |                          |
+        |                          |
+        |                          |
+        |                          |                 +-----------------+
+        |                          ---------------&amp;gt;  | V8 (Javascript) |
+        ------------------------------------------&amp;gt;  +-----------------+
+&lt;/pre&gt;
+&lt;div class="section" id="jit"&gt;
+&lt;h3&gt;JIT&lt;/h3&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Compiled when needed&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="mixed-mode"&gt;
+&lt;h3&gt;Mixed-Mode&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;dl class="first docutils"&gt;
+&lt;dt&gt;Interpreted&lt;/dt&gt;
+&lt;dd&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;Bytecode-walking&lt;/li&gt;
+&lt;li&gt;Artificial stack machine&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;dl class="first docutils"&gt;
+&lt;dt&gt;Compiled&lt;/dt&gt;
+&lt;dd&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;Direct native operations&lt;/li&gt;
+&lt;li&gt;Native register machine&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="profiling"&gt;
+&lt;h3&gt;Profiling&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;dl class="first docutils"&gt;
+&lt;dt&gt;Gather data about code while interpreting&lt;/dt&gt;
+&lt;dd&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;Invariants (types, constants, nulls)&lt;/li&gt;
+&lt;li&gt;Statistics (branches, calls)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="optimizations"&gt;
+&lt;h3&gt;Optimizations&lt;/h3&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Method inlining&lt;/li&gt;
+&lt;li&gt;Loop unrolling&lt;/li&gt;
+&lt;li&gt;Lock coarsening/eliding&lt;/li&gt;
+&lt;li&gt;Dead code elimination&lt;/li&gt;
+&lt;li&gt;Duplicate code elimination&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Escape_analysis"&gt;Escape analysis&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="hotspot"&gt;
+&lt;h3&gt;Hotspot&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;dl class="first docutils"&gt;
+&lt;dt&gt;client mode (C1) inlines, less aggressive&lt;/dt&gt;
+&lt;dd&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;Fewer opportunities to optimize&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;dl class="first docutils"&gt;
+&lt;dt&gt;server mode (C2) inlines aggressively&lt;/dt&gt;
+&lt;dd&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;Based on richer runtime profiling&lt;/li&gt;
+&lt;li&gt;Profile until 10k calls&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;dl class="first docutils"&gt;
+&lt;dt&gt;Tiered&lt;/dt&gt;
+&lt;dd&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;Level 0 = Interpreter&lt;/li&gt;
+&lt;li&gt;Level 1~3 = C1&lt;/li&gt;
+&lt;li&gt;Level 4 = C2&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="from-interpreter-to-compiler"&gt;
+&lt;h3&gt;from Interpreter to Compiler&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;dl class="first docutils"&gt;
+&lt;dt&gt;Bytecode interpreter&lt;/dt&gt;
+&lt;dd&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;switch-threading&lt;/li&gt;
+&lt;li&gt;indirect-threading&lt;/li&gt;
+&lt;li&gt;token-threading&lt;/li&gt;
+&lt;li&gt;...&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="summary-openjdk"&gt;
+&lt;h3&gt;Summary : OpenJDK&lt;/h3&gt;
+&lt;/div&gt;
+&lt;div class="section" id="introduction-to-dalvik-vm"&gt;
+&lt;h3&gt;Introduction to Dalvik VM&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p class="first"&gt;因為硬體限制，不能像 HotSpot 一樣做那麼多優化&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Dalvik 是 Register-based 的 VM&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;dl class="first docutils"&gt;
+&lt;dt&gt;Dalvik Executable (DEX)&lt;/dt&gt;
+&lt;dd&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;convert tool : dx&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;dl class="first docutils"&gt;
+&lt;dt&gt;Optimizing Dispatch&lt;/dt&gt;
+&lt;dd&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;selective inlining
++ 打開 Java 程式執行的時候，CPU 就是不知道在忙什麼
++ 只是個印出 Hello World 的程式，發現 CPU 有點忙&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;dexopt : Instruction Rewritten&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="libart-android-runtime-library"&gt;
+&lt;h3&gt;libART (Android RunTime Library)&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;dl class="first docutils"&gt;
+&lt;dt&gt;Use Ahead-Of-Time (AOT) scheme instead of JIT&lt;/dt&gt;
+&lt;dd&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;Precompile Dalvik Bytecode into machine language during installation&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="summary"&gt;
+&lt;h2&gt;Summary&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Hotspot 和 Dalvik 完全不同 codebase，但設計原理很像，Hotspot 實作比較完整，Dalvik 有很多先天限制&lt;/li&gt;
+&lt;li&gt;Android L 啟動時間變更久 (重新 scan bytecode 來生成 machine code)&lt;/li&gt;
+&lt;li&gt;要兼顧效能和啟動時間&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</summary><category term="Java"></category><category term="OpenJDK"></category><category term="Dalvik"></category><category term="ART"></category><category term="VM"></category></entry><entry><title>Arch Linux upgrade (11/11)</title><link href="/posts/2014/11/archlinux-upgrade-2014-11-11/" rel="alternate"></link><updated>2014-11-12T00:06:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-11-12:posts/2014/11/archlinux-upgrade-2014-11-11/</id><summary type="html">&lt;p&gt;It has been a while since last time I upgrade my notebook,
 now I upgrade many software in my notebook including the Linux Kernel,
 everything works well after upgrade :)&lt;/p&gt;
 &lt;p&gt;I love rolling release :P&lt;/p&gt;
