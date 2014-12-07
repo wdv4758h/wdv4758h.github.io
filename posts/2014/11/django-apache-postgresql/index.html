@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Python — Dv 名字很難念</title>
-	<meta name="description" content="All posts which refer to category Python">
+	<title>Django, Apache, PostgreSQL — Dv 名字很難念</title>
+	<meta name="description" content="Title: Django, Apache, PostgreSQL; Date: 2014-11-22; Author: wdv4758h">
 	<meta name="author" content="wdv4758h">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -25,47 +25,54 @@
 	</div>
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
-<h1>Category <small>Python</small></h1>
-<table class="table">
-    <tbody>
-        <tr>
-        <td>06 Nov 2014</td>
-        <td><a href='/posts/2014/11/pypy-io-improvements/'>[PyPy] IO improvements</a></td>
-        </tr>
-        <tr>
-        <td>22 Oct 2014</td>
-        <td><a href='/posts/2014/10/python-virtualenv-upgrade/'>Python virtualenv upgrade</a></td>
-        </tr>
-        <tr>
-        <td>21 Oct 2014</td>
-        <td><a href='/posts/2014/10/RPython/'>RPython Intro.</a></td>
-        </tr>
-        <tr>
-        <td>15 Oct 2014</td>
-        <td><a href='/posts/2014/10/jitviewer/'>Try the jitviewer</a></td>
-        </tr>
-        <tr>
-        <td>11 Oct 2014</td>
-        <td><a href='/posts/2014/10/ptt-python-transpose/'>PTT - Python 版 - transpose 問題</a></td>
-        </tr>
-        <tr>
-        <td>13 Sep 2014</td>
-        <td><a href='/posts/2014/09/python-coding-style/'>Python coding style</a></td>
-        </tr>
-        <tr>
-        <td>24 Feb 2014</td>
-        <td><a href='/posts/2014/02/stackless-python/'>About Stackless Python</a></td>
-        </tr>
-        <tr>
-        <td>06 Feb 2014</td>
-        <td><a href='/posts/2014/02/python-wraps/'>Python - @wraps</a></td>
-        </tr>
-        <tr>
-        <td>01 Feb 2014</td>
-        <td><a href='/posts/2014/02/pelican/'>初次使用 Pelican</a></td>
-        </tr>
-    </tbody>
-</table>
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">Django, Apache, PostgreSQL</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">wdv4758h</h4>
+		</span>
+        <span itemprop="publish">publish: <time datetime="2014-11-22T01:00:00" itemprop="datePublished">Sat 22 November 2014</time></span>
+        <br>
+        <span itemprop="update">update: <time datetime="2014-11-22 01:00:00" itemprop="datePublished">Sat 22 November 2014</time></span>
+	</div>
+	<div>
+		Category:
+		<span itemprop="articleSection">
+			<a href="/category/django.html" rel="category">Django</a>
+		</span>
+	</div>
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="/tag/django.html" rel="tag">Django</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><p>Although I usually use Arch Linux,
+this time I need to install every thing on Ubuntu Server (I get a task to install something on Ubuntu VM) ...</p>
+<p>First, I give my public key to current VM administrator, so I can get permission to ssh to server by key.</p>
+<p>Install Apache, mod-wsgi ...</p>
+<p>Making a virtualenv, cloning current project, installing the requirement.txt</p>
+<p>Modify Apache's configuration (Apache's configuration in Ubuntu is at <tt class="docutils literal">/etc/apache2/apache2.conf</tt>,
+and default user that Apache use in Ubuntu is &quot;www-data&quot;), setting WSGIPythonPath to the virtualenv one</p>
+<p>Install PostgreSQL (this is my first time to install PostgreSQL)</p>
+<p>Setting PostgreSQL (create user, database, ...)</p>
+</div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'wdv4758h-blog';
+    var disqus_title = 'Django, Apache, PostgreSQL';
+	var disqus_identifier = 'posts/2014/11/django-apache-postgresql/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
 		</div>
 	</div> 	<!-- <hr> -->
 </div> <!-- /container -->

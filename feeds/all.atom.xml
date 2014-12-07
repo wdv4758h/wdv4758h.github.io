@@ -187,7 +187,16 @@
 &lt;li&gt;要兼顧效能和啟動時間&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-</summary><category term="Java"></category><category term="OpenJDK"></category><category term="Dalvik"></category><category term="ART"></category><category term="VM"></category></entry><entry><title>Arch Linux upgrade (11/11)</title><link href="/posts/2014/11/archlinux-upgrade-2014-11-11/" rel="alternate"></link><updated>2014-11-12T00:06:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-11-12:posts/2014/11/archlinux-upgrade-2014-11-11/</id><summary type="html">&lt;p&gt;It has been a while since last time I upgrade my notebook,
+</summary><category term="Java"></category><category term="OpenJDK"></category><category term="Dalvik"></category><category term="ART"></category><category term="VM"></category></entry><entry><title>Django, Apache, PostgreSQL</title><link href="/posts/2014/11/django-apache-postgresql/" rel="alternate"></link><updated>2014-11-22T01:00:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-11-22:posts/2014/11/django-apache-postgresql/</id><summary type="html">&lt;p&gt;Although I usually use Arch Linux,
+this time I need to install every thing on Ubuntu Server (I get a task to install something on Ubuntu VM) ...&lt;/p&gt;
+&lt;p&gt;First, I give my public key to current VM administrator, so I can get permission to ssh to server by key.&lt;/p&gt;
+&lt;p&gt;Install Apache, mod-wsgi ...&lt;/p&gt;
+&lt;p&gt;Making a virtualenv, cloning current project, installing the requirement.txt&lt;/p&gt;
+&lt;p&gt;Modify Apache's configuration (Apache's configuration in Ubuntu is at &lt;tt class="docutils literal"&gt;/etc/apache2/apache2.conf&lt;/tt&gt;,
+and default user that Apache use in Ubuntu is &amp;quot;www-data&amp;quot;), setting WSGIPythonPath to the virtualenv one&lt;/p&gt;
+&lt;p&gt;Install PostgreSQL (this is my first time to install PostgreSQL)&lt;/p&gt;
+&lt;p&gt;Setting PostgreSQL (create user, database, ...)&lt;/p&gt;
+</summary><category term="Django"></category></entry><entry><title>Arch Linux upgrade (11/11)</title><link href="/posts/2014/11/archlinux-upgrade-2014-11-11/" rel="alternate"></link><updated>2014-11-12T00:06:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-11-12:posts/2014/11/archlinux-upgrade-2014-11-11/</id><summary type="html">&lt;p&gt;It has been a while since last time I upgrade my notebook,
 now I upgrade many software in my notebook including the Linux Kernel,
 everything works well after upgrade :)&lt;/p&gt;
 &lt;p&gt;I love rolling release :P&lt;/p&gt;

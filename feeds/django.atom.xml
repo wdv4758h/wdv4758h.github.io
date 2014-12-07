@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Dv 名字很難念</title><link href="/" rel="alternate"></link><link href="/feeds/django.atom.xml" rel="self"></link><id>/</id><updated>2014-02-20T00:10:00+08:00</updated><entry><title>自製 template tags 和 filters</title><link href="/posts/2014/02/django-templatetags/" rel="alternate"></link><updated>2014-02-20T00:10:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-02-20:posts/2014/02/django-templatetags/</id><summary type="html">&lt;div class="section" id="id1"&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Dv 名字很難念</title><link href="/" rel="alternate"></link><link href="/feeds/django.atom.xml" rel="self"></link><id>/</id><updated>2014-11-22T01:00:00+08:00</updated><entry><title>Django, Apache, PostgreSQL</title><link href="/posts/2014/11/django-apache-postgresql/" rel="alternate"></link><updated>2014-11-22T01:00:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-11-22:posts/2014/11/django-apache-postgresql/</id><summary type="html">&lt;p&gt;Although I usually use Arch Linux,
+this time I need to install every thing on Ubuntu Server (I get a task to install something on Ubuntu VM) ...&lt;/p&gt;
+&lt;p&gt;First, I give my public key to current VM administrator, so I can get permission to ssh to server by key.&lt;/p&gt;
+&lt;p&gt;Install Apache, mod-wsgi ...&lt;/p&gt;
+&lt;p&gt;Making a virtualenv, cloning current project, installing the requirement.txt&lt;/p&gt;
+&lt;p&gt;Modify Apache's configuration (Apache's configuration in Ubuntu is at &lt;tt class="docutils literal"&gt;/etc/apache2/apache2.conf&lt;/tt&gt;,
+and default user that Apache use in Ubuntu is &amp;quot;www-data&amp;quot;), setting WSGIPythonPath to the virtualenv one&lt;/p&gt;
+&lt;p&gt;Install PostgreSQL (this is my first time to install PostgreSQL)&lt;/p&gt;
+&lt;p&gt;Setting PostgreSQL (create user, database, ...)&lt;/p&gt;
+</summary><category term="Django"></category></entry><entry><title>自製 template tags 和 filters</title><link href="/posts/2014/02/django-templatetags/" rel="alternate"></link><updated>2014-02-20T00:10:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-02-20:posts/2014/02/django-templatetags/</id><summary type="html">&lt;div class="section" id="id1"&gt;
 &lt;h2&gt;起手式&lt;/h2&gt;
 &lt;p&gt;要建立自己的 template tags 之前，要先在一個 app 資料架底下建立 &amp;quot;templatetags&amp;quot; 資料夾，
 如果這些 tags 是跟 app A 有關的話，那很理所當然可以放在 app A 資料夾下的 &amp;quot;templatetags&amp;quot;，
