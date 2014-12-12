@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/vim.rss.xml" rel="self"></atom:link><lastBuildDate>Fri, 12 Dec 2014 20:26:00 +0800</lastBuildDate><item><title>neovim first try</title><link>/posts/2014/12/neovim-first-try/</link><description>&lt;p&gt;Vim is a wonderful editor which appears long long ago.
-Now, a project called Neovim whats to refactor Vim and simplify maintenance and improve plugin architecture and many things. It's makeing progress now, you can see &lt;a class="reference external" href="https://github.com/neovim/neovim/wiki/Progress"&gt;Neovim - Progress - GitHub wiki&lt;/a&gt; for more information.&lt;/p&gt;
+Now, a project called Neovim wants to refactor Vim and simplify maintenance and improve plugin architecture and many thing else. It's making progress now, you can see &lt;a class="reference external" href="https://github.com/neovim/neovim/wiki/Progress"&gt;Neovim - Progress - GitHub wiki&lt;/a&gt; for more information.&lt;/p&gt;
 &lt;p&gt;Today, I install neovim on my computer, and it seems to work fine as original Vim (with a lots of change that user hard to detect)&lt;/p&gt;
 &lt;p&gt;Now, Neovim is working on port all IO to libuv and a VimL to Lua transpiler.
 I hope another language will replace the Vimscript soon ...&lt;/p&gt;

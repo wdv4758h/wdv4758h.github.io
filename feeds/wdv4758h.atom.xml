@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Dv 名字很難念</title><link href="/" rel="alternate"></link><link href="/feeds/wdv4758h.atom.xml" rel="self"></link><id>/</id><updated>2014-12-12T20:26:00+08:00</updated><entry><title>neovim first try</title><link href="/posts/2014/12/neovim-first-try/" rel="alternate"></link><updated>2014-12-12T20:26:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-12-12:posts/2014/12/neovim-first-try/</id><summary type="html">&lt;p&gt;Vim is a wonderful editor which appears long long ago.
-Now, a project called Neovim whats to refactor Vim and simplify maintenance and improve plugin architecture and many things. It's makeing progress now, you can see &lt;a class="reference external" href="https://github.com/neovim/neovim/wiki/Progress"&gt;Neovim - Progress - GitHub wiki&lt;/a&gt; for more information.&lt;/p&gt;
+Now, a project called Neovim wants to refactor Vim and simplify maintenance and improve plugin architecture and many thing else. It's making progress now, you can see &lt;a class="reference external" href="https://github.com/neovim/neovim/wiki/Progress"&gt;Neovim - Progress - GitHub wiki&lt;/a&gt; for more information.&lt;/p&gt;
 &lt;p&gt;Today, I install neovim on my computer, and it seems to work fine as original Vim (with a lots of change that user hard to detect)&lt;/p&gt;
 &lt;p&gt;Now, Neovim is working on port all IO to libuv and a VimL to Lua transpiler.
 I hope another language will replace the Vimscript soon ...&lt;/p&gt;
