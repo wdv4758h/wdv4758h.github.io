@@ -8,7 +8,7 @@
 :summary: neovim first try
 
 Vim is a wonderful editor which appears long long ago.
-Now, a project called Neovim whats to refactor Vim and simplify maintenance and improve plugin architecture and many things. It's makeing progress now, you can see `Neovim - Progress - GitHub wiki <https://github.com/neovim/neovim/wiki/Progress>`_ for more information.
+Now, a project called Neovim wants to refactor Vim and simplify maintenance and improve plugin architecture and many thing else. It's making progress now, you can see `Neovim - Progress - GitHub wiki <https://github.com/neovim/neovim/wiki/Progress>`_ for more information.
 
 Today, I install neovim on my computer, and it seems to work fine as original Vim (with a lots of change that user hard to detect)
 
