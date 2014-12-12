@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/vim.rss.xml" rel="self"></atom:link><lastBuildDate>Fri, 12 Dec 2014 20:26:00 +0800</lastBuildDate><item><title>neovim first try</title><link>/posts/2014/12/neovim-first-try/</link><description>&lt;p&gt;Vim is a wonderful editor which appears long long ago.
+Now, a project called Neovim whats to refactor Vim and simplify maintenance and improve plugin architecture and many things. It's makeing progress now, you can see &lt;a class="reference external" href="https://github.com/neovim/neovim/wiki/Progress"&gt;Neovim - Progress - GitHub wiki&lt;/a&gt; for more information.&lt;/p&gt;
+&lt;p&gt;Today, I install neovim on my computer, and it seems to work fine as original Vim (with a lots of change that user hard to detect)&lt;/p&gt;
+&lt;p&gt;Now, Neovim is working on port all IO to libuv and a VimL to Lua transpiler.
+I hope another language will replace the Vimscript soon ...&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://neovim.org/"&gt;The Neovim Website&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://github.com/neovim/neovim"&gt;Neovim - GitHub&lt;/a&gt;&lt;/p&gt;
+&lt;div class="section" id="install"&gt;
+&lt;h2&gt;Install&lt;/h2&gt;
+&lt;p&gt;I install it on my Arch Linux&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;yaourt -S neovim-git python2-neovim-git
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;After installation, you can use &lt;tt class="docutils literal"&gt;nvim&lt;/tt&gt; to start neovim, and the config is &lt;tt class="docutils literal"&gt;.nvimrc&lt;/tt&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Fri, 12 Dec 2014 20:26:00 +0800</pubDate><guid>tag:,2014-12-12:posts/2014/12/neovim-first-try/</guid><category>Vim</category></item></channel></rss>

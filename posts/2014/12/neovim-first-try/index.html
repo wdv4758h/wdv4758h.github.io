@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>[FP] predicate — Dv 名字很難念</title>
-	<meta name="description" content="Title: [FP] predicate; Date: 2014-10-28; Author: wdv4758h">
+	<title>neovim first try — Dv 名字很難念</title>
+	<meta name="description" content="Title: neovim first try; Date: 2014-12-12; Author: wdv4758h">
 	<meta name="author" content="wdv4758h">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -27,96 +27,39 @@
 		<div class="col-md-8 col-md-offset-2">
 <div class="article" itemscope itemtype="http://schema.org/BlogPosting">
 	<div class="text-center article-header">
-		<h1 itemprop="name headline" class="article-title">[FP] predicate</h1>
+		<h1 itemprop="name headline" class="article-title">neovim first try</h1>
 		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
 			<h4 itemprop="name">wdv4758h</h4>
 		</span>
-        <span itemprop="publish">publish: <time datetime="2014-10-28T11:20:00" itemprop="datePublished">Tue 28 October 2014</time></span>
+        <span itemprop="publish">publish: <time datetime="2014-12-12T20:26:00" itemprop="datePublished">Fri 12 December 2014</time></span>
+        <br>
+        <span itemprop="update">update: <time datetime="2014-12-12 20:26:00" itemprop="datePublished">Fri 12 December 2014</time></span>
 	</div>
 	<div>
 		Category:
 		<span itemprop="articleSection">
-			<a href="/category/functional.html" rel="category">Functional</a>
+			<a href="/category/vim.html" rel="category">Vim</a>
 		</span>
 	</div>
 	<div>
 		Tags:
 		<span itemprop="keywords">
-			<a href="/tag/funcitonal.html" rel="tag">funcitonal</a>
+			<a href="/tag/vim.html" rel="tag">Vim</a>
 		</span>
 	</div>
-	<div itemprop="articleBody" class="article-body"><p>short :</p>
-<p>A <strong>predicate</strong> is a box that takes an argument and returns a <strong>Boolean value</strong>. For example, &quot;x -&gt; x is even&quot;.</p>
-<p>A <strong>function</strong> is a box that takes an argument and returns a <strong>value</strong>. For example, &quot;x -&gt; x*x&quot;</p>
-<hr class="docutils" />
-<div class="section" id="predicate-in-natural-language">
-<h2>Predicate (謂語) in natural language</h2>
-<p>Subject + Predicate : The dog + barks.</p>
-<p>The predicate identifies and describes the action of the sentence.</p>
-</div>
-<div class="section" id="predicate-in-functional">
-<h2>Predicate in Functional</h2>
-<p>A predicate is a function that returns the <strong>Boolean value</strong></p>
-</div>
-<div class="section" id="in-python">
-<h2>In Python</h2>
-<ul class="simple">
-<li><a class="reference external" href="https://docs.python.org/3/howto/functional.html">Python - Functional Programming How To</a></li>
-</ul>
-<div class="highlight"><pre><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">filter(predicate, iter)</span>
-<span class="sd">&#39;&#39;&#39;</span>
-
-<span class="k">def</span> <span class="nf">is_even</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
-
-<span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="n">is_even</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)))</span>
-
-<span class="c"># there are more in iterools</span>
+	<div itemprop="articleBody" class="article-body"><p>Vim is a wonderful editor which appears long long ago.
+Now, a project called Neovim whats to refactor Vim and simplify maintenance and improve plugin architecture and many things. It's makeing progress now, you can see <a class="reference external" href="https://github.com/neovim/neovim/wiki/Progress">Neovim - Progress - GitHub wiki</a> for more information.</p>
+<p>Today, I install neovim on my computer, and it seems to work fine as original Vim (with a lots of change that user hard to detect)</p>
+<p>Now, Neovim is working on port all IO to libuv and a VimL to Lua transpiler.
+I hope another language will replace the Vimscript soon ...</p>
+<p><a class="reference external" href="http://neovim.org/">The Neovim Website</a></p>
+<p><a class="reference external" href="https://github.com/neovim/neovim">Neovim - GitHub</a></p>
+<div class="section" id="install">
+<h2>Install</h2>
+<p>I install it on my Arch Linux</p>
+<div class="highlight"><pre>yaourt -S neovim-git python2-neovim-git
 </pre></div>
-</div>
-<div class="section" id="in-prolog">
-<h2>In Prolog</h2>
-<p>Prolog's BNF</p>
-<div class="highlight"><pre>&lt;program&gt; ::= &lt;clause list&gt; &lt;query&gt; | &lt;query&gt;
-&lt;clause list&gt; ::= &lt;clause&gt; | &lt;clause list&gt; &lt;clause&gt;
-&lt;clause&gt; ::= &lt;predicate&gt; . | &lt;predicate&gt; :- &lt;predicate list&gt;.
-&lt;predicate list&gt; ::= &lt;predicate&gt; | &lt;predicate list&gt; , &lt;predicate&gt;
-&lt;predicate&gt; ::= &lt;atom&gt; | &lt;atom&gt; ( &lt;term list&gt; )
-&lt;term list&gt; ::= &lt;term&gt; | &lt;term list&gt; , &lt;term&gt;
-&lt;term&gt; ::= &lt;numeral&gt; | &lt;atom&gt; | &lt;variable&gt; | &lt;structure&gt;
-&lt;structure&gt; ::= &lt;atom&gt; ( &lt;term list&gt; )
-&lt;query&gt; ::= ?- &lt;predicate list&gt;.
-&lt;atom&gt; ::= &lt;small atom&gt; | &#39; &lt;string&gt; &#39;
-&lt;small atom&gt; ::= &lt;lowercase letter&gt; | &lt;small atom&gt; &lt;character&gt;
-&lt;variable&gt; ::= &lt;uppercase letter&gt; | &lt;variable&gt; &lt;character&gt;
-&lt;lowercase letter&gt; ::= a | b | c | ... | x | y | z
-&lt;uppercase letter&gt; ::= A | B | C | ... | X | Y | Z | _
-&lt;numeral&gt; ::= &lt;digit&gt; | &lt;numeral&gt; &lt;digit&gt;
-&lt;digit&gt; ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-&lt;character&gt; ::= &lt;lowercase letter&gt; | &lt;uppercase letter&gt; | &lt;digit&gt; | &lt;special&gt;
-&lt;special&gt; ::= + | - | * | / | \ | ^ | ~ | : | . | ? | | # | $ | &amp;
-&lt;string&gt; ::= &lt;character&gt; | &lt;string&gt; &lt;character&gt;
-</pre></div>
-<p>Prolog has two types of <strong>clause (子句)</strong> : (clause = facts | rules)</p>
-<ul class="simple">
-<li>facts</li>
-</ul>
-<div class="highlight"><pre><span class="nf">cat</span><span class="p">(</span><span class="s-Atom">tom</span><span class="p">).</span>
-</pre></div>
-<ul class="simple">
-<li>rules</li>
-</ul>
-<div class="highlight"><pre><span class="nf">animal</span><span class="p">(</span><span class="s-Atom">tom</span><span class="p">)</span> <span class="p">:-</span> <span class="nf">cat</span><span class="p">(</span><span class="s-Atom">tom</span><span class="p">).</span>
-</pre></div>
-<p>Both facts and rules are composed of predicates.</p>
-</div>
-<div class="section" id="links">
-<h2>Links</h2>
-<ul class="simple">
-<li><a class="reference external" href="http://en.wikipedia.org/wiki/Functional_predicate">Functional predicate - wikipedia</a></li>
-<li><a class="reference external" href="http://en.wikipedia.org/wiki/Prolog">Prolog - wikipedia</a></li>
-</ul>
+<p>After installation, you can use <tt class="docutils literal">nvim</tt> to start neovim, and the config is <tt class="docutils literal">.nvimrc</tt></p>
 </div>
 </div>
 	<hr>
@@ -124,8 +67,8 @@
 <div id="disqus_thread"></div>
 <script type="text/javascript">
     var disqus_shortname = 'wdv4758h-blog';
-    var disqus_title = '[FP] predicate';
-	var disqus_identifier = 'posts/2014/10/predicate/';
+    var disqus_title = 'neovim first try';
+	var disqus_identifier = 'posts/2014/12/neovim-first-try/';
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
