@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>初次使用 Pelican — Dv 名字很難念</title>
-	<meta name="description" content="Title: 初次使用 Pelican; Date: 2014-02-01; Author: wdv4758h">
+	<title>Vim startup time log — Dv 名字很難念</title>
+	<meta name="description" content="Title: Vim startup time log; Date: 2014-12-23; Author: wdv4758h">
 	<meta name="author" content="wdv4758h">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -27,54 +27,86 @@
 		<div class="col-md-8 col-md-offset-2">
 <div class="article" itemscope itemtype="http://schema.org/BlogPosting">
 	<div class="text-center article-header">
-		<h1 itemprop="name headline" class="article-title">初次使用 Pelican</h1>
+		<h1 itemprop="name headline" class="article-title">Vim startup time log</h1>
 		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
 			<h4 itemprop="name">wdv4758h</h4>
 		</span>
-        <span itemprop="publish">publish: <time datetime="2014-02-01T14:33:00" itemprop="datePublished">Sat 01 February 2014</time></span>
+        <span itemprop="publish">publish: <time datetime="2014-12-23T23:10:00" itemprop="datePublished">Tue 23 December 2014</time></span>
+        <br>
+        <span itemprop="update">update: <time datetime="2014-12-23 23:10:00" itemprop="datePublished">Tue 23 December 2014</time></span>
 	</div>
 	<div>
 		Category:
 		<span itemprop="articleSection">
-			<a href="/category/python.html" rel="category">Python</a>
+			<a href="/category/vim.html" rel="category">Vim</a>
 		</span>
 	</div>
 	<div>
 		Tags:
 		<span itemprop="keywords">
-			<a href="/tag/pelican.html" rel="tag">pelican</a>
-		</span>
-		<span itemprop="keywords">
-			<a href="/tag/python.html" rel="tag">Python</a>
+			<a href="/tag/vim.html" rel="tag">Vim</a>
 		</span>
 	</div>
-	<div itemprop="articleBody" class="article-body"><p>首先，什麼是 <a class="reference external" href="http://docs.getpelican.com/en/">Pelican</a> 呢？
-Pelican 是個 Python 寫的靜態網站 generator，
-你可以使用 Markdown, reStructuredText, AsciiDoc 等 markup language 作為撰寫的格式，
-然後經由 Pelican 去生成靜態的網頁，經由這種方式，可以方便地使用你喜歡的文字編輯器去撰寫你的文章，
-還可以結合 Version Control 去管理，
-而由於生成的網頁是靜態的，所以可以放到 Github Pages 或者其他可以放置靜態網頁的地方去 Host，無疑是個很方便的模式。</p>
-<div class="section" id="id1">
-<h2>Pelican 初步設定</h2>
-</div>
-<div class="section" id="theme">
-<h2>Theme</h2>
-</div>
-<div class="section" id="disqus-support">
-<h2>Disqus Support</h2>
-<p>Pelican 要支援 Disqus 非常簡單，首先只要在你的 Disqus 新增好你的網站，獲得你的 Disqul url 後，
-只要在你的 pelicanconf.py 裡新增 DISQUS_SITENAME = 'your-disqus-url' 即可：</p>
-<div class="highlight"><pre><span class="n">DISQUS_SITENAME</span> <span class="o">=</span> <span class="s">&#39;my-blog.disqus.com&#39;</span>
+	<div itemprop="articleBody" class="article-body"><p>原本是在找 vim 啟動時間相關的資料，找到了 <a class="reference external" href="http://usevim.com/2012/04/18/startuptime/">這個網站</a> ，
+發現有 <tt class="docutils literal"><span class="pre">--startuptime</span></tt> 這個參數可以用，於是就立馬來試一下，</p>
+<div class="highlight"><pre>vim --startuptime vim.log test.py
 </pre></div>
-</div>
+<p>接著就可以去 <tt class="docutils literal">vim.log</tt> 看整個啟動狀況</p>
+<pre class="literal-block">
+times in msec
+ clock   self+sourced   self:  sourced script
+ clock   elapsed:              other lines
+
+000.013  000.013: --- VIM STARTING ---
+000.142  000.129: Allocated generic buffers
+000.277  000.135: locale set
+000.305  000.028: GUI prepared
+000.313  000.008: clipboard setup
+000.321  000.008: window checked
+000.881  000.560: inits 1
+000.888  000.007: parsing arguments
+000.889  000.001: expanding arguments
+000.903  000.014: shell init
+001.163  000.260: Termcap init
+001.214  000.051: inits 2
+001.356  000.142: init highlight
+042.935  041.473  041.473: sourcing /usr/share/vim/vimfiles/archlinux.vim
+043.008  041.604  000.131: sourcing /etc/vimrc
+044.222  000.267  000.267: sourcing /usr/share/vim/vim74/syntax/syncolor.vim
+044.368  000.480  000.213: sourcing /usr/share/vim/vim74/syntax/synload.vim
+067.980  023.555  023.555: sourcing /usr/share/vim/vim74/filetype.vim
+068.028  024.211  000.176: sourcing /usr/share/vim/vim74/syntax/syntax.vim
+...
+161.306  000.881: loading plugins
+161.907  000.601: inits 3
+162.125  000.218: reading viminfo
+163.820  001.695: setup clipboard
+163.846  000.026: setting raw mode
+163.855  000.009: start termcap
+163.876  000.021: clearing screen
+...
+185.539  000.358: BufEnter autocommands
+185.541  000.002: editing files in windows
+190.308  004.767: VimEnter autocommands
+190.311  000.003: before starting main loop
+190.445  000.134: first screen update
+190.447  000.002: --- VIM STARTED ---
+</pre>
+<p>manual in Vim : <tt class="docutils literal">:help <span class="pre">slow-start</span></tt></p>
+<p>這個 log 參數剛好拿來解掉一個朋友碰到的問題 ~</p>
+<p>他在用 <tt class="docutils literal">mosh</tt> 連到某台機器上開 vim 時會 hang 住，
+藉由這個 log，發現是卡在 clipboard 那裡，
+原因是因為程式嘗試和 X server connect，但一直連不到，
+接著就找到了解法 <tt class="docutils literal">vim <span class="pre">-X</span></tt></p>
+<p>詳細問題解法可以看 <a class="reference external" href="stackoverflow.com/questions/14635295/vim-takes-a-very-long-time-to-start-up">這篇 stackoverflow</a> 回答</p>
 </div>
 	<hr>
 	<h2>Comments</h2>
 <div id="disqus_thread"></div>
 <script type="text/javascript">
     var disqus_shortname = 'wdv4758h-blog';
-    var disqus_title = '初次使用 Pelican';
-	var disqus_identifier = 'posts/2014/02/pelican/';
+    var disqus_title = 'Vim startup time log';
+	var disqus_identifier = 'posts/2014/12/vim-startup-time-log/';
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
