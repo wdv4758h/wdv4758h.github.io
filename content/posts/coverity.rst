@@ -29,3 +29,4 @@ from Coverity :
 example :
 
 .. image:: /img/coverity/cpython.png
+   :alt: cpython-coverity
