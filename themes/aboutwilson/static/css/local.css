@@ -60,6 +60,11 @@
     padding-bottom: 3px;
 }
 
+iframe {
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
 /**
  * Overrides of notebook CSS for static HTML export
 **/
