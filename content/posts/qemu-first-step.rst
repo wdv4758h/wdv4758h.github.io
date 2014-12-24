@@ -41,6 +41,8 @@ Create Image
 
     qemu-img create -f qcow2 test.qcow2 100G
 
+output :
+
 ::
 
     Formatting 'test.qcow2', fmt=qcow2 size=107374182400 encryption=off cluster_size=65536 lazy_refcounts=off
@@ -64,6 +66,8 @@ check your kernel has KVM support :
 .. code-block:: sh
 
     lsmod | grep kvm
+
+output :
 
 ::
 
