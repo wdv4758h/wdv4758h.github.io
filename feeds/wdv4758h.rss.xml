@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/wdv4758h.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 24 Dec 2014 20:12:00 +0800</lastBuildDate><item><title>[TED] Michael Rubinstein: See invisible motion, hear silent sounds. Cool? Creepy? We can't decide</title><link>/posts/2014/12/ted-motion-microscope/</link><description>&lt;p&gt;這個 talk 講的是利用影像處理來放大細微的動作，甚至藉此來初步還原出當時的聲音&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/wdv4758h.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 24 Dec 2014 21:19:00 +0800</lastBuildDate><item><title>Linux Standard Base, Filesystem Hierarchy Standard</title><link>/posts/2014/12/linux-standard-base/</link><description>&lt;div class="section" id="linux-standard-base-lsb"&gt;
+&lt;h2&gt;Linux Standard Base (LSB)&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://en.wikipedia.org/wiki/Linux_Standard_Base"&gt;Wikipedia - Linux Standard Base&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.linuxbase.org/betaspecs/lsb/"&gt;The DRAFT LSB 5.0 Specification&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="filesystem-hierarchy-standard-fhs"&gt;
+&lt;h2&gt;Filesystem Hierarchy Standard (FHS)&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard"&gt;Wikipedia - Filesystem Hierarchy Standard&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.linuxbase.org/betaspecs/fhs/"&gt;Filesystem Hierarchy Specification - Beta&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Wed, 24 Dec 2014 21:19:00 +0800</pubDate><guid>tag:,2014-12-24:posts/2014/12/linux-standard-base/</guid><category>linux</category></item><item><title>[TED] Michael Rubinstein: See invisible motion, hear silent sounds. Cool? Creepy? We can't decide</title><link>/posts/2014/12/ted-motion-microscope/</link><description>&lt;p&gt;這個 talk 講的是利用影像處理來放大細微的動作，甚至藉此來初步還原出當時的聲音&lt;/p&gt;
 &lt;iframe src="https://embed-ssl.ted.com/talks/michael_rubinstein_see_invisible_motion_hear_silent_sounds_cool_creepy_we_can_t_decide.html" width="854" height="480" frameborder="0" scrolling="no" webkitAllowFullScreen mozallowfullscreen allowFullScreen&gt;&lt;/iframe&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Wed, 24 Dec 2014 20:12:00 +0800</pubDate><guid>tag:,2014-12-24:posts/2014/12/ted-motion-microscope/</guid><category>TED</category><category>video-processing</category></item><item><title>QEMU - First Step</title><link>/posts/2014/12/qemu-first-step/</link><description>&lt;ul class="simple"&gt;
 &lt;li&gt;&lt;a class="reference external" href="https://en.wikibooks.org/wiki/QEMU"&gt;Wikipedia - QEMU&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="https://wiki.archlinux.org/index.php/QEMU"&gt;Arch Wiki - QEMU&lt;/a&gt;&lt;/li&gt;

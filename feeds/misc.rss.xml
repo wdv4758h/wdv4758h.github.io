@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/misc.rss.xml" rel="self"></atom:link><lastBuildDate>Mon, 08 Dec 2014 01:39:00 +0800</lastBuildDate><item><title>[Video] The Real Story Behind Wayland and X - Daniel Stone (linux.conf.au 2013)</title><link>/posts/2014/12/the-real-story-behind-wayland-and-x/</link><description>&lt;p&gt;This talk is funny and easy to understand ~&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/misc.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 24 Dec 2014 21:19:00 +0800</lastBuildDate><item><title>Linux Standard Base, Filesystem Hierarchy Standard</title><link>/posts/2014/12/linux-standard-base/</link><description>&lt;div class="section" id="linux-standard-base-lsb"&gt;
+&lt;h2&gt;Linux Standard Base (LSB)&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://en.wikipedia.org/wiki/Linux_Standard_Base"&gt;Wikipedia - Linux Standard Base&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.linuxbase.org/betaspecs/lsb/"&gt;The DRAFT LSB 5.0 Specification&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="filesystem-hierarchy-standard-fhs"&gt;
+&lt;h2&gt;Filesystem Hierarchy Standard (FHS)&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard"&gt;Wikipedia - Filesystem Hierarchy Standard&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.linuxbase.org/betaspecs/fhs/"&gt;Filesystem Hierarchy Specification - Beta&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Wed, 24 Dec 2014 21:19:00 +0800</pubDate><guid>tag:,2014-12-24:posts/2014/12/linux-standard-base/</guid><category>linux</category></item><item><title>[Video] The Real Story Behind Wayland and X - Daniel Stone (linux.conf.au 2013)</title><link>/posts/2014/12/the-real-story-behind-wayland-and-x/</link><description>&lt;p&gt;This talk is funny and easy to understand ~&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://people.freedesktop.org/~daniels/lca2013-wayland-x11.pdf"&gt;slide&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
