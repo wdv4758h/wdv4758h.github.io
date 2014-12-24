@@ -1,5 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Tue, 23 Dec 2014 23:10:00 +0800</lastBuildDate><item><title>Vim startup time log</title><link>/posts/2014/12/vim-startup-time-log/</link><description>&lt;p&gt;原本是在找 vim 啟動時間相關的資料，找到了 &lt;a class="reference external" href="http://usevim.com/2012/04/18/startuptime/"&gt;這個網站&lt;/a&gt; ，
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 24 Dec 2014 19:07:00 +0800</lastBuildDate><item><title>QEMU - First Step</title><link>/posts/2014/12/qemu-first-step/</link><description>&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://en.wikibooks.org/wiki/QEMU"&gt;Wikipedia - QEMU&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://wiki.archlinux.org/index.php/QEMU"&gt;Arch Wiki - QEMU&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="section" id="install-qemu"&gt;
+&lt;h2&gt;Install QEMU&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;pacman -S qemu  &lt;span class="c"&gt;# Arch Linux&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;pre class="literal-block"&gt;
+Name                New Version  Net Change  Download Size
+
+extra/bluez-libs    5.26-1       0.28 MiB         0.06 MiB
+extra/celt0.5.1     0.5.1.3-3    0.16 MiB         0.04 MiB
+extra/libcacard     2.1.2-1      0.09 MiB         0.03 MiB
+extra/libiscsi      1.12.0-1     0.44 MiB         0.10 MiB
+extra/seabios       1.7.5-2      1.69 MiB         0.12 MiB
+extra/spice         0.12.5-1     2.41 MiB         0.56 MiB
+community/usbredir  0.6-4        0.15 MiB         0.03 MiB
+extra/vde2          2.3.2-6      0.78 MiB         0.19 MiB
+extra/qemu          2.1.2-1      178.21 MiB      19.38 MiB
+
+Total Download Size:    20.53 MiB
+Total Installed Size:   184.21 MiB
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class="section" id="create-image"&gt;
+&lt;h2&gt;Create Image&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;qemu-img create -f qcow2 test.qcow2 100G
+&lt;/pre&gt;&lt;/div&gt;
+&lt;pre class="literal-block"&gt;
+Formatting 'test.qcow2', fmt=qcow2 size=107374182400 encryption=off cluster_size=65536 lazy_refcounts=off
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class="section" id="install-os-from-bootable-iso"&gt;
+&lt;h2&gt;Install OS from bootable ISO&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;-m&lt;/span&gt;&lt;/tt&gt; to assign memory size&lt;/li&gt;
+&lt;li&gt;&lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;-cdrom&lt;/span&gt;&lt;/tt&gt; to assign bootable ISO&lt;/li&gt;
+&lt;li&gt;&lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;-boot&lt;/span&gt; order=d&lt;/tt&gt; to change the booting priority for cdrom&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;qemu-system-x86_64 -m 2G -cdrom ArchLinux.iso -boot &lt;span class="nv"&gt;order&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;d test.qcow2
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="qemu-with-kvm"&gt;
+&lt;h2&gt;QEMU with KVM&lt;/h2&gt;
+&lt;p&gt;check your kernel has KVM support :&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;lsmod &lt;span class="p"&gt;|&lt;/span&gt; grep kvm
+&lt;/pre&gt;&lt;/div&gt;
+&lt;pre class="literal-block"&gt;
+kvm_intel             143245  0
+kvm                   421519  1 kvm_intel
+&lt;/pre&gt;
+&lt;p&gt;start QEMU in KVM mode (add &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;--enable-kvm&lt;/span&gt;&lt;/tt&gt;)&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;qemu-system-x86_64 --enable-kvm test.qcow2
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;with previous booting optinos :&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;qemu-system-x86_64 --enable-kvm -m 2G -cdrom ArchLinux.iso -boot &lt;span class="nv"&gt;order&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;d test.qcow2
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Wed, 24 Dec 2014 19:07:00 +0800</pubDate><guid>tag:,2014-12-24:posts/2014/12/qemu-first-step/</guid><category>qemu</category><category>virtualization</category><category>kvm</category></item><item><title>Vim startup time log</title><link>/posts/2014/12/vim-startup-time-log/</link><description>&lt;p&gt;原本是在找 vim 啟動時間相關的資料，找到了 &lt;a class="reference external" href="http://usevim.com/2012/04/18/startuptime/"&gt;這個網站&lt;/a&gt; ，
 發現有 &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;--startuptime&lt;/span&gt;&lt;/tt&gt; 這個參數可以用，於是就立馬來試一下，&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;vim --startuptime vim.log test.py
 &lt;/pre&gt;&lt;/div&gt;
