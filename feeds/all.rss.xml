@@ -1,5 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 24 Dec 2014 21:19:00 +0800</lastBuildDate><item><title>Linux Standard Base, Filesystem Hierarchy Standard</title><link>/posts/2014/12/linux-standard-base/</link><description>&lt;div class="section" id="linux-standard-base-lsb"&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 24 Dec 2014 23:38:00 +0800</lastBuildDate><item><title>Coverity</title><link>/posts/2014/12/coverity/</link><description>&lt;p&gt;from Coverity :&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+In 2006, the Coverity Scan service was initiated with the U.S. Department of Homeland Security as the largest public-private sector research project in the world, focused on open source software quality and security. Coverity now manages the project, providing its development testing technology as a free service to the open source community to help them build quality and security into their software development process. Register your open source project for the Coverity Scan service, and follow us on Twitter to get the latest updates.
+&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;dl class="first docutils"&gt;
+&lt;dt&gt;&lt;a class="reference external" href="https://scan.coverity.com/"&gt;Coverity Scan Static Analysis&lt;/a&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;Find and fix defects in your Java, C/C++ or C# open source project for free&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;&lt;a class="reference external" href="https://en.wikipedia.org/wiki/Coverity"&gt;Wikipedia - Coverity&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;dl class="first docutils"&gt;
+&lt;dt&gt;Projects that use this service&lt;/dt&gt;
+&lt;dd&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;Linux Kernel&lt;/li&gt;
+&lt;li&gt;CPython&lt;/li&gt;
+&lt;li&gt;Jenkins&lt;/li&gt;
+&lt;li&gt;PHP&lt;/li&gt;
+&lt;li&gt;PostgreSQL&lt;/li&gt;
+&lt;li&gt;Hadoop&lt;/li&gt;
+&lt;li&gt;...&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;example :&lt;/p&gt;
+&lt;img alt="" src="/img/coverity/cpython.png" /&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Wed, 24 Dec 2014 23:38:00 +0800</pubDate><guid>tag:,2014-12-24:posts/2014/12/coverity/</guid><category>coverity</category><category>test</category></item><item><title>Linux Standard Base, Filesystem Hierarchy Standard</title><link>/posts/2014/12/linux-standard-base/</link><description>&lt;div class="section" id="linux-standard-base-lsb"&gt;
 &lt;h2&gt;Linux Standard Base (LSB)&lt;/h2&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;&lt;a class="reference external" href="https://en.wikipedia.org/wiki/Linux_Standard_Base"&gt;Wikipedia - Linux Standard Base&lt;/a&gt;&lt;/li&gt;
