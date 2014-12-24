@@ -28,6 +28,7 @@ Total Installed Size:   184.21 MiB
 &lt;h2&gt;Create Image&lt;/h2&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;qemu-img create -f qcow2 test.qcow2 100G
 &lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;output :&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 Formatting 'test.qcow2', fmt=qcow2 size=107374182400 encryption=off cluster_size=65536 lazy_refcounts=off
 &lt;/pre&gt;
@@ -47,6 +48,7 @@ Formatting 'test.qcow2', fmt=qcow2 size=107374182400 encryption=off cluster_size
 &lt;p&gt;check your kernel has KVM support :&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;lsmod &lt;span class="p"&gt;|&lt;/span&gt; grep kvm
 &lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;output :&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 kvm_intel             143245  0
 kvm                   421519  1 kvm_intel
