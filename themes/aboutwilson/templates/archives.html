@@ -9,7 +9,9 @@
     <tbody>
     {% for article in dates %}
         <tr>
-        <td>{{ article.date.strftime("%d %b %Y") }}</td>
+        <td>{{ article.date.strftime("%Y") }}</td>
+        <td>{{ article.date.strftime("%b") }}</td>
+        <td>{{ article.date.strftime("%d") }}</td>
         <td><a href='{{ SITEURL }}/{{ article.url }}'>{{ article.title }}</a></td>
         </tr>
     {% endfor %}
