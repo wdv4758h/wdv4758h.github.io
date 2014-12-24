@@ -52,6 +52,14 @@
     margin-bottom: 1em;
 }
 
+.literal {
+    background: #8ADDDD;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
 /**
  * Overrides of notebook CSS for static HTML export
 **/
