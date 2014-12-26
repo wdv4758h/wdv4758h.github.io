@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Dv 名字很難念</title><link href="/" rel="alternate"></link><link href="/feeds/wdv4758h.atom.xml" rel="self"></link><id>/</id><updated>2014-12-27T01:33:00+08:00</updated><entry><title>Notification things</title><link href="/posts/2014/12/notify-on-linux/" rel="alternate"></link><updated>2014-12-27T01:33:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-12-26:posts/2014/12/notify-on-linux/</id><summary type="html">&lt;div class="section" id="linux"&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Dv 名字很難念</title><link href="/" rel="alternate"></link><link href="/feeds/wdv4758h.atom.xml" rel="self"></link><id>/</id><updated>2014-12-27T01:33:00+08:00</updated><entry><title>Notification things</title><link href="/posts/2014/12/notification-things/" rel="alternate"></link><updated>2014-12-27T01:33:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-12-26:posts/2014/12/notification-things/</id><summary type="html">&lt;div class="section" id="linux"&gt;
 &lt;h2&gt;Linux&lt;/h2&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;&lt;a class="reference external" href="https://wiki.archlinux.org/index.php/Desktop_notifications"&gt;Arch Wiki - Desktop Notifications&lt;/a&gt;&lt;/li&gt;

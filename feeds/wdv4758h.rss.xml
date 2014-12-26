@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/wdv4758h.rss.xml" rel="self"></atom:link><lastBuildDate>Sat, 27 Dec 2014 01:33:00 +0800</lastBuildDate><item><title>Notification things</title><link>/posts/2014/12/notify-on-linux/</link><description>&lt;div class="section" id="linux"&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/wdv4758h.rss.xml" rel="self"></atom:link><lastBuildDate>Sat, 27 Dec 2014 01:33:00 +0800</lastBuildDate><item><title>Notification things</title><link>/posts/2014/12/notification-things/</link><description>&lt;div class="section" id="linux"&gt;
 &lt;h2&gt;Linux&lt;/h2&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;&lt;a class="reference external" href="https://wiki.archlinux.org/index.php/Desktop_notifications"&gt;Arch Wiki - Desktop Notifications&lt;/a&gt;&lt;/li&gt;
@@ -91,7 +91,7 @@ Their notification servers are started automatically on login to receive notific
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Sat, 27 Dec 2014 01:33:00 +0800</pubDate><guid>tag:,2014-12-26:posts/2014/12/notify-on-linux/</guid><category>linux</category><category>notification</category></item><item><title>Coverity</title><link>/posts/2014/12/coverity/</link><description>&lt;p&gt;from Coverity :&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Sat, 27 Dec 2014 01:33:00 +0800</pubDate><guid>tag:,2014-12-26:posts/2014/12/notification-things/</guid><category>linux</category><category>notification</category></item><item><title>Coverity</title><link>/posts/2014/12/coverity/</link><description>&lt;p&gt;from Coverity :&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 In 2006, the Coverity Scan service was initiated with the U.S. Department of Homeland Security as the largest public-private sector research project in the world, focused on open source software quality and security. Coverity now manages the project, providing its development testing technology as a free service to the open source community to help them build quality and security into their software development process. Register your open source project for the Coverity Scan service, and follow us on Twitter to get the latest updates.
 &lt;/pre&gt;
