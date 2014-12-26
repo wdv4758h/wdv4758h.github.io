@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Python - @wraps — Dv 名字很難念</title>
-	<meta name="description" content="Title: Python - @wraps; Date: 2014-02-06; Author: wdv4758h">
+	<title>notify on Linux — Dv 名字很難念</title>
+	<meta name="description" content="Title: notify on Linux; Date: 2014-12-26; Author: wdv4758h">
 	<meta name="author" content="wdv4758h">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -27,82 +27,79 @@
 		<div class="col-md-8 col-md-offset-2">
 <div class="article" itemscope itemtype="http://schema.org/BlogPosting">
 	<div class="text-center article-header">
-		<h1 itemprop="name headline" class="article-title">Python - @wraps</h1>
+		<h1 itemprop="name headline" class="article-title">notify on Linux</h1>
 		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
 			<h4 itemprop="name">wdv4758h</h4>
 		</span>
-        <span itemprop="publish">publish: <time datetime="2014-02-06T11:30:00" itemprop="datePublished">Thu 06 February 2014</time></span>
+        <span itemprop="publish">publish: <time datetime="2014-12-26T18:56:00" itemprop="datePublished">Fri 26 December 2014</time></span>
+        <br>
+        <span itemprop="update">update: <time datetime="2014-12-26 18:56:00" itemprop="datePublished">Fri 26 December 2014</time></span>
 	</div>
 	<div>
 		Category:
 		<span itemprop="articleSection">
-			<a href="/category/python.html" rel="category">Python</a>
+			<a href="/category/misc.html" rel="category">Misc</a>
 		</span>
 	</div>
 	<div>
 		Tags:
 		<span itemprop="keywords">
-			<a href="/tag/python.html" rel="tag">Python</a>
+			<a href="/tag/linux.html" rel="tag">linux</a>
 		</span>
 	</div>
-	<div itemprop="articleBody" class="article-body"><p>在這邊先假設看這篇文章的都知道 decorator</p>
-<p>在使用 decorator 時，若沒有經過處理，可能會造成 function 的 property 改變，例如:</p>
-<div class="highlight"><pre><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;this is in test function&quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">haha</span><span class="p">():</span>
-        <span class="sd">&quot;&quot;&quot;this is in haha function&quot;&quot;&quot;</span>
-
-        <span class="k">print</span><span class="p">(</span><span class="s">&quot;haha&quot;</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">haha</span>
-
-<span class="nd">@test</span>
-<span class="k">def</span> <span class="nf">func1</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;this is in func1&quot;&quot;&quot;</span>
-
-    <span class="k">print</span><span class="p">(</span><span class="s">&quot;func1&quot;</span><span class="p">)</span>
-
-<span class="k">print</span><span class="p">(</span><span class="n">func1</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="s">&#39;,&#39;</span><span class="p">,</span>  <span class="n">func1</span><span class="o">.</span><span class="n">__doc__</span><span class="p">)</span>
-
-<span class="c"># OUTPUT :</span>
-<span class="c">#   haha , this is in haha function</span>
-</pre></div>
-<p>可以看到 func1 的 <cite>__name__</cite> 和 <cite>__doc__</cite> 都改變了，這通常不是我們想要的，還有可能在 debug 的時候造成麻煩</p>
-<p>因此 Python 有了 wraps 這個 decorator 去處理這個問題 (在 functools 裡)</p>
-<div class="highlight"><pre><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
-
-<span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;this is in test function&quot;&quot;&quot;</span>
-
-    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">haha</span><span class="p">():</span>
-        <span class="sd">&quot;&quot;&quot;this is in haha function&quot;&quot;&quot;</span>
-
-        <span class="k">print</span><span class="p">(</span><span class="s">&quot;haha&quot;</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">haha</span>
-
-<span class="nd">@test</span>
-<span class="k">def</span> <span class="nf">func1</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;this is in func1&quot;&quot;&quot;</span>
-
-    <span class="k">print</span><span class="p">(</span><span class="s">&quot;func1&quot;</span><span class="p">)</span>
-
-<span class="k">print</span><span class="p">(</span><span class="n">func1</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="s">&#39;,&#39;</span><span class="p">,</span> <span class="n">func1</span><span class="o">.</span><span class="n">__doc__</span><span class="p">)</span>
-
-<span class="c"># OUTPUT :</span>
-<span class="c">#   func1 , this is in func1</span>
-</pre></div>
-<p>可以看到，加上了 &#64;wraps 後維持了 function 本來的 property ~</p>
+	<div itemprop="articleBody" class="article-body"><ul class="simple">
+<li><a class="reference external" href="https://wiki.archlinux.org/index.php/Desktop_notifications">Arch Wiki - Desktop Notifications</a></li>
+</ul>
+<div class="section" id="libnotify">
+<h2>Libnotify</h2>
+<ul class="simple">
+<li><a class="reference external" href="https://www.archlinux.org/packages/extra/x86_64/libnotify/">Arch Package - libnotify</a></li>
+<li>desktop independent</li>
+<li>need a notification server</li>
+</ul>
+<div class="section" id="dependencies">
+<h3>Dependencies</h3>
+<div class="section" id="gdk-pixbuf2">
+<h4>gdk-pixbuf2</h4>
+<ul>
+<li><dl class="first docutils">
+<dt><a class="reference external" href="http://en.wikipedia.org/wiki/GDK">Wikipedia - GDK</a></dt>
+<dd><ul class="first last simple">
+<li>GIMP Drawing Kit</li>
+<li>GDK was originally developed on the X Window System for the GIMP</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>GdkPixbuf is a toolkit for image loading and pixel buffer manipulation.</p>
+<p>In GTK+ version 2.22 from 2010-09-23 GdkPixbuf was split off from GDK into a separate package in preparation for the transition to GTK+ 3.</p>
+</div>
+</div>
+</div>
+<div class="section" id="notification-servers">
+<h2>Notification servers</h2>
+<div class="section" id="bult-in">
+<h3>Bult-in</h3>
+<ul class="simple">
+<li>Cinnamon</li>
+<li>Enlightenment</li>
+<li>GNOME</li>
+<li>KDE</li>
+</ul>
+</div>
+<div class="section" id="standalone">
+<h3>Standalone</h3>
+</div>
+</div>
 </div>
 	<hr>
 	<h2>Comments</h2>
 <div id="disqus_thread"></div>
 <script type="text/javascript">
     var disqus_shortname = 'wdv4758h-blog';
-    var disqus_title = 'Python - @wraps';
-	var disqus_identifier = 'posts/2014/02/python-wraps/';
+    var disqus_title = 'notify on Linux';
+	var disqus_identifier = 'posts/2014/12/notify-on-linux/';
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
