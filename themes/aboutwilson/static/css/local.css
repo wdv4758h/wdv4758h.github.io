@@ -152,3 +152,12 @@ div.article-body h4 {
     margin-bottom: 10px;
     width: 70%;
 }
+
+div.article-body h5 {
+    border-bottom-style: solid;
+    border-bottom-color: #B48A6B;
+    border-bottom-right-radius: 70%;
+    padding-bottom: 4px;
+    margin-bottom: 10px;
+    width: 60%;
+}
