@@ -1,5 +1,5 @@
 :title: Notification things
-:slug: notify-on-linux
+:slug: notification-things
 :date: 2014-12-26 18:56
 :modified: 2014-12-27 01:33
 :category: Misc
