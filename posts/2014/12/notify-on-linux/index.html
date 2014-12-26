@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>notify on Linux — Dv 名字很難念</title>
-	<meta name="description" content="Title: notify on Linux; Date: 2014-12-26; Author: wdv4758h">
+	<title>Notification things — Dv 名字很難念</title>
+	<meta name="description" content="Title: Notification things; Date: 2014-12-26; Author: wdv4758h">
 	<meta name="author" content="wdv4758h">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -27,13 +27,13 @@
 		<div class="col-md-8 col-md-offset-2">
 <div class="article" itemscope itemtype="http://schema.org/BlogPosting">
 	<div class="text-center article-header">
-		<h1 itemprop="name headline" class="article-title">notify on Linux</h1>
+		<h1 itemprop="name headline" class="article-title">Notification things</h1>
 		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
 			<h4 itemprop="name">wdv4758h</h4>
 		</span>
         <span itemprop="publish">publish: <time datetime="2014-12-26T18:56:00" itemprop="datePublished">Fri 26 December 2014</time></span>
         <br>
-        <span itemprop="update">update: <time datetime="2014-12-26 18:56:00" itemprop="datePublished">Fri 26 December 2014</time></span>
+        <span itemprop="update">update: <time datetime="2014-12-27 01:33:00" itemprop="datePublished">Sat 27 December 2014</time></span>
 	</div>
 	<div>
 		Category:
@@ -46,21 +46,26 @@
 		<span itemprop="keywords">
 			<a href="/tag/linux.html" rel="tag">linux</a>
 		</span>
+		<span itemprop="keywords">
+			<a href="/tag/notification.html" rel="tag">notification</a>
+		</span>
 	</div>
-	<div itemprop="articleBody" class="article-body"><ul class="simple">
+	<div itemprop="articleBody" class="article-body"><div class="section" id="linux">
+<h2>Linux</h2>
+<ul class="simple">
 <li><a class="reference external" href="https://wiki.archlinux.org/index.php/Desktop_notifications">Arch Wiki - Desktop Notifications</a></li>
 </ul>
 <div class="section" id="libnotify">
-<h2>Libnotify</h2>
+<h3>Libnotify</h3>
 <ul class="simple">
 <li><a class="reference external" href="https://www.archlinux.org/packages/extra/x86_64/libnotify/">Arch Package - libnotify</a></li>
 <li>desktop independent</li>
-<li>need a notification server</li>
+<li><strong>need a notification server</strong></li>
 </ul>
 <div class="section" id="dependencies">
-<h3>Dependencies</h3>
+<h4>Dependencies</h4>
 <div class="section" id="gdk-pixbuf2">
-<h4>gdk-pixbuf2</h4>
+<h5>gdk-pixbuf2</h5>
 <ul>
 <li><dl class="first docutils">
 <dt><a class="reference external" href="http://en.wikipedia.org/wiki/GDK">Wikipedia - GDK</a></dt>
@@ -78,9 +83,11 @@
 </div>
 </div>
 <div class="section" id="notification-servers">
-<h2>Notification servers</h2>
+<h3>Notification servers</h3>
 <div class="section" id="bult-in">
-<h3>Bult-in</h3>
+<h4>Bult-in</h4>
+<p>The following desktop environments use their own implementations to display notifications, and you cannot replace them.
+Their notification servers are started automatically on login to receive notifications from applications via <tt class="docutils literal">DBus</tt>.</p>
 <ul class="simple">
 <li>Cinnamon</li>
 <li>Enlightenment</li>
@@ -89,7 +96,50 @@
 </ul>
 </div>
 <div class="section" id="standalone">
-<h3>Standalone</h3>
+<h4>Standalone</h4>
+</div>
+</div>
+</div>
+<div class="section" id="mac-os-x">
+<h2>Mac OS X</h2>
+<div class="section" id="growl">
+<h3>Growl</h3>
+<ul class="simple">
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/Growl_%28software%29">Wikipedia - Growl</a></li>
+<li><a class="reference external" href="http://growl.info/">Growl - Website</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="browser">
+<h2>Browser</h2>
+<div class="section" id="firefox">
+<h3>Firefox</h3>
+<ul class="simple">
+<li><a class="reference external" href="https://developer.mozilla.org/en/docs/Web/API/notification">MDN - Notification - Web API Interfaces</a></li>
+</ul>
+</div>
+<div class="section" id="chromium">
+<h3>Chromium</h3>
+<ul>
+<li><dl class="first docutils">
+<dt><a class="reference external" href="http://www.chromium.org/developers/linux-technical-faq">Chromium - Linux Technical FAQ</a></dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Why don't Chromium notifications use the D-BUS-based notifications system (aka libnotify / notification-daemon)?</dt>
+<dd><ul class="first last simple">
+<li>HTML5 notifications can contain arbitrary HTML, which is not supported by the notification protocol. (This is the same reason we don't use Growl on OS X.)</li>
+<li>Chromium's notifications include a button that brings up an options menu, which is also not supported by the notification protocol.</li>
+<li>The glitzy Ubuntu notifications daemon, by design, does not allow the user to interact with notifications at all, which doesn't work when the notification HTML includes clickable links.</li>
+<li>It would be nice to extend the protocol to allow Chromium to integrate.</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -98,7 +148,7 @@
 <div id="disqus_thread"></div>
 <script type="text/javascript">
     var disqus_shortname = 'wdv4758h-blog';
-    var disqus_title = 'notify on Linux';
+    var disqus_title = 'Notification things';
 	var disqus_identifier = 'posts/2014/12/notify-on-linux/';
 
     (function() {
