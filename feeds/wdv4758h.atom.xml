@@ -1,5 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Dv 名字很難念</title><link href="/" rel="alternate"></link><link href="/feeds/wdv4758h.atom.xml" rel="self"></link><id>/</id><updated>2014-12-27T01:33:00+08:00</updated><entry><title>Notification things</title><link href="/posts/2014/12/notification-things/" rel="alternate"></link><updated>2014-12-27T01:33:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-12-26:posts/2014/12/notification-things/</id><summary type="html">&lt;div class="section" id="linux"&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Dv 名字很難念</title><link href="/" rel="alternate"></link><link href="/feeds/wdv4758h.atom.xml" rel="self"></link><id>/</id><updated>2014-12-27T01:45:00+08:00</updated><entry><title>D-Bus</title><link href="/posts/2014/12/d-bus/" rel="alternate"></link><updated>2014-12-27T01:45:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-12-27:posts/2014/12/d-bus/</id><summary type="html">&lt;p&gt;Note: &lt;strong&gt;本篇仍在未完成狀態&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;a message bus system for inter-process communication (IPC)&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://wiki.archlinux.org/index.php/D-Bus"&gt;D-Bus&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/D-Bus"&gt;Wikipedia - D-Bus&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.freedesktop.org/wiki/IntroductionToDBus/"&gt;Freedesktop - Introduction to D-Bus&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.linuxfromscratch.org/blfs/view/svn/general/dbus.html"&gt;Linux From Scratch - D-Bus&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;D-Bus is enabled automatically when using systemd because dbus is a dependency of systemd.&lt;/p&gt;
+&lt;div class="section" id="d-bus-architecture"&gt;
+&lt;h2&gt;D-Bus - Architecture&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;libdbus&lt;/li&gt;
+&lt;li&gt;dbus-daemon&lt;/li&gt;
+&lt;li&gt;wrapper libraries based on particular application frameworks&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Interesting :&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+In 2013 the systemd project rewrote libdbus in an effort to simplify the code, but it turned out to significantly increase the performance of D-Bus as well.
+In preliminary benchmarks, BMW found that the systemd D-Bus library increased performance by 360%.
+&lt;/pre&gt;
+&lt;img alt="" src="/img/linux/dbus-architectural.png" /&gt;
+&lt;/div&gt;
+&lt;div class="section" id="kdbus"&gt;
+&lt;h2&gt;kdbus&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://lwn.net/Articles/551969/"&gt;ALS: Linux interprocess communication and kdbus&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://lwn.net/Articles/580194/"&gt;The unveiling of kdbus&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</summary><category term="linux"></category><category term="d-bus"></category></entry><entry><title>Notification things</title><link href="/posts/2014/12/notification-things/" rel="alternate"></link><updated>2014-12-27T01:33:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-12-26:posts/2014/12/notification-things/</id><summary type="html">&lt;div class="section" id="linux"&gt;
 &lt;h2&gt;Linux&lt;/h2&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;&lt;a class="reference external" href="https://wiki.archlinux.org/index.php/Desktop_notifications"&gt;Arch Wiki - Desktop Notifications&lt;/a&gt;&lt;/li&gt;
