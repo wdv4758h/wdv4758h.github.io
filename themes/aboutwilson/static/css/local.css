@@ -44,6 +44,10 @@
     line-height: 30px;
 }
 
+.article li p {
+    margin-top: 0px;
+}
+
 .article-title {
     margin-bottom: 1em;
 }
@@ -161,4 +165,8 @@ div.article-body h5 {
     margin-top: 20px;
     margin-bottom: 10px;
     width: 60%;
+}
+
+.docutils dt {
+    font-weight: normal;
 }
