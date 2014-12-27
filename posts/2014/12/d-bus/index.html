@@ -20,8 +20,11 @@
 <body>
 <div class="container">
 	<div class="page-header">
-		<h1><a href="/">Dv 名字很難念</a>
-			<br><small>Aquí hay gato encerrado. </small></h1>
+		<h1>
+            <a href="/">Dv 名字很難念</a>
+			<br>
+            <small>Aquí hay gato encerrado. </small>
+        </h1>
 	</div>
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
@@ -49,18 +52,91 @@
 		<span itemprop="keywords">
 			<a href="/tag/d-bus.html" rel="tag">d-bus</a>
 		</span>
+		<span itemprop="keywords">
+			<a href="/tag/ipc.html" rel="tag">ipc</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="/tag/kdbus.html" rel="tag">kdbus</a>
+		</span>
 	</div>
-	<div itemprop="articleBody" class="article-body"><p>Note: <strong>本篇仍在未完成狀態</strong></p>
-<p>a message bus system for inter-process communication (IPC)</p>
+	<div itemprop="articleBody" class="article-body"><div class="section" id="basic-linux-ipc">
+<h2>Basic Linux IPC</h2>
+<ul>
+<li><p class="first"><a class="reference external" href="https://en.wikipedia.org/wiki/Inter-process_communication">Wikipedia - Inter-process communication</a></p>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference external" href="https://www.youtube.com/watch?v=8hxb0kwnzGI">[Linux.conf.au 2013] - An Introduction to Linux IPC Facilities</a></dt>
+<dd><ul class="first last simple">
+<li><a class="reference external" href="http://man7.org/conf/lca2013/IPC_Overview-LCA-2013-printable.pdf">[Linux.conf.au 2013] - An Introduction to Linux IPC Facilities - slide</a></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">sockets</p>
+</li>
+<li><p class="first">FIFOs</p>
+</li>
+<li><p class="first">shared memory</p>
+</li>
+</ul>
+<img alt="linux-ipc-communication" src="/img/linux/linux-ipc-communication.png" />
+<img alt="linux-ipc-synchronization" src="/img/linux/linux-ipc-synchronization.png" />
+</div>
+<div class="section" id="d-bus">
+<h2>D-Bus</h2>
+<p>D-Bus is a message bus system for inter-process communication (<tt class="docutils literal">IPC</tt>)</p>
 <ul class="simple">
 <li><a class="reference external" href="https://wiki.archlinux.org/index.php/D-Bus">D-Bus</a></li>
 <li><a class="reference external" href="http://en.wikipedia.org/wiki/D-Bus">Wikipedia - D-Bus</a></li>
 <li><a class="reference external" href="http://www.freedesktop.org/wiki/IntroductionToDBus/">Freedesktop - Introduction to D-Bus</a></li>
 <li><a class="reference external" href="http://www.linuxfromscratch.org/blfs/view/svn/general/dbus.html">Linux From Scratch - D-Bus</a></li>
+<li><a class="reference external" href="http://dbus.freedesktop.org/doc/dbus-specification.html">D-Bus Specification</a></li>
 </ul>
 <p>D-Bus is enabled automatically when using systemd because dbus is a dependency of systemd.</p>
+<div class="section" id="what-s-d-bus">
+<h3>What's D-Bus</h3>
+<ul>
+<li><p class="first">a powerful IPC system</p>
+</li>
+<li><p class="first">the closest thing to a standard in this area as can be found on Linux</p>
+</li>
+<li><p class="first">provides a nice method-call transaction mechanism</p>
+</li>
+<li><dl class="first docutils">
+<dt>has fundamental inefficiencies of the user-space implementation</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>well suited to control tasks</dt>
+<dd><ul class="first last simple">
+<li>works well to tell a sound server to change the volume</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>less so for anything that has to carry significant amounts of data</dt>
+<dd><ul class="first last simple">
+<li>one would not want to try to send the actual audio data over the bus</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">In D-Bus a call-return message requires <tt class="docutils literal">10 message copies</tt>, <tt class="docutils literal">4 message validations</tt>, <tt class="docutils literal">4 context switches</tt></p>
+</li>
+<li><p class="first">D-Bus has <tt class="docutils literal">no timestamps on messages</tt></p>
+</li>
+<li><p class="first">not available at early boot</p>
+</li>
+<li><p class="first"><strong>We need a better implementation</strong> -&gt; <tt class="docutils literal">kdbus</tt></p>
+</li>
+</ul>
+</div>
 <div class="section" id="d-bus-architecture">
-<h2>D-Bus - Architecture</h2>
+<h3>D-Bus - Architecture</h3>
 <ul class="simple">
 <li>libdbus</li>
 <li>dbus-daemon</li>
@@ -71,13 +147,101 @@
 In 2013 the systemd project rewrote libdbus in an effort to simplify the code, but it turned out to significantly increase the performance of D-Bus as well.
 In preliminary benchmarks, BMW found that the systemd D-Bus library increased performance by 360%.
 </pre>
-<img alt="" src="/img/linux/dbus-architectural.png" />
+<img alt="linux desktop architecture" src="/img/linux/dbus-architectural.png" />
+</div>
 </div>
 <div class="section" id="kdbus">
 <h2>kdbus</h2>
-<ul class="simple">
-<li><a class="reference external" href="https://lwn.net/Articles/551969/">ALS: Linux interprocess communication and kdbus</a></li>
-<li><a class="reference external" href="http://lwn.net/Articles/580194/">The unveiling of kdbus</a></li>
+<ul>
+<li><dl class="first docutils">
+<dt><a class="reference external" href="https://www.youtube.com/watch?v=NgR6d54blrU">D-Bus in the kernel [linux.conf.au 2014]</a></dt>
+<dd><ul class="first last simple">
+<li><a class="reference external" href="http://events.linuxfoundation.org/sites/events/files/slides/linuxconjapan2014.pdf">D-Bus in the Kernel - slide</a></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first"><a class="reference external" href="https://lwn.net/Articles/551969/">ALS: Linux interprocess communication and kdbus (May 30, 2013)</a></p>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference external" href="http://lwn.net/Articles/580194/">The unveiling of kdbus (Jan 13, 2014)</a></dt>
+<dd><ul class="first last">
+<li><p class="first">Linux Kernel only have primitives IPC : sockets, FIFOs, and shared memory</p>
+</li>
+<li><dl class="first docutils">
+<dt>kdbus is a <strong>in-kernel implementation of D-Bus</strong></dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>can carry large amounts of data</dt>
+<dd><ul class="first last simple">
+<li>even used for gigabyte-sized message streams</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">have zero-copy message passing</p>
+</li>
+<li><p class="first">worst case : <tt class="docutils literal">2 copy operations</tt>, <tt class="docutils literal">2 validations</tt>, <tt class="docutils literal">2 context switches</tt></p>
+</li>
+<li><p class="first">all messages carry timestamps</p>
+</li>
+<li><p class="first">full credential information (user ID, process ID, SELinux label, control group information, capabilities, and much more) is passed with each message</p>
+</li>
+<li><p class="first">always available to the system (no need to wait for the D-Bus daemon to be started)</p>
+</li>
+<li><p class="first">Linux security modules can hook into it directly</p>
+</li>
+<li><p class="first">various race conditions have been fixed</p>
+</li>
+<li><p class="first">API has simplified</p>
+</li>
+<li><p class="first">Kdbus is implemented as a <tt class="docutils literal">character device</tt> in the kernel</p>
+</li>
+<li><p class="first">signal broadcasting mechanism has been rewritten to use Bloom filters to select recipients</p>
+</li>
+<li><p class="first">There is a user-space proxy server that can be used by older code that has not been rewritten to use the new API, so everything should just work on a kdbus-enabled system with no code changes required.</p>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>the new <tt class="docutils literal">memfd</tt> syscall was merged into Linux kernel 3.17</dt>
+<dd><ul class="first last simple">
+<li><tt class="docutils literal">memfd</tt> is a mechanism similar to Android's <tt class="docutils literal">ashmem</tt> that allows <tt class="docutils literal"><span class="pre">zero-copy</span></tt> message passing in KDBUS.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">Android &quot;ashmem&quot; subsystem</p>
+</li>
+<li><p class="first">Android Binder</p>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first"><a class="reference external" href="http://lwn.net/Articles/619068/">Kdbus meets linux-kernel (Nov 4, 2014)</a></p>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference external" href="http://gentooexperimental.org/~patrick/weblog/archives/2014-11.html#e2014-11-23T09_26_01.txt">D-Bus, FreeDesktop, and lots of madness</a></dt>
+<dd><ul class="first last simple">
+<li><a class="reference external" href="https://news.ycombinator.com/item?id=8648437">Hacker News - D-Bus, FreeDesktop, and lots of madness</a></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference external" href="http://www.kroah.com/log/blog/2014/01/15/kdbus-details/">Kdbus Details - Greg Kroah-Hartman</a></dt>
+<dd><ul class="first last simple">
+<li>Binder vs. kdbus</li>
+<li>Binder is bound to the CPU, D-Bus (and hence kdbus), is bound to RAM</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first"><a class="reference external" href="https://code.google.com/p/d-bus/source/browse/kdbus.txt">kdbus.txt</a></p>
+</li>
 </ul>
 </div>
 </div>
@@ -156,7 +320,7 @@ In preliminary benchmarks, BMW found that the systemd D-Bus library increased pe
 	<div class="row">
 		<div class="col-md-12 text-center center-block aw-bottom">
 			<p>&copy; wdv4758h 2014</p>
-			<p>Powered by Pelican</p>
+            <small>Arch Linux + Vim + reStructuredText + Pelican = Blog</small>
 		</div>
 	</div>
 </div>
