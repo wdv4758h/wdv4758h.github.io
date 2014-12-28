@@ -54,7 +54,7 @@ MENUITEMS = [('archive', 'archives'), ('tags', 'tags')]
 # Plugin
 
 PLUGIN_PATHS = ['plugins',]
-PLUGINS=['sitemap',]
+PLUGINS=['sitemap', 'tipue_search']
 
 SITEMAP = {
     'format': 'xml',
@@ -69,3 +69,8 @@ SITEMAP = {
         'pages': 'monthly'
     }
 }
+
+# This setting tells Pelican which templates are to be used directly to render your content.
+# If you don't add it, it will not render the search.html page.
+
+DIRECT_TEMPLATES = (('index', 'tags', 'categories', 'authors', 'archives', 'search'))
