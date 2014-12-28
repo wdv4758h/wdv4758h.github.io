@@ -16,6 +16,7 @@
 	<link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/simplex/bootstrap.min.css" rel="stylesheet">
 	<link href="/theme/css/local.css" rel="stylesheet">
 	<link href="/theme/css/pygments.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/tipuesearch/tipuesearch.css">
 </head>
 <body>
 <div class="container">
@@ -24,6 +25,9 @@
             <a href="/">Dv 名字很難念</a>
 			<br>
             <small>Aquí hay gato encerrado. </small>
+            <form id="searchform" action="/search.html" onsubmit="return (this.elements['q'].value.length > 0)">
+                    <input id="searchbox" type="text" name="q" size="12" placeholder="Search">
+            </form>
         </h1>
 	</div>
 	<div class="row">
@@ -332,6 +336,10 @@
 </div>
 <!-- JavaScript -->
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<!-- search -->
+<script type="text/javascript" src="/theme/tipuesearch/tipuesearch_set.js"></script>
+<script type="text/javascript" src="/theme/tipuesearch/tipuesearch.min.js"></script>
+<!------------>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 jQuery(document).ready(function($) {

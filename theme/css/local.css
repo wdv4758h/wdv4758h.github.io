@@ -170,3 +170,23 @@ div.article-body h5 {
 .docutils dt {
     font-weight: normal;
 }
+
+/* Search */
+
+#searchform { float: right; margin-top: 10px; }
+
+#searchbox {
+    background-color: #F5F4EF;
+    border: 1px solid #F5F4EF;
+    border-radius: 4px 4px 4px 4px;
+    -moz-border-radius: 4px 4px 4px 4px;
+    -webkit-border-radius: 4px 4px 4px 4px;
+    height: 30px;
+    padding: 4px;
+    margin: 0px 15px;
+    vertical-align: top;
+}
+
+#tipue_search_input {
+    height: 50px;
+}
