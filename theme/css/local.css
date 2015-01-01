@@ -190,3 +190,19 @@ div.article-body h5 {
 #tipue_search_input {
     height: 50px;
 }
+
+/* about */
+
+.top-line-label {
+    position: relative;
+    top: 40px;
+    padding: 10px;
+    background: #EAE0B2;
+    font-weight: bold;
+    color: #716A6A;
+
+}
+
+.row {
+    padding-top: 10px;
+}
