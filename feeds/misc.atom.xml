@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Dv 名字很難念</title><link href="/" rel="alternate"></link><link href="/feeds/misc.atom.xml" rel="self"></link><id>/</id><updated>2015-01-01T16:17:00+08:00</updated><entry><title>[文章閱讀] 9 個 GIF 動畫，看懂 Web 演化史</title><link href="/posts/2015/01/web-history-9-gifs/" rel="alternate"></link><updated>2015-01-01T16:17:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2015-01-01:posts/2015/01/web-history-9-gifs/</id><summary type="html">&lt;ul class="simple"&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Dv 名字很難念</title><link href="/" rel="alternate"></link><link href="/feeds/misc.atom.xml" rel="self"></link><id>/</id><updated>2015-01-01T21:32:00+08:00</updated><entry><title>Vim Plugin - rogue</title><link href="/posts/2015/01/vim-plugin-rogue/" rel="alternate"></link><updated>2015-01-01T21:32:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2015-01-01:posts/2015/01/vim-plugin-rogue/</id><summary type="html">&lt;p&gt;剛好看到一個 Vim 的 Plugin 叫作 &lt;tt class="docutils literal"&gt;rogue&lt;/tt&gt;
+(GitHub repo 在這裡 &lt;a class="reference external" href="https://github.com/katono/rogue.vim"&gt;katono/rogue.vim&lt;/a&gt; )&lt;/p&gt;
+&lt;p&gt;如果看到 &lt;strong&gt;rogue&lt;/strong&gt; 這個詞會有反應的，
+極有可能知道 &lt;a class="reference external" href="http://en.wikipedia.org/wiki/Roguelike"&gt;roguelike&lt;/a&gt; 這個遊戲種類，
+沒錯這個 Plugin 指的就是這種類的起源 &lt;a class="reference external" href="http://en.wikipedia.org/wiki/Rogue_%28video_game%29"&gt;Rogue&lt;/a&gt; 這款遊戲，
+這遊戲以及其衍生出的 &lt;strong&gt;roguelike&lt;/strong&gt; 的遊戲一直以來都包含著好玩的遊戲的重要要素 ~，
+如果對於 roguelike 不熟悉也沒關係，
+可以先看看這篇豐富的介紹文 &lt;a class="reference external" href="http://pre-sence.com/archives/roguelike-dossier"&gt;Roguelike 到底是啥&lt;/a&gt;
+(其中的發展還涉及了當時的 Unix 以及 BSD 還有 curses 這個 library)，
+roguelike 遊戲的元素到現在都還是處處可見，
+早期知名的像是 &lt;a class="reference external" href="http://en.wikipedia.org/wiki/NetHack"&gt;NetHack&lt;/a&gt;
+(介紹文 : Jedi - &lt;a class="reference external" href="http://jedi.org/blog/archives/003676.html"&gt;如果你一生只打算做一件事的話，玩 NetHack&lt;/a&gt; )，
+最近很紅的像是 &lt;a class="reference external" href="http://en.wikipedia.org/wiki/The_Binding_of_Isaac_%28video_game%29"&gt;The Binding Of Issac&lt;/a&gt; ，
+而這 Vim Plugin 的作者則是把 rogue 這款遊戲 (Clone 版本) porting 到 Vim 上了 ...&lt;/p&gt;
+&lt;p&gt;用 Vundle 把 Plugin 裝完後只要在 Vim 裡下 &lt;tt class="docutils literal"&gt;:Rogue&lt;/tt&gt; 就可以開始遊戲 ...&lt;/p&gt;
+&lt;p&gt;雖然這對我使用 Vim 來編輯一點幫助也沒有 XD，
+但是看到有人對這遊戲如此熱愛就讓我想紀錄一下 ~&lt;/p&gt;
+</summary><category term="vim"></category></entry><entry><title>[文章閱讀] 9 個 GIF 動畫，看懂 Web 演化史</title><link href="/posts/2015/01/web-history-9-gifs/" rel="alternate"></link><updated>2015-01-01T16:17:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2015-01-01:posts/2015/01/web-history-9-gifs/</id><summary type="html">&lt;ul class="simple"&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://adon988.logdown.com/posts/246175-9-animation-read-the-web-history"&gt;9 個 GIF 動畫，看懂 Web 演化史&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="www.fastcodesign.com/3039402/the-history-of-web-design-explained-in-9-gifs"&gt;原文 : The History Of Web Design Explained In 9 GIFs&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://blog.froont.com/brief-history-of-web-design-for-designers/"&gt;GIFs 來源 : A brief history of web design for designers&lt;/a&gt;&lt;/li&gt;
