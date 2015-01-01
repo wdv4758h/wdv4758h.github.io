@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Dv 名字很難念</title><link href="/" rel="alternate"></link><link href="/feeds/misc.atom.xml" rel="self"></link><id>/</id><updated>2014-12-27T01:45:00+08:00</updated><entry><title>D-Bus</title><link href="/posts/2014/12/d-bus/" rel="alternate"></link><updated>2014-12-27T01:45:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-12-27:posts/2014/12/d-bus/</id><summary type="html">&lt;div class="section" id="basic-linux-ipc"&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Dv 名字很難念</title><link href="/" rel="alternate"></link><link href="/feeds/misc.atom.xml" rel="self"></link><id>/</id><updated>2015-01-01T16:17:00+08:00</updated><entry><title>[文章閱讀] 9 個 GIF 動畫，看懂 Web 演化史</title><link href="/posts/2015/01/web-history-9-gifs/" rel="alternate"></link><updated>2015-01-01T16:17:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2015-01-01:posts/2015/01/web-history-9-gifs/</id><summary type="html">&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://adon988.logdown.com/posts/246175-9-animation-read-the-web-history"&gt;9 個 GIF 動畫，看懂 Web 演化史&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="www.fastcodesign.com/3039402/the-history-of-web-design-explained-in-9-gifs"&gt;原文 : The History Of Web Design Explained In 9 GIFs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://blog.froont.com/brief-history-of-web-design-for-designers/"&gt;GIFs 來源 : A brief history of web design for designers&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</summary><category term="web"></category><category term="gif"></category></entry><entry><title>D-Bus</title><link href="/posts/2014/12/d-bus/" rel="alternate"></link><updated>2014-12-27T01:45:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2014-12-27:posts/2014/12/d-bus/</id><summary type="html">&lt;div class="section" id="basic-linux-ipc"&gt;
 &lt;h2&gt;Basic Linux IPC&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p class="first"&gt;&lt;a class="reference external" href="https://en.wikipedia.org/wiki/Inter-process_communication"&gt;Wikipedia - Inter-process communication&lt;/a&gt;&lt;/p&gt;
