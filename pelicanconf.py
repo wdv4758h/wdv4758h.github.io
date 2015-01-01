@@ -73,4 +73,4 @@ SITEMAP = {
 # This setting tells Pelican which templates are to be used directly to render your content.
 # If you don't add it, it will not render the search.html page.
 
-DIRECT_TEMPLATES = (('index', 'tags', 'categories', 'authors', 'archives', 'search'))
+DIRECT_TEMPLATES = (('index', 'tags', 'categories', 'authors', 'archives', 'search', 'about'))
