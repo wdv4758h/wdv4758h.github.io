@@ -293,7 +293,8 @@ Erikson's theory
 
 stage 1 ~ 8
 
-Parenting style
+Parenting Styles
 ------------------------------
 
 .. image:: /img/psycho/parenting-styles.png
+    :alt: Parenting Styles
