@@ -1,4 +1,4 @@
-:title: [WIP][Psycho] Psychology Intro.
+:title: [Psycho] Psychology Intro.
 :slug: psycho-intro
 :date: 2014-11-10 01:00
 :modified: 2014-11-10 01:44
@@ -6,6 +6,8 @@
 :tags: psycho
 :author: wdv4758h
 :summary: note for Psychology Intro.
+
+修心理學通識的隨便紀錄 (?
 
 Ch1 - Psychology and Life
 ========================================
