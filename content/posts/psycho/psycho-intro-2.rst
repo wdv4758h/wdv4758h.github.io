@@ -13,6 +13,7 @@
 
 * `學習與記憶 <http://www.ncu.edu.tw/~jimmyjue/lge/program2/p205/2a.pdf>`_
 * `青少年發展 <http://www.ncu.edu.tw/~jimmyjue/lge/program2/p205/2b.pdf>`_
+* `人格心理學 <http://www.ncu.edu.tw/~jimmyjue/lge/program2/p205/3b.pdf>`_
 
 學習
 ========================================
@@ -143,10 +144,15 @@ Video
 
 7 +- 2 working memory chunks
 
+.. image:: /img/psycho/infoprocess.jpg
+    :alt: Memory
+
 events => Sensory Memory => Working Memory (include Short-term Memory) => Long-term Memory
+
 
 * explicit memory : 取得資訊需要有意識的回想
 * implicit memory : 取得資訊不需要有意識的的回想
+
 
 Types :
 
@@ -217,3 +223,77 @@ Video
 
 人類發展
 ========================================
+
+Developmental Psychology 發展心理學
+
+Locomotion
+
+.. image:: /img/psycho/cognitive-developmental-theory.jpg
+    :alt: 認知發展階段
+
+* research design
+    - Longitudinal Design 縱貫設計
+        + 長時間研究同年齡的受試者
+        + 受試者流失 dropout,造成不同時間資料比較的困難
+    - Cross-Sectional Design 橫向設計
+        + 某一時間研究不同年齡組
+        + 世代效應 cohort effect: 不同年齡組受到不同的歷史的影響
+* Piaget's theory
+    - 認知發展理論
+    - 認知發展的基礎：基模，同化，調節，不平衡狀態
+        + 基模：知識的組織與結構
+        + 同化：以已有的知識解釋來自環境中的各種刺激
+        + 調節：個體同化外界事物時，受外界影響，知識組織產生變化
+        + 不平衡狀態：個體知識結構與外界刺激間因不一致產生不平衡狀態，使個體有進一步學習的動機
+    - 認知發展階段
+* Cognitive development in adulthood
+    - 流體智力
+    - 晶體智力
+    - 選擇性最適化加上補償替代方案
+* Erikson's theory
+    - 社會心理發展階段
+* Attachment 依附關係
+    - `Attachment theory <http://en.wikipedia.org/wiki/Attachment_theory>`_
+* Parenting style
+* Identity formation 認同形成
+    - James Marcia
+        + Identity diffusion 認同散亂
+        + Foreclosure 提早結束
+        + Moratorium 認同找尋中(延緩)
+        + Identity achievement 認同完成/成就
+    - Expanded on Erikson's analysis
+* Moral (道德) Development
+    - Lawrence Kohlberg
+    - `Lawrence Kohlberg's stages of moral development <http://en.wikipedia.org/wiki/Lawrence_Kohlberg%27s_stages_of_moral_development>`_
+    - Level 1
+        + Stage 1 : 避免懲罰
+        + Stage 2 : 贏得獎勵，強調報酬/交換
+    - Level 2
+        + Stage 3 : 贏得讚許，避免被反對，作個 "好人"
+        + Stage 4 : 被 "法律與秩序" 規範
+    - Level 3
+        + Stage 5 : 被公眾福利，"社會契約" 規範
+        + Stage 6 : 被自己建立的抽象道德原則規範
+
+visual cliff
+------------------------------
+
+發展心理學的一個著名實驗，用來研究人類和動物的深度知覺，設計者為 Eleanor Gibson 和 Richard Walk
+
+.. raw:: html
+
+    <iframe src="//player.vimeo.com/video/77934" width="WIDTH" height="HEIGHT" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+
+Erikson's theory
+------------------------------
+
+社會心理發展階段
+
+* `Erikson's stages of psychosocial development <http://en.wikipedia.org/wiki/Erikson%27s_stages_of_psychosocial_development>`_
+
+stage 1 ~ 8
+
+Parenting style
+------------------------------
+
+.. image:: /img/psycho/parenting-styles.png
