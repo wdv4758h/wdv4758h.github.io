@@ -38,6 +38,13 @@ paste mode 預設就有 toggle key 可以設定
 在 normal mode 裡面可以用 ``"`` 來 access Vim 的 register，
 所以可以使用 ``"`` + ``+`` + ``p`` 來快速的貼上 clipboard 裡的東西
 
+方便起見，當然還是 map 到某個 key 上面，這樣就可以快速的使用了，
+目前我是把自己之前用在 paste mode toggle 的 ``<leader>p`` map 成了 ``"+p`` ，
+想說我如果想切到 paste mode 通常也就是我要從外面貼東西進來，
+乾脆就直接換成這個快速貼上 ~
+
+先使用一陣子看看，如果真的不習慣再換囉 ~
+
 其他應用 - 從 Vim 裡複製到 system clipboard
 ===========================================
 
