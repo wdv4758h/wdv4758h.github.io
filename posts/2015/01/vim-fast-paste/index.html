@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>testing — Dv 名字很難念</title>
-	<meta name="description" content="All posts which refer to tag testing">
+	<title>Vim - 快快貼 — Dv 名字很難念</title>
+	<meta name="description" content="Title: Vim - 快快貼; Date: 2015-01-07; Author: wdv4758h">
 	<meta name="author" content="wdv4758h">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -33,15 +33,96 @@
 	</div>
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
-<h1>Tag <small>testing</small></h1>
-<table class="table">
-    <tbody>
-        <tr>
-        <td>10 Nov 2014</td>
-        <td><a href='/posts/2014/11/software-testing-intro/'>[WIP][Software Testing] Intro.</a></td>
-        </tr>
-    </tbody>
-</table>
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">Vim - 快快貼</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">wdv4758h</h4>
+		</span>
+        <span itemprop="publish">publish: <time datetime="2015-01-07T21:38:00+08:00" itemprop="datePublished">Wed 07 January 2015</time></span>
+        <br>
+        <span itemprop="update">update: <time datetime="2015-01-07 21:38:00+08:00" itemprop="datePublished">Wed 07 January 2015</time></span>
+	</div>
+	<div>
+		Category:
+		<span itemprop="articleSection">
+			<a href="/category/vim.html" rel="category">Vim</a>
+		</span>
+	</div>
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="/tag/vim.html" rel="tag">vim</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><p>我之前在貼上大量文字進 Vim 的時候覺得有點慢，所以搜尋過如何更快速的貼上，
+不過也只找到 paste mode 可以用 (應該是當時沒有打到重要的關鍵字)</p>
+<p>paste mode 預設就有 toggle key 可以設定</p>
+<div class="highlight"><pre><span class="c">&quot; use &#39;&lt;leader&gt;p&#39; to toggle paste mode</span>
+<span class="k">set</span> <span class="nb">pastetoggle</span><span class="p">=&lt;</span>leader<span class="p">&gt;</span><span class="k">p</span>
+</pre></div>
+<p>或是手動用 <tt class="docutils literal">:set paste</tt> 來進入 paste mode， <tt class="docutils literal">:set nopaste</tt> 來離開 paste mode</p>
+<p>今天終於找到了我想要的解法，直接從 system clipboard 拿資料，
+而不是由 terminal 去慢慢模擬輸入 ...</p>
+<p>這邊要用到 Vim 裡的 register，
+在 Vim 裡面對應到外面 Linux 的 clipboard 的 register 是 <tt class="docutils literal">+</tt> ，
+所以可以從這裡面快速的拿到資料</p>
+<div class="section" id="insert-mode">
+<h2>方法 1 : 在 insert mode 快速貼上</h2>
+<p>在 insert mode 裡面可以用 <tt class="docutils literal">Ctrl+R</tt> 來 access Vim 的 register，
+內容會直接輸入，所以可以使用 <tt class="docutils literal">Ctrl+R</tt> + <tt class="docutils literal">+</tt> 來快速的輸入 clipboard 裡的東西</p>
+</div>
+<div class="section" id="normal-mode">
+<h2>方法 2 : 在 normal mode 快速貼上</h2>
+<p>在 normal mode 裡面可以用 <tt class="docutils literal">&quot;</tt> 來 access Vim 的 register，
+所以可以使用 <tt class="docutils literal">&quot;</tt> + <tt class="docutils literal">+</tt> + <tt class="docutils literal">p</tt> 來快速的貼上 clipboard 裡的東西</p>
+</div>
+<div class="section" id="vim-system-clipboard">
+<h2>其他應用 - 從 Vim 裡複製到 system clipboard</h2>
+<p>在 visual mode 或是 visual block mode 裡面可以也可以用 <tt class="docutils literal">&quot;</tt> 來 access Vim 的 register，
+所以可以先選取想要複製的區塊，
+接著用 <tt class="docutils literal">&quot;</tt> + <tt class="docutils literal">+</tt> + <tt class="docutils literal">y</tt> 來複製資料到 clipboard 裡 ~~~</p>
+<p>然後就可以在其他程式裡快樂的貼上了 ~ ya ~</p>
+</div>
+<div class="section" id="vim-registers">
+<h2>其他 Vim registers</h2>
+<p>想知道其他更多 Vim 裡的 registers 的資料可以下 <tt class="docutils literal">:reg</tt> ，
+更多資訊可以 Vim 的 manual</p>
+</div>
+<div class="section" id="id1">
+<h2>參考資料</h2>
+<ul>
+<li><dl class="first docutils">
+<dt><a class="reference external" href="http://stackoverflow.com/questions/3997078/how-to-paste-text-into-vim-command-line">StackOverflow - How to paste text into Vim command line</a></dt>
+<dd><ul class="first last simple">
+<li>回應很豐富</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first"><a class="reference external" href="http://vim.wikia.com/wiki/In_line_copy_and_paste_to_system_clipboard">Vim Tips wiki - In line copy and paste to system clipboard</a></p>
+</li>
+<li><p class="first"><a class="reference external" href="http://vim.wikia.com/wiki/Accessing_the_system_clipboard">Vim Tips wiki - Accessing the system clipboard</a></p>
+</li>
+</ul>
+</div>
+</div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'wdv4758h-blog';
+    var disqus_title = 'Vim - 快快貼';
+	var disqus_identifier = 'posts/2015/01/vim-fast-paste/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
 		</div>
 	</div> 	<!-- <hr> -->
 </div> <!-- /container -->
