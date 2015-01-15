@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/misc.rss.xml" rel="self"></atom:link><lastBuildDate>Sun, 04 Jan 2015 16:22:00 +0800</lastBuildDate><item><title>virtualenv 版本號異動</title><link>/posts/2015/01/virtualenv-version-change/</link><description>&lt;p&gt;剛剛要做系統更新的時候，
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/misc.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 15 Jan 2015 23:31:00 +0800</lastBuildDate><item><title>libinput 0.8.0</title><link>/posts/2015/01/libinput-0.8.0/</link><description>&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://lists.freedesktop.org/archives/wayland-devel/2015-January/019383.html"&gt;[ANNOUNCE] libinput 0.8.0&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;剛剛在讀 RSS 的時候看到 libinput 有新 release 了，
+新的 release 改進的部份主要在於滾動和觸空版支援&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Thu, 15 Jan 2015 23:31:00 +0800</pubDate><guid>tag:,2015-01-15:posts/2015/01/libinput-0.8.0/</guid><category>libinput</category></item><item><title>virtualenv 版本號異動</title><link>/posts/2015/01/virtualenv-version-change/</link><description>&lt;p&gt;剛剛要做系統更新的時候，
 發現我這邊 Arch Linux 機器上的 virtualenv 要從 1.11.6-2 升到 12.0.5-1，
 一看到覺得這版本會不會跳太大了 XD，
 去翻了 &lt;a class="reference external" href="https://virtualenv.pypa.io/en/latest/changes.html"&gt;virtualenv - changes&lt;/a&gt;

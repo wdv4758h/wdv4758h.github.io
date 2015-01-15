@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>C++11 - override & final — Dv 名字很難念</title>
+	<meta name="description" content="Title: C++11 - override & final; Date: 2015-01-14; Author: wdv4758h">
+	<meta name="author" content="wdv4758h">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="/theme/html5.js"></script>
+		<![endif]-->
+	<link href="/theme/css/ipython.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/simplex/bootstrap.min.css" rel="stylesheet">
+	<link href="/theme/css/local.css" rel="stylesheet">
+	<link href="/theme/css/pygments.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/tipuesearch/tipuesearch.css">
+</head>
+<body>
+<div class="container">
+	<div class="page-header">
+		<h1>
+            <a href="/">Dv 名字很難念</a>
+			<br>
+            <small>Aquí hay gato encerrado. </small>
+            <form id="searchform" action="/search.html" onsubmit="return (this.elements['q'].value.length > 0)">
+                    <input id="searchbox" type="text" name="q" size="12" placeholder="Search">
+            </form>
+        </h1>
+        <a class="top-line-label" href="/about.html">About</a>
+	</div>
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">C++11 - override & final</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">wdv4758h</h4>
+		</span>
+        <span itemprop="publish">publish: <time datetime="2015-01-14T02:43:00+08:00" itemprop="datePublished">Wed 14 January 2015</time></span>
+        <br>
+        <span itemprop="update">update: <time datetime="2015-01-14 02:43:00+08:00" itemprop="datePublished">Wed 14 January 2015</time></span>
+	</div>
+	<div>
+		Category:
+		<span itemprop="articleSection">
+			<a href="/category/c.html" rel="category">C++</a>
+		</span>
+	</div>
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="/tag/c.html" rel="tag">C++</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><p>C++11 在繼承的地方多了 <tt class="docutils literal">override</tt> 和 <tt class="docutils literal">final</tt> 兩個 keyword 可以用</p>
+<p>在解釋之前先回顧 C++ 的繼承</p>
+<div class="section" id="c">
+<h2>C++ 繼承</h2>
+<ul>
+<li><dl class="first docutils">
+<dt>class 定義</dt>
+<dd><ul class="first last simple">
+<li><tt class="docutils literal">public</tt> : 大家都可看</li>
+<li><tt class="docutils literal">protected</tt> : 只有子孫能看</li>
+<li><tt class="docutils literal">private</tt> : 只有自己能看</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>class 繼承</dt>
+<dd><ul class="first last simple">
+<li><tt class="docutils literal">public</tt> : 大家都知道父母和小孩的關係</li>
+<li><tt class="docutils literal">protected</tt> : 只有子孫知道自己與祖先的關係</li>
+<li><tt class="docutils literal">private</tt> : 只有自己知道跟父母的關係</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>基本上的 priority 就是 <tt class="docutils literal">private</tt> &gt; <tt class="docutils literal">protected</tt> &gt; <tt class="docutils literal">public</tt> 所以在繼承的時候 priority 大的會掩蓋 priorty 小的</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">A</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+<span class="k">protected</span><span class="o">:</span>
+    <span class="kt">int</span> <span class="n">y</span><span class="p">;</span>
+<span class="k">private</span><span class="o">:</span>
+    <span class="kt">int</span> <span class="n">z</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">B</span> <span class="o">:</span> <span class="k">public</span> <span class="n">A</span>
+<span class="p">{</span>
+    <span class="c1">// x is public</span>
+    <span class="c1">// y is protected</span>
+    <span class="c1">// z is not accessible from B</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">C</span> <span class="o">:</span> <span class="k">protected</span> <span class="n">A</span>
+<span class="p">{</span>
+    <span class="c1">// x is protected</span>
+    <span class="c1">// y is protected</span>
+    <span class="c1">// z is not accessible from C</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">D</span> <span class="o">:</span> <span class="k">private</span> <span class="n">A</span>
+<span class="p">{</span>
+    <span class="c1">// x is private</span>
+    <span class="c1">// y is private</span>
+    <span class="c1">// z is not accessible from D</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<div class="section" id="virutal-function">
+<h2>Virutal Function</h2>
+<p>C++ 裡提供了一個 keyword 叫 <tt class="docutils literal">virtual</tt> ，
+使用 virtual 關鍵字的 method 會是 Late binding (dynamic binding)，
+在 runtime 的時候才會決定要 call 的 function 位址</p>
+<p>例如 :</p>
+<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;</span>
+
+<span class="k">class</span> <span class="nc">A</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">func1</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;func1 in A&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">func2</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;func2 in A&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">B</span> <span class="o">:</span> <span class="k">public</span> <span class="n">A</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">func1</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;func1 in B&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">func2</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;func2 in B&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+
+    <span class="n">A</span> <span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">();</span>
+    <span class="n">B</span> <span class="n">b</span> <span class="o">=</span> <span class="n">B</span><span class="p">();</span>
+
+    <span class="n">a</span><span class="p">.</span><span class="n">func1</span><span class="p">();</span>  <span class="c1">// func1 in A</span>
+    <span class="n">a</span><span class="p">.</span><span class="n">func2</span><span class="p">();</span>  <span class="c1">// func2 in A</span>
+    <span class="n">b</span><span class="p">.</span><span class="n">func1</span><span class="p">();</span>  <span class="c1">// func1 in B</span>
+    <span class="n">b</span><span class="p">.</span><span class="n">func2</span><span class="p">();</span>  <span class="c1">// func2 in B</span>
+
+    <span class="n">A</span> <span class="o">&amp;</span><span class="n">c</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>
+    <span class="n">c</span><span class="p">.</span><span class="n">func1</span><span class="p">();</span>  <span class="c1">// func1 in A</span>
+    <span class="n">c</span><span class="p">.</span><span class="n">func2</span><span class="p">();</span>  <span class="c1">// func2 in B</span>
+
+    <span class="n">A</span> <span class="o">*</span><span class="n">ptr</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+
+    <span class="n">ptr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">;</span>
+    <span class="n">ptr</span><span class="o">-&gt;</span><span class="n">func1</span><span class="p">();</span>  <span class="c1">// func1 in A</span>
+    <span class="n">ptr</span><span class="o">-&gt;</span><span class="n">func2</span><span class="p">();</span>  <span class="c1">// func2 in A</span>
+
+    <span class="n">ptr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">b</span><span class="p">;</span>
+    <span class="n">ptr</span><span class="o">-&gt;</span><span class="n">func1</span><span class="p">();</span>  <span class="c1">// func1 in A</span>
+    <span class="n">ptr</span><span class="o">-&gt;</span><span class="n">func2</span><span class="p">();</span>  <span class="c1">// func2 in B</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+<p>這邊可以看到，把 class B 的變數用 class A 去解讀的時候，func1 是呼叫到 class A 所定義的，
+而 func2 是呼叫到 class B 所定義的，會有這樣的差別是因為 func1 沒有用 <tt class="docutils literal">virtual</tt> ，
+但是 func2 有用 <tt class="docutils literal">virtual</tt> ，
+base class 有寫 virtual 的 function 在被 call 到時會去 <tt class="docutils literal">virtual table</tt> 裡面找真正要 call 的 function 的位址，
+也才能有 late binding 的效果，沒有寫 virtual 的 function 依然會是 early binding (static binding)。</p>
+<p>在 static binding 的情況下，ptr 要 call 的 function 的位址在 compile time 就決定了，
+所以 func1 一直都會 call 到 class A 的版本。而在 late binding 的情況下，
+要 call 的 function 的位址在 runtime 決定，會從 <tt class="docutils literal">virtual table</tt> 中找到對應的 function 的位址，
+所以可以 call 到各自的版本。</p>
+</div>
+<div class="section" id="c-11-override-final">
+<h2>C++11 - override &amp; final</h2>
+<div class="section" id="override">
+<h3>override</h3>
+<p><tt class="docutils literal">override</tt> 是提供給繼承的 class 用的，目的是確保 function 有 override 到 base class 的 virtual funcion，
+標上 <tt class="docutils literal">override</tt> 後，compiler 可以在 compile time 的時候檢查是否真的有 override，
+可以避免不小心沒寫好造成該 override 的 function 沒有 override 到。</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">A</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">foo</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="nf">bar</span><span class="p">();</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">B</span> <span class="o">:</span> <span class="n">A</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">foo</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>  <span class="c1">// Error: B::foo does not override A::foo</span>
+                                <span class="c1">// (signature mismatch)</span>
+    <span class="kt">void</span> <span class="n">foo</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>        <span class="c1">// OK: B::foo overrides A::foo</span>
+    <span class="kt">void</span> <span class="n">bar</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>        <span class="c1">// Error: A::bar is not virtual</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<div class="section" id="final">
+<h3>final</h3>
+<p><tt class="docutils literal">final</tt> 是提供給 class 或 base class 的 virtual function 使用的，
+標上 <tt class="docutils literal">final</tt> 的 class 不能再被繼承，標上 <tt class="docutils literal">final</tt> 的 virutal function 不能再被 override。</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">A</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">foo</span><span class="p">()</span> <span class="k">final</span><span class="p">;</span>   <span class="c1">// A::foo is final</span>
+    <span class="kt">void</span> <span class="n">bar</span><span class="p">()</span> <span class="k">final</span><span class="p">;</span>           <span class="c1">// Error: non-virtual function cannot be final</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">B</span> <span class="k">final</span> <span class="o">:</span> <span class="n">A</span>   <span class="c1">// struct B is final</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">foo</span><span class="p">();</span>     <span class="c1">// Error: foo cannot be overridden as it&#39;s final in A</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">C</span> <span class="o">:</span> <span class="n">B</span>         <span class="c1">// Error: B is final</span>
+<span class="p">{</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ref">
+<h2>Ref</h2>
+<ul class="simple">
+<li><a class="reference external" href="http://en.cppreference.com/w/cpp/language/override">override specifier (since C++11)</a></li>
+<li><a class="reference external" href="http://en.cppreference.com/w/cpp/language/final">final specifier (since C++11)</a></li>
+<li><a class="reference external" href="https://kheresy.wordpress.com/2014/10/03/override-and-final-in-cpp-11/">比較安全的 C++ 虛擬函式寫法：C++11 override 與 final</a></li>
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/Late_binding">Wikipedia - Late binding</a></li>
+<li><a class="reference external" href="http://stackoverflow.com/questions/860339/difference-between-private-public-and-protected-inheritance">C++ - Difference between private, public, and protected inheritance</a></li>
+</ul>
+</div>
+</div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'wdv4758h-blog';
+    var disqus_title = 'C++11 - override & final';
+	var disqus_identifier = 'posts/2015/01/cpp11-override-and-final/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div> 	<!-- <hr> -->
+</div> <!-- /container -->
+<footer class="aw-footer bg-danger">
+	<div class="container"> <!-- footer -->
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+				<div class="row">
+					<div class="col-md-3">
+						<h4>Navigation</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="">Dv 名字很難念</a></li>
+                            <li><a href="/about.html">About</a></li>
+							<li><a href="/archives"><i class="fa fa-archive "></i> archive</a></li>
+							<li><a href="/tags"><i class="fa fa-tags "></i> tags</a></li>
+							<li><a href="/feeds/all.rss.xml"><i class="fa fa-rss "></i> rss</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Author</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="https://wdv4758h.github.com">Homepage</a></li>
+							<li><a href="https://github.com/wdv4758h/">Github</a></li>
+							<li><a href="https://plus.google.com/103751737509044116269/posts">Google+</a></li>
+							<li><a href="https://www.facebook.com/wdv4758h">Facebook</a></li>
+							<li><a href="https://www.linkedin.com/pub/chiu-hsiang-hsu/69/83/530">Linked-in</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Categories</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="/category/c++.html">C++ (1)</a></li>
+							<li><a href="/category/compiler.html">Compiler (1)</a></li>
+							<li><a href="/category/django.html">Django (2)</a></li>
+							<li><a href="/category/functional.html">Functional (2)</a></li>
+							<li><a href="/category/fuzzy.html">Fuzzy (1)</a></li>
+							<li><a href="/category/gc.html">GC (1)</a></li>
+							<li><a href="/category/misc.html">Misc (28)</a></li>
+							<li><a href="/category/prolog.html">Prolog (1)</a></li>
+							<li><a href="/category/python.html">Python (9)</a></li>
+							<li><a href="/category/qemu.html">QEMU (1)</a></li>
+							<li><a href="/category/ted.html">TED (1)</a></li>
+							<li><a href="/category/vim.html">Vim (3)</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Links</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="https://www.python.org/">Python</a></li>
+							<li><a href="https://www.djangoproject.com/">Django</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; wdv4758h 2014</p>
+            <small>Arch Linux + Vim + reStructuredText + Pelican = Blog</small>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<!-- search -->
+<script type="text/javascript" src="/theme/tipuesearch/tipuesearch_set.js"></script>
+<script type="text/javascript" src="/theme/tipuesearch/tipuesearch.min.js"></script>
+<!------------>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-42810012-2', 'auto');
+  ga('send', 'pageview');
+</script>
+</body>
+</html>
