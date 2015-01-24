@@ -1,5 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/wdv4758h.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 21 Jan 2015 13:12:00 +0800</lastBuildDate><item><title>[閱讀 &amp; 翻譯] Linux Input Ecosystem</title><link>/posts/2015/01/linux-input-ecosystem/</link><description>&lt;p&gt;以下內容翻譯自 &lt;a class="reference external" href="https://joeshaw.org/2010/10/01/681/"&gt;linux input ecosystem (2010), by joe shaw&lt;/a&gt;&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/wdv4758h.rss.xml" rel="self"></atom:link><lastBuildDate>Sat, 24 Jan 2015 21:21:00 +0800</lastBuildDate><item><title>Xorg with libinput as driver</title><link>/posts/2015/01/xorg-with-libinput-as-driver/</link><description>&lt;div class="section" id="libinput"&gt;
+&lt;h2&gt;libinput&lt;/h2&gt;
+&lt;p&gt;這是 Xorg 上的 Input Stack :&lt;/p&gt;
+&lt;img alt="Xorg Input Stack" src="/img/linux/x-input-stack.png" /&gt;
+&lt;p&gt;這是 Wayland 上的 Input Stack :&lt;/p&gt;
+&lt;img alt="Wayland Input Stack" src="/img/linux/wayland-input-stack.png" /&gt;
+&lt;p&gt;Xorg 上的 Input Stack 有以下問題&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Features distributed across modules&lt;/li&gt;
+&lt;li&gt;No communication between modules&lt;/li&gt;
+&lt;li&gt;Impossible to test&lt;/li&gt;
+&lt;li&gt;Lots of user-exposed options&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;driver feature 比對&lt;/p&gt;
+&lt;table border="1" class="table table-bordered docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="42%" /&gt;
+&lt;col width="16%" /&gt;
+&lt;col width="26%" /&gt;
+&lt;col width="16%" /&gt;
+&lt;/colgroup&gt;
+&lt;thead valign="bottom"&gt;
+&lt;tr&gt;&lt;th class="head"&gt;Feature&lt;/th&gt;
+&lt;th class="head"&gt;evdev&lt;/th&gt;
+&lt;th class="head"&gt;synaptics&lt;/th&gt;
+&lt;th class="head"&gt;wacom&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;Tapping&lt;/td&gt;
+&lt;td&gt;no&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;MB emulation&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;no&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Gestures&lt;/td&gt;
+&lt;td&gt;no&lt;/td&gt;
+&lt;td&gt;no&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Finger Scrolling&lt;/td&gt;
+&lt;td&gt;no&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;some&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Calibration&lt;/td&gt;
+&lt;td&gt;yes*&lt;/td&gt;
+&lt;td&gt;no*&lt;/td&gt;
+&lt;td&gt;yes*&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;(* means server provides some calibration on top)&lt;/p&gt;
+&lt;p&gt;為了讓 Wayland 的 compositor 能有共通的 input stack 實作，
+所以獨立出了 libinput 來解決問題，
+libinput 把很多內部的東西都處理掉 (藏起來)，
+有著以下特色 :&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;multiple backends, but not exposed to the users&lt;/li&gt;
+&lt;li&gt;struct udev* in, devices out&lt;/li&gt;
+&lt;li&gt;only the configuration options that make sense&lt;/li&gt;
+&lt;li&gt;everything else is handled based on the hardware&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Touchpad features (normal):&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;proper multitouch support&lt;/li&gt;
+&lt;li&gt;top and bottom software button on clickpads&lt;/li&gt;
+&lt;li&gt;two-finger scrolling&lt;/li&gt;
+&lt;li&gt;1/2/3-finger tapping&lt;/li&gt;
+&lt;li&gt;clickfinger on Apple touchpads&lt;/li&gt;
+&lt;li&gt;palm detection&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Touchpad features (exotic):&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;re-routing of T440 software buttons through trackstick&lt;/li&gt;
+&lt;li&gt;trackstick wheel emulation on T440&lt;/li&gt;
+&lt;li&gt;smart disabling of the touchpad&lt;/li&gt;
+&lt;li&gt;auto-scaling of the top software buttons&lt;/li&gt;
+&lt;li&gt;disable touchpad while using the trackstick&lt;/li&gt;
+&lt;li&gt;normalized pointer acceleration&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;A useful test suite&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;tests multiple devices automatically&lt;/li&gt;
+&lt;li&gt;uinput based&lt;/li&gt;
+&lt;li&gt;tests without a compositor&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Future plans (non-obvious):&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&amp;quot;buttonbox&amp;quot; interface/gamepads&lt;/li&gt;
+&lt;li&gt;raw/unaccelerated mouse input&lt;/li&gt;
+&lt;li&gt;device identification system&lt;/li&gt;
+&lt;li&gt;touchpad handwriting&lt;/li&gt;
+&lt;li&gt;touchpad gestures&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id1"&gt;
+&lt;h2&gt;近況&lt;/h2&gt;
+&lt;p&gt;libinput 最近發展的漸漸成熟，在 2015-01-15 釋出了 0.8 版，
+Fedora 22 也要把 Xorg 底下的 input driver 換成使用 libinput (xf86-input-libinput)，
+目前 xf86-input-libinput 在 AUR 裡，不過相信未來應該會進 official repositories。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="users"&gt;
+&lt;h2&gt;Users&lt;/h2&gt;
+&lt;p&gt;在 Arch Linux 上，要把 Xorg 底下的 input driver 換成 libinput 的話，
+先去 AUR 裝 &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;xf86-input-libinput&lt;/span&gt;&lt;/tt&gt; ，
+接著就可以在 Xorg 的設定檔裡選擇 &lt;tt class="docutils literal"&gt;libinput&lt;/tt&gt; 當 driver，
+不過要注意的是，一些 Options 會不一樣，所以設定要調整過，
+例如 :&lt;/p&gt;
+&lt;p&gt;原本&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+# xorg.conf.d/50-synaptics.conf
+
+# Original
+
+Section &amp;quot;InputClass&amp;quot;
+  Identifier &amp;quot;enable tapping&amp;quot;
+  MatchProduct &amp;quot;my touchpad&amp;quot;
+  Driver &amp;quot;synaptics&amp;quot;
+  Option &amp;quot;TapButton1&amp;quot; &amp;quot;1&amp;quot;
+EndSection
+&lt;/pre&gt;
+&lt;p&gt;後來&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+# xorg.conf.d/50-synaptics.conf
+
+# libinput version
+
+Section &amp;quot;InputClass&amp;quot;
+  Identifier &amp;quot;enable tapping&amp;quot;
+  MatchProduct &amp;quot;my touchpad&amp;quot;
+  Driver &amp;quot;synaptics&amp;quot;
+  Option &amp;quot;TapButton1&amp;quot; &amp;quot;1&amp;quot;
+EndSection
+&lt;/pre&gt;
+&lt;p&gt;這邊注意到，之前是把 driver assign 給 device，接著設定 options，
+後來 libinput 的版本是 match 到一個 driver。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="reference"&gt;
+&lt;h2&gt;Reference&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.x.org/wiki/Events/XDC2014/XDC2014HuttererLibInput/xdc-2014.html"&gt;Consolidating the input stacks with libinput&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://www.youtube.com/watch?v=vxhdba4RS8s"&gt;XDC2014: Peter Hutterer - Consolidating the input stacks with libinput&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://fosdem.org/2015/schedule/event/libinput/"&gt;Replacing Xorg input-drivers with libinput&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://who-t.blogspot.tw/2014/09/libinput-common-input-stack-for-wayland.html"&gt;libinput - a common input stack for Wayland compositors and X.Org drivers&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://who-t.blogspot.tw/2015/01/xf86-input-libinput-compatibility-with.html"&gt;xf86-input-libinput compatibility with evdev and synaptics&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://fedoraproject.org/wiki/Changes/LibinputForXorg"&gt;Fedora - Changes/LibinputForXorg&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://wayland.freedesktop.org/libinput/doc/latest/pages.html"&gt;libinput documentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://cgit.freedesktop.org/xorg/driver/xf86-input-libinput/"&gt;Freedesktop.org - xf86-input-libinput&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Sat, 24 Jan 2015 21:21:00 +0800</pubDate><guid>tag:,2015-01-24:posts/2015/01/xorg-with-libinput-as-driver/</guid><category>Linux</category><category>Xorg</category><category>libinput</category></item><item><title>[閱讀 &amp; 翻譯] Linux Input Ecosystem</title><link>/posts/2015/01/linux-input-ecosystem/</link><description>&lt;p&gt;以下內容翻譯自 &lt;a class="reference external" href="https://joeshaw.org/2010/10/01/681/"&gt;linux input ecosystem (2010), by joe shaw&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;(還有我的幾張截圖 zzz)&lt;/p&gt;
 &lt;hr class="docutils" /&gt;
 &lt;p&gt;目前 Linux kernel 的 input system 分成兩大塊，一個是 &lt;tt class="docutils literal"&gt;device driver&lt;/tt&gt; ，另一個是 &lt;tt class="docutils literal"&gt;event driver&lt;/tt&gt; 。
