@@ -206,3 +206,9 @@ div.article-body h5 {
 .row {
     padding-top: 10px;
 }
+
+/* code block */
+
+pre {
+    white-space: pre;
+}
