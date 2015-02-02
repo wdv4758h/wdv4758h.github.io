@@ -212,3 +212,10 @@ div.article-body h5 {
 pre {
     white-space: pre;
 }
+
+/* code div */
+
+.highlight {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
