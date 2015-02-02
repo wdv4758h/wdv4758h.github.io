@@ -33,9 +33,20 @@
 	</div>
 	{% endif %}
 	<div itemprop="articleBody" class="article-body">{{ article.content }}</div>
+
+    {% if article.related_posts %}
+        <hr>
+        <h2>Related Posts</h2>
+        <ul>
+        {% for related_post in article.related_posts %}
+            <li><a href="{{ SITEURL }}/{{ related_post.url }}">{{ related_post.title }}</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
 	<hr>
+
 	<h2>Comments</h2>
-	{% include "twitter.html" %}
 	{% include 'disqus.html' %}
 </div>
 {% endblock %}

@@ -54,7 +54,7 @@ MENUITEMS = [('archive', 'archives'), ('tags', 'tags')]
 # Plugin
 
 PLUGIN_PATHS = ['plugins',]
-PLUGINS=['sitemap', 'tipue_search']
+PLUGINS=['sitemap', 'tipue_search', 'related_posts']
 
 SITEMAP = {
     'format': 'xml',
@@ -74,3 +74,7 @@ SITEMAP = {
 # If you don't add it, it will not render the search.html page.
 
 DIRECT_TEMPLATES = (('index', 'tags', 'categories', 'authors', 'archives', 'search', 'about'))
+
+# realted posts
+
+RELATED_POSTS_MAX = 5
