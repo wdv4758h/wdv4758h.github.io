@@ -37,7 +37,7 @@
 }
 
 .article p {
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .article li {
@@ -152,8 +152,8 @@ div.article-body h4 {
     border-bottom-style: solid;
     border-bottom-color: green;
     border-bottom-right-radius: 40%;
+    padding-top: 6px;
     padding-bottom: 4px;
-    margin-bottom: 10px;
     width: 70%;
 }
 
@@ -205,4 +205,17 @@ div.article-body h5 {
 
 .row {
     padding-top: 10px;
+}
+
+/* code block */
+
+pre {
+    white-space: pre;
+}
+
+/* code div */
+
+.highlight {
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
