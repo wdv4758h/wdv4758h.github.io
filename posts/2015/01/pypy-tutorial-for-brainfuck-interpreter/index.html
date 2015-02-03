@@ -48,7 +48,7 @@
         <span>publish: <time datetime="2015-01-31T20:33:00+08:00">Sat 31 January 2015</time></span>
 
             <br>
-            <span>update: <time datetime="2015-01-31 20:33:00+08:00">Sat 31 January 2015</time></span>
+            <span>update: <time datetime="2015-02-04 00:33:00+08:00">Wed 04 February 2015</time></span>
 
 	</div>
 
@@ -91,6 +91,7 @@
             <div class="toc" id="">
 
 <ul class="simple">
+<li><a class="reference internal" href="#introduction" id="id3">Introduction</a></li>
 <li><a class="reference internal" href="#tutorial" id="id4">Tutorial</a><ul>
 <li><a class="reference internal" href="#brainfuck-interpreter-begin" id="id5">Brainfuck Interpreter - Begin</a><ul>
 <li><a class="reference internal" href="#pypy-translation" id="id6">PyPy Translation</a></li>
@@ -105,18 +106,60 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#optimize" id="id13">Optimize</a><ul>
-<li><a class="reference internal" href="#purefunction" id="id14">purefunction</a></li>
+<li><a class="reference internal" href="#elidable-old-purefunction" id="id14">elidable (old : purefunction)</a></li>
+<li><a class="reference internal" href="#delay-output" id="id15">Delay Output</a></li>
+<li><a class="reference internal" href="#zero" id="id16">Zero</a></li>
+<li><a class="reference internal" href="#compact" id="id17">Compact</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#reference" id="id15">Reference</a></li>
+<li><a class="reference internal" href="#id2" id="id18">額外紀錄</a><ul>
+<li><a class="reference internal" href="#with-statement-in-rpython" id="id19">with statement in RPython</a></li>
+<li><a class="reference internal" href="#rpython-s-print-statement" id="id20">RPython's print statement</a></li>
+<li><a class="reference internal" href="#comple-with-clang" id="id21">Comple with Clang</a></li>
+<li><a class="reference internal" href="#if-elif" id="id22">if ... elif</a></li>
+<li><a class="reference internal" href="#string-replace" id="id23">string replace</a></li>
+<li><a class="reference internal" href="#rpython-rlib-jit-py" id="id24">rpython/rlib/jit.py</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#reference" id="id25">Reference</a></li>
 </ul>
 </div>
         </div>
     </div>
-	<div class="article-body"><p>[<strong>Not finish yet</strong>]</p>
-
+	<div class="article-body">
+<div class="section" id="introduction">
+<h2><a class="toc-backref" href="#id3">Introduction</a></h2>
+<p>Python 是一個 Dynamic Language，
+官方提供了一個叫作 CPython 的 Interpreter 實作，
+Interpreter 讓這類 Dynamic Language 不用事先 compile 過才可以執行，
+只要寫好 script 後丟進去就可以跑，
+以下有 Compiler 和 Interpreter 簡陋的流程圖 :</p>
+<p>Compiler :</p>
+<img alt="Compiler" src="/img/compiler/compiler.png"/>
+<p>Interpreter :</p>
+<img alt="Interpreter" src="/img/compiler/interpreter.png"/>
+<p>CPython 的實作只維持在很標準的方式，
+相較之下並沒有花費大量的努力往更好的效能去調整，
+一來應該是商業公司投資的資源量不夠，
+再來應該是人力也不夠。</p>
+<p>雖然在 2009 年一度從 Google 發起一個叫作 Unladen Swallow 的 project，
+目標是在 CPython 上利用 LLVM 做 just-in-time compiler，
+不過最後在 2009 年底就漸漸中斷，目前只留下一個沒在開發的 branch。</p>
+<p>目前幾個針對效能的實作中，Cython 和 PyPy 是最成熟可行的選項，
+Cython 是一個 Python 的 superset，
+利用 Cython 提供的靜態型別宣告以及其他功能來修改程式，
+最後經過 compile 後可以讓程式變得相當快速，
+而 PyPy 則是一個 Drop-In Replacement 的實作，
+PyPy 的效能來自於 JIT、更有效率 Garbage Collection、更有效率的 Data Structure。</p>
+<p>近期倒是有由 Dropbox 發起的新實作叫 <a class="reference external" href="https://github.com/dropbox/pyston">Pysyon</a> ，
+目標是 based on LLVM 做一個有效率的 JIT 實作，
+由於是個新專案，目前 release 只有到 0.2 版，
+有 Dropbox 企業的金錢、人力資助下，
+只要這專案持續下去，相信出來的效能是會蠻有看頭的，
+不過專案目前還在早期開發中，就靜觀其變囉。</p>
+</div>
 <div class="section" id="tutorial">
 <h2><a class="toc-backref" href="#id4">Tutorial</a></h2>
 <p>PyPy 的官方 Blog 上，
@@ -133,7 +176,8 @@
 <li>Python 的 Interpreter 實作</li>
 <li>撰寫 Dynamic Languages 的 Interpreter 的 framework</li>
 </ul>
-<p>接下來這篇的重點會放在 "撰寫 Interpreter"</p>
+<p>"Interpreter 的 framework" 是 PyPy 這 project 最特別的地方，
+接下來這篇的重點將會放在 "撰寫 Interpreter"</p>
 <p>要做一個 Language 的 Interpreter 會需要以下事情</p>
 <ul class="simple">
 <li>source code parser</li>
@@ -429,14 +473,69 @@ call 它後從它回傳的 function 開始翻譯，
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
     <span class="n">entry_point</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
 </pre></div>
+<p>此外還有一個部份需要修改，就是用到 sys module 裡的 stdin/stdout 的部份，
+因為目前 RPython 並沒有支援 sys.stdin 和 sys.stdout
+(雖然開發者說其實可以用 os.read 和 os.write 包裝) 所以需要改成用 os.read 和 os.write</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c"># sys.stdout.write(chr(tape.get()))</span>
+
+<span class="n">os</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">chr</span><span class="p">(</span><span class="n">tape</span><span class="o">.</span><span class="n">get</span><span class="p">()))</span>    <span class="c"># 1 for stdout</span>
+
+<span class="c"># tape.set(ord(sys.stdin.read(1)))</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>    <span class="c"># 0 for stdin, 1 for one byte</span>
+<span class="k">if</span> <span class="n">data</span> <span class="o">!=</span> <span class="s">''</span><span class="p">:</span>
+    <span class="n">tape</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+</pre></div>
 <p>接下來需要抓 PyPy 的 source code :</p>
 <div class="highlight"><pre>hg clone https://bitbucket.org/pypy/pypy
+
+<span class="c"># 建環境</span>
+virtualenv2 env
+<span class="nb">source </span>env/bin/activate
+
+cp -r pypy/py/ ../env/lib/python2.7/site-packages/
+cp -r pypy/rpython/ ../env/lib/python2.7/site-packages/
+
+pip install pytest
 </pre></div>
 <p>接下來就交給 PyPy 做轉換</p>
 <div class="highlight"><pre>python2 ./pypy/pypy/translator/goal/translate.py example2.py
 </pre></div>
 <p>然後就會看到許多 PyPy 吐出來的訊息，最後產生 <tt class="docutils literal"><span class="pre">example2-c</span></tt> 這個執行檔，
-這個轉換在我機器上大約需要 4x ~ 5x 秒</p>
+這個轉換在我機器 (虛擬機) 上大約需要 4x ~ 5x 秒</p>
+<p>結果 :</p>
+<table border="1" class="table table-bordered docutils">
+<colgroup>
+<col width="56%"></col>
+<col width="44%"></col>
+</colgroup>
+<tbody valign="top">
+<tr><td>File Size</td>
+<td>290552 bytes</td>
+</tr>
+<tr><td>Translation Time</td>
+<td>56.5 s</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="table table-bordered docutils">
+<colgroup>
+<col width="41%"></col>
+<col width="59%"></col>
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Test File</th>
+<th class="head">Execution Time</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>mandel.b</td>
+<td>68.61 s</td>
+</tr>
+</tbody>
+</table>
 <p>接著試跑一下</p>
 <div class="highlight"><pre>./example2-c mandel.b
 </pre></div>
@@ -576,22 +675,23 @@ tracing mode 就停止，把追蹤紀錄丟給 optimizer，
 <pre class="literal-block">
 [3c091099eae17d] jit-log-opt-loop}
 </pre>
+<p>中間則是每次執行的操作，有些操作如果被優化掉的話就不會出現</p>
 </div>
 </div>
 <div class="section" id="optimize">
 <h3><a class="toc-backref" href="#id13">Optimize</a></h3>
-<div class="section" id="purefunction">
-<h4><a class="toc-backref" href="#id14">purefunction</a></h4>
+<div class="section" id="elidable-old-purefunction">
+<h4><a class="toc-backref" href="#id14">elidable (old : purefunction)</a></h4>
 <p>由於每次的 loop 都會去 dictionary 裡查對應的位址，
 但是其實這個 dictionary 裡的資訊是不會變的，
 所以是可以直接編成 machine code 來加速，
 但是對 PyPy 而言，那個 dictionary 有可能會變動，
 但它不知道其實資料不會再改了，
 所以我們可以告訴它同樣的輸入一定會有相同的輸出，
-這可以用 PyPy 裡的 <tt class="docutils literal">purefunction</tt> decorator 做告知</p>
-<div class="highlight"><pre><span class="kn">from</span> <span class="nn">rpython.rlib.jit</span> <span class="kn">import</span> <span class="n">purefunction</span>
+這可以用 PyPy 裡的 <tt class="docutils literal">elidable</tt> (以前是 <tt class="docutils literal">purefunction</tt>) decorator 做告知</p>
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">rpython.rlib.jit</span> <span class="kn">import</span> <span class="n">elidable</span>
 
-<span class="nd">@purefunction</span>
+<span class="nd">@elidable</span>
 <span class="k">def</span> <span class="nf">get_matching_bracket</span><span class="p">(</span><span class="n">bracket_map</span><span class="p">,</span> <span class="n">pc</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">bracket_map</span><span class="p">[</span><span class="n">pc</span><span class="p">]</span>
 
@@ -599,15 +699,163 @@ tracing mode 就停止，把追蹤紀錄丟給 optimizer，
 </pre></div>
 <p>接下來跟前面一樣做轉換，最後拿到的程式就比原本快很多</p>
 </div>
+<div class="section" id="delay-output">
+<h4><a class="toc-backref" href="#id15">Delay Output</a></h4>
+<p>對電腦來說 I/O 是很慢的，所以原本每個 byte 這樣讀讀寫寫也會有一點效能損失，
+所以可以把直先存起來，之後再一次 output，
+對於有大量 output 的 brainfuck 程式可能可以有一點點的幫助 (不多)</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Tape</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thetape</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="s">''</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_threshold</span> <span class="o">=</span> <span class="mi">50</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">thetape</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thetape</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="k">def</span> <span class="nf">inc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thetape</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">dec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thetape</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">advance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thetape</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thetape</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">devance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">-=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>    <span class="c"># 1 for stdout</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="s">''</span>
+
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>    <span class="c"># 0 for stdin, 1 for one byte</span>
+
+        <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">+=</span> <span class="nb">chr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_threshold</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>    <span class="c"># 1 for stdout</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="s">''</span>
+</pre></div>
+</div>
+<div class="section" id="zero">
+<h4><a class="toc-backref" href="#id16">Zero</a></h4>
+<p>Brainfuck code 裡面的 "[-]" 這樣的 loop 其實就是把目前指到的值歸零，
+所以可以直接把它 assign 成零，不要再慢慢減了，
+這樣換掉後可以有些許的提升</p>
+</div>
+<div class="section" id="compact">
+<h4><a class="toc-backref" href="#id17">Compact</a></h4>
+<p>Brainfuck 的 code 裡面常常會出現連續的 "+" 或 "-" 或 "&lt;" 或 "&gt;"，
+但是這是可以一次完成的 (連續的 "&gt;"、"&lt;" 都可以和起來，"+"、"-" 也可以)，
+不需要一個一個慢慢加、一個一個慢慢移，
+所以如果把這部份處理掉，
+做更有效率的計算，
+可以獲得一部份的效能提升 ~</p>
+</div>
+</div>
+</div>
+<div class="section" id="id2">
+<h2><a class="toc-backref" href="#id18">額外紀錄</a></h2>
+<div class="section" id="with-statement-in-rpython">
+<h3><a class="toc-backref" href="#id19">with statement in RPython</a></h3>
+<p>在寫 example 的時候，我開檔案那邊用的是 with statement 來幫我 handle，
+結果發現丟下去轉換的時候不會過，去 PyPy irc 問了後，
+發現其實 RPython 是有支援 with statement 的，
+只是近期在 RPython 對檔案的部份有了 <tt class="docutils literal">rpython/rlib/rfile.py</tt> 這個實作，
+在 RPython 裡 built-in 的 open() 回傳的是這個 RFile class 的 instance，
+RPython 的 RFile 實作的是完整的 Python files 的 subset，
+但目前沒有寫 <tt class="docutils literal">__enter__</tt> 和 <tt class="docutils literal">__exit__</tt> methods，
+過沒多久開發者 Armin Rigo 就送了
+<a class="reference external" href="https://bitbucket.org/pypy/pypy/commits/6657cb5a838dae0e9ad8453d6d412ef96ee155fa">一個 commit</a>
+補上了這部份，
+于是乎，我可以繼續用 with statement 丟下去給 PyPy 轉了 ~</p>
+</div>
+<div class="section" id="rpython-s-print-statement">
+<h3><a class="toc-backref" href="#id20">RPython's print statement</a></h3>
+<p>RPython 裡面其實是有支援 print statement 的，
+但是那大多只用於 debug，
+多數情況都用 os.read / os.write，
+不過其實可以用類似 "os.fdopen(1)" 的方法來拿到 stdout
+(不過要在 RPython function 裡，而不是 module global)，
+所以其實可以做到當我在 RPython 用 sys.stdout 時其實後面是 call rfile.py 裡面類似 getstdout() 的 function，
+它會取得並且 cache 用 os.fdopen() 取得的 rfile。</p>
+<p>畢竟 RPython 是要拿來寫 interpreter 的，
+有 os module 可以用來 I/O 其實也很夠，
+只是如果有 sys.stdout / sys.stdin 的支援對很多地方會更方便些，
+不過 PyPy team 應該也是缺錢缺人手，
+這也不算是核心大問題，
+暫時就先這樣吧，等看看哪天有人 contribute XD</p>
+</div>
+<div class="section" id="comple-with-clang">
+<h3><a class="toc-backref" href="#id21">Comple with Clang</a></h3>
+<p>雖然前面有提到可以用 <tt class="docutils literal"><span class="pre">--cc=clang</span></tt> 來用 clang compile，
+但其實我在試的時候有出現問題，
+不過到 irc 上尋問後得到了解法，
+就是加上 <tt class="docutils literal"><span class="pre">--gcrootfinder=shadowstack</span></tt> ，
+以下是 Armin Rigo 的回覆</p>
+<pre class="literal-block">
+I guess clang produces subtly different assembler that throws off "trackgcroot"
+you can use --gcrootfinder=shadowstack
+that will be slightly slower
+(~10% and only before jit-compilation)
+(trackgcroot is a hack used with --gcrootfinder=asmgcc, which is enabled only on Linux;
+usually we have to fix it slightly for every new version of gcc...)
+</pre>
+</div>
+<div class="section" id="if-elif">
+<h3><a class="toc-backref" href="#id22">if ... elif</a></h3>
+<p>在翻參數的時候，發現有個優化參數叫作 <tt class="docutils literal">merge_if_blocks</tt> ，
+顧名思義就是把 Python 多層的 if ... elif block 合成 C 裡 switch 的形式，
+可以看
+<a class="reference external" href="https://pypy.readthedocs.org/en/latest/config/translation.backendopt.merge_if_blocks.html">documentation 裡的說明</a>
+裡面有示意圖 XD</p>
+</div>
+<div class="section" id="string-replace">
+<h3><a class="toc-backref" href="#id23">string replace</a></h3>
+<p>RPython 裡的 str 目前只支援 char 的 replace，
+但是可以從 <tt class="docutils literal">rpython/rlib/rstring.py</tt> 裡找到 replace function 來替代，
+<tt class="docutils literal">from rpython.rlib.rstring import replace</tt> ，
+<tt class="docutils literal">replace(string, old, new, max)</tt></p>
+<p>以下是 irc 上詢問得到得回答</p>
+<pre class="literal-block">
+   wdv| any reason that RPython's string replace only works for char args ?
+ ronan| wdv: no very good reasons
+ ronan| wdv: it would be a bit of work to implement and interpreters are usually better off writing their own
+        replace at a low level
+cfbolz| ronan, wdv: there is even a usable implementation, in rlib.rstring, I think
+</pre>
+</div>
+<div class="section" id="rpython-rlib-jit-py">
+<h3><a class="toc-backref" href="#id24">rpython/rlib/jit.py</a></h3>
+<p>由於在看前面的 <tt class="docutils literal">rpython/rlib/rstring.py</tt> 裡的 replace function 時，
+發現上面有一些 decorator，其中一個是 <tt class="docutils literal">jit.elidable</tt> ，
+覺得好奇就去翻了一下，不翻還好，
+億翻發現就 tutorial 上寫的 <tt class="docutils literal">purefunction</tt> 已經 deprecated 了 XD，
+現在要用剛剛看到的 "<strong>elidable</strong>"，
+趕快來改一下 ~</p>
 </div>
 </div>
 <div class="section" id="reference">
-<h2><a class="toc-backref" href="#id15">Reference</a></h2>
+<h2><a class="toc-backref" href="#id25">Reference</a></h2>
 <ul class="simple">
-<li><a class="reference external" href="http://morepypy.blogspot.tw/2011/04/tutorial-writing-interpreter-with-pypy.html">Tutorial: Writing an Interpreter with PyPy, Part 1</a></li>
-<li><a class="reference external" href="http://morepypy.blogspot.tw/2011/04/tutorial-part-2-adding-jit.html">Tutorial Part 2: Adding a JIT</a></li>
 <li><a class="reference external" href="http://en.wikipedia.org/wiki/Just-in-time_compilation">Just-in-time compilation</a></li>
 <li><a class="reference external" href="http://en.wikipedia.org/wiki/Tracing_just-in-time_compilation">Tracing just-in-time compilation</a></li>
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/Interpreter_%28computing%29">Interpreter (computing)</a></li>
 </ul>
 </div>
 </div>
@@ -615,11 +863,11 @@ tracing mode 就停止，把追蹤紀錄丟給 optimizer，
         <hr>
         <h2>Related Posts</h2>
         <ul>
-            <li><a href="/posts/2014/11/pypy-io-improvements/">[PyPy] IO improvements</a></li>
-            <li><a href="/posts/2014/09/incremental-gc/">Incremental Garbage Collector</a></li>
             <li><a href="/posts/2014/10/RPython/">RPython Intro.</a></li>
+            <li><a href="/posts/2014/09/incremental-gc/">Incremental Garbage Collector</a></li>
             <li><a href="/posts/2014/09/ggc-spidermonkey/">Generational Garbage Collection for SpiderMonkey</a></li>
             <li><a href="/posts/2014/10/jitviewer/">Try the jitviewer</a></li>
+            <li><a href="/posts/2014/11/pypy-io-improvements/">[PyPy] IO improvements</a></li>
         </ul>
 
 	<hr>
