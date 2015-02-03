@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="utf-8">
 	<title>XMLHttpRequest — Dv 名字很難念</title>
@@ -18,6 +19,7 @@
 	<link href="/theme/css/pygments.css" rel="stylesheet">
     <link rel="stylesheet" href="/theme/tipuesearch/tipuesearch.css">
 </head>
+
 <body>
 <div class="container">
 	<div class="page-header">
@@ -32,31 +34,47 @@
         <a class="top-line-label" href="/about.html">About</a>
 	</div>
 	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
-<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+        <div>
+            <div class="row-fluid">
+                <div class="col-md-8 col-md-offset-2">
+<div class="article">
+
 	<div class="text-center article-header">
-		<h1 itemprop="name headline" class="article-title">XMLHttpRequest</h1>
-		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
-			<h4 itemprop="name">wdv4758h</h4>
+
+		<h1 class="article-title">XMLHttpRequest</h1>
+		<span>
+			<h4>wdv4758h</h4>
 		</span>
-        <span itemprop="publish">publish: <time datetime="2014-02-11T00:06:00+08:00" itemprop="datePublished">Tue 11 February 2014</time></span>
+        <span>publish: <time datetime="2014-02-11T00:06:00+08:00">Tue 11 February 2014</time></span>
+
+
 	</div>
+
 	<div>
 		Category:
-		<span itemprop="articleSection">
+		<span>
 			<a href="/category/misc.html" rel="category">Misc</a>
 		</span>
 	</div>
+
 	<div>
 		Tags:
-		<span itemprop="keywords">
+		<span>
 			<a href="/tag/xmlhttprequest.html" rel="tag">XMLHttpRequest</a>
 		</span>
-		<span itemprop="keywords">
+		<span>
 			<a href="/tag/ajax.html" rel="tag">ajax</a>
 		</span>
 	</div>
-	<div itemprop="articleBody" class="article-body"><p>有了 XMLHttpRequest 就讓我們可以利用 Javascript 去做 request</p>
+
+</div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-8">
+	<div class="article-body"><p>有了 XMLHttpRequest 就讓我們可以利用 Javascript 去做 request</p>
 <p>以下直接用一段 Javascript 去說明</p>
 <div class="highlight"><pre><span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
 <span class="nx">req</span><span class="p">.</span><span class="nx">onreadystatechange</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
@@ -139,12 +157,15 @@ on readyState change 顧名思義就是 readyState 有變動時會去 call 這�
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
 </script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
+
+                </div>
+            </div>
 		</div>
 	</div> 	<!-- <hr> -->
 </div> <!-- /container -->
