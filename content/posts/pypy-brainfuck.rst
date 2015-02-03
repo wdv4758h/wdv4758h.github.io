@@ -773,6 +773,26 @@ rpython/rlib/jit.py
 現在要用剛剛看到的 "**elidable**"，
 趕快來改一下 ~
 
+Embedding PyPy
+------------------------------
+
+在 irc 上問問題的時候，剛好看到前面有人問了 ``libpypy-c.so`` 是幹嘛用的，
+原來是近期 PyPy 提供的功能，可以把 PyPy 嵌入其他地方，
+`官方 Document <http://pypy.readthedocs.org/en/latest/embedding.html>`_
+有寫了簡單的 C 範例，include "PyPy.h" 後，
+把在 C 程式裡的 Python code char array 丟進去執行，
+甚至可以把丟參數給 Python 端的 function，
+提供了未來把 PyPy 嵌入別的地方的機會 ~
+
+附上 irc log :
+
+::
+
+    mstuchli| This is prolly a stupid question, but the libpypy-c.so is a new thing, correct? What's it for?
+       fijal| mstuchli: for embedding
+     arigato| mstuchli: for embedding pypy into some other program, more precisely; now the "pypy" executable is
+              very small and just calls libpypy-c.so, but other programs may call it too
+
 Reference
 ========================================
 
