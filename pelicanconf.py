@@ -52,9 +52,11 @@ RELATIVE_URLS = True
 MENUITEMS = [('archive', 'archives'), ('tags', 'tags')]
 
 # Plugin
+#
+# extract_toc need beautifulsoup4
 
 PLUGIN_PATHS = ['plugins',]
-PLUGINS=['sitemap', 'tipue_search', 'related_posts']
+PLUGINS=['sitemap', 'tipue_search', 'related_posts', 'extract_toc']
 
 SITEMAP = {
     'format': 'xml',
