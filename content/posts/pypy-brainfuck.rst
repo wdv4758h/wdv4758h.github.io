@@ -1,15 +1,55 @@
 :title: PyPy - Tutorial for Brainfuck Interpreter
 :slug: pypy-tutorial-for-brainfuck-interpreter
 :date: 2015-01-31 20:33
-:modified: 2015-01-31 20:33
+:modified: 2015-02-04 00:33
 :category: Python
 :tags: PyPy, Brainfuck, Interpreter, JIT, GC
 :author: wdv4758h
 :summary: use PyPy's toolchain to make a Brinfuck Interpreter with JIT
 
-[**Not finish yet**]
-
 .. contents::
+
+Introduction
+========================================
+
+Python 是一個 Dynamic Language，
+官方提供了一個叫作 CPython 的 Interpreter 實作，
+Interpreter 讓這類 Dynamic Language 不用事先 compile 過才可以執行，
+只要寫好 script 後丟進去就可以跑，
+以下有 Compiler 和 Interpreter 簡陋的流程圖 :
+
+Compiler :
+
+.. image:: /img/compiler/compiler.png
+    :alt: Compiler
+
+Interpreter :
+
+.. image:: /img/compiler/interpreter.png
+    :alt: Interpreter
+
+CPython 的實作只維持在很標準的方式，
+相較之下並沒有花費大量的努力往更好的效能去調整，
+一來應該是商業公司投資的資源量不夠，
+再來應該是人力也不夠。
+
+雖然在 2009 年一度從 Google 發起一個叫作 Unladen Swallow 的 project，
+目標是在 CPython 上利用 LLVM 做 just-in-time compiler，
+不過最後在 2009 年底就漸漸中斷，目前只留下一個沒在開發的 branch。
+
+目前幾個針對效能的實作中，Cython 和 PyPy 是最成熟可行的選項，
+Cython 是一個 Python 的 superset，
+利用 Cython 提供的靜態型別宣告以及其他功能來修改程式，
+最後經過 compile 後可以讓程式變得相當快速，
+而 PyPy 則是一個 Drop-In Replacement 的實作，
+PyPy 的效能來自於 JIT、更有效率 Garbage Collection、更有效率的 Data Structure。
+
+近期倒是有由 Dropbox 發起的新實作叫 `Pysyon <https://github.com/dropbox/pyston>`_ ，
+目標是 based on LLVM 做一個有效率的 JIT 實作，
+由於是個新專案，目前 release 只有到 0.2 版，
+有 Dropbox 企業的金錢、人力資助下，
+只要這專案持續下去，相信出來的效能是會蠻有看頭的，
+不過專案目前還在早期開發中，就靜觀其變囉。
 
 Tutorial
 ========================================
@@ -28,7 +68,8 @@ PyPy 這個專案其實有兩個角色
 * Python 的 Interpreter 實作
 * 撰寫 Dynamic Languages 的 Interpreter 的 framework
 
-接下來這篇的重點會放在 "撰寫 Interpreter"
+"Interpreter 的 framework" 是 PyPy 這 project 最特別的地方，
+接下來這篇的重點將會放在 "撰寫 Interpreter"
 
 要做一個 Language 的 Interpreter 會需要以下事情
 
@@ -305,21 +346,58 @@ call 它後從它回傳的 function 開始翻譯，
         entry_point(sys.argv)
 
 
+此外還有一個部份需要修改，就是用到 sys module 裡的 stdin/stdout 的部份，
+因為目前 RPython 並沒有支援 sys.stdin 和 sys.stdout
+(雖然開發者說其實可以用 os.read 和 os.write 包裝) 所以需要改成用 os.read 和 os.write
+
+.. code-block:: python
+
+    import os
+
+    # sys.stdout.write(chr(tape.get()))
+
+    os.write(1, chr(tape.get()))    # 1 for stdout
+
+    # tape.set(ord(sys.stdin.read(1)))
+
+    data = os.read(0, 1)    # 0 for stdin, 1 for one byte
+    if data != '':
+        tape.set(ord(data[0]))
+
 接下來需要抓 PyPy 的 source code :
 
 .. code-block:: sh
 
     hg clone https://bitbucket.org/pypy/pypy
 
-
 接下來就交給 PyPy 做轉換
 
 .. code-block:: sh
 
-    python2 ./pypy/pypy/translator/goal/translate.py example2.py
+    pypy/rpython/bin/rpython example2.py
 
 然後就會看到許多 PyPy 吐出來的訊息，最後產生 ``example2-c`` 這個執行檔，
-這個轉換在我機器上大約需要 4x ~ 5x 秒
+這個轉換在我機器 (虛擬機) 上大約需要 4x ~ 5x 秒
+
+結果 :
+
+.. table::
+    :class: table table-bordered
+
+    +------------------+--------------+
+    | File Size        | 290552 bytes |
+    +------------------+--------------+
+    | Translation Time | 56.5 s       |
+    +------------------+--------------+
+
+.. table::
+    :class: table table-bordered
+
+    +-----------+----------------+
+    | Test File | Execution Time |
+    +===========+================+
+    | mandel.b  | 68.61 s        |
+    +-----------+----------------+
 
 接著試跑一下
 
@@ -348,7 +426,6 @@ Bash 裡有自己的 time command 可以看執行時間，
 
 如果想看更多 translate 時可以開的優化參數的話可以看
 `這裡 <https://pypy.readthedocs.org/en/latest/config/commandline.html>`_
-
 
 Compile with Clang
 ++++++++++++++++++++
@@ -422,7 +499,7 @@ red 有 "tape"，
 
 .. code-block:: sh
 
-    python2 ./pypy/rpython/translator/goal/translate.py --opt=jit example3.py
+    pypy/rpython/bin/rpython --opt=jit example3.py
 
 總結需要做的事 :
 
@@ -487,7 +564,7 @@ Debug and Trace Log
 
 .. code-block:: sh
 
-    python2 ./pypy/rpython/translator/goal/translate.py --opt=jit example4.py
+    pypy/rpython/bin/rpython --opt=jit example4.py
 
 接下來跑程式的時候先加環境變數來把操作寫進 log
 
@@ -507,12 +584,14 @@ Debug and Trace Log
 
     [3c091099eae17d] jit-log-opt-loop}
 
+中間則是每次執行的操作，有些操作如果被優化掉的話就不會出現
+
 
 Optimize
 ------------------------------
 
-purefunction
-++++++++++++++++++++
+elidable (old : purefunction)
++++++++++++++++++++++++++++++
 
 由於每次的 loop 都會去 dictionary 裡查對應的位址，
 但是其實這個 dictionary 裡的資訊是不會變的，
@@ -520,13 +599,13 @@ purefunction
 但是對 PyPy 而言，那個 dictionary 有可能會變動，
 但它不知道其實資料不會再改了，
 所以我們可以告訴它同樣的輸入一定會有相同的輸出，
-這可以用 PyPy 裡的 ``purefunction`` decorator 做告知
+這可以用 PyPy 裡的 ``elidable`` (以前是 ``purefunction``) decorator 做告知
 
 .. code-block:: python
 
-    from rpython.rlib.jit import purefunction
+    from rpython.rlib.jit import elidable
 
-    @purefunction
+    @elidable
     def get_matching_bracket(bracket_map, pc):
         return bracket_map[pc]
 
@@ -534,10 +613,169 @@ purefunction
 
 接下來跟前面一樣做轉換，最後拿到的程式就比原本快很多
 
+Delay Output
+++++++++++++++++++++
+
+對電腦來說 I/O 是很慢的，所以原本每個 byte 這樣讀讀寫寫也會有一點效能損失，
+所以可以把直先存起來，之後再一次 output，
+對於有大量 output 的 brainfuck 程式可能可以有一點點的幫助 (不多)
+
+.. code-block:: python
+
+    class Tape(object):
+        def __init__(self):
+            self.thetape = [0]
+            self.position = 0
+            self.output = ''
+            self.output_threshold = 50
+
+        def get(self):
+            return self.thetape[self.position]
+
+        def set(self, val):
+            self.thetape[self.position] = val
+
+        def inc(self):
+            self.thetape[self.position] += 1
+
+        def dec(self):
+            self.thetape[self.position] -= 1
+
+        def advance(self):
+            self.position += 1
+            if len(self.thetape) <= self.position:
+                self.thetape.append(0)
+
+        def devance(self):
+            self.position -= 1
+
+        def clear(self):
+            if self.output:
+                os.write(1, self.output)    # 1 for stdout
+                self.output = ''
+
+        def read(self):
+            self.clear()
+
+            data = os.read(0, 1)    # 0 for stdin, 1 for one byte
+
+            if data:
+                self.set(ord(data[0]))
+
+        def write(self):
+            self.output += chr(self.get())
+
+            if len(self.output) > self.output_threshold:
+                os.write(1, self.output)    # 1 for stdout
+                self.output = ''
+
+Zero
+++++++++++++++++++++
+
+Brainfuck code 裡面的 "[-]" 這樣的 loop 其實就是把目前指到的值歸零，
+所以可以直接把它 assign 成零，不要再慢慢減了，
+這樣換掉後可以有些許的提升
+
+Compact
+++++++++++++++++++++
+
+Brainfuck 的 code 裡面常常會出現連續的 "+" 或 "-" 或 "<" 或 ">"，
+但是這是可以一次完成的 (連續的 ">"、"<" 都可以和起來，"+"、"-" 也可以)，
+不需要一個一個慢慢加、一個一個慢慢移，
+所以如果把這部份處理掉，
+做更有效率的計算，
+可以獲得一部份的效能提升 ~
+
+額外紀錄
+========================================
+
+with statement in RPython
+------------------------------
+
+在寫 example 的時候，我開檔案那邊用的是 with statement 來幫我 handle，
+結果發現丟下去轉換的時候不會過，去 PyPy irc 問了後，
+發現其實 RPython 是有支援 with statement 的，
+只是近期在 RPython 對檔案的部份有了 ``rpython/rlib/rfile.py`` 這個實作，
+在 RPython 裡 built-in 的 open() 回傳的是這個 RFile class 的 instance，
+RPython 的 RFile 實作的是完整的 Python files 的 subset，
+但目前沒有寫 ``__enter__`` 和 ``__exit__`` methods，
+過沒多久開發者 Armin Rigo 就送了
+`一個 commit <https://bitbucket.org/pypy/pypy/commits/6657cb5a838dae0e9ad8453d6d412ef96ee155fa>`_
+補上了這部份，
+于是乎，我可以繼續用 with statement 丟下去給 PyPy 轉了 ~
+
+RPython's print statement
+------------------------------
+
+RPython 裡面其實是有支援 print statement 的，
+但是那大多只用於 debug，
+多數情況都用 os.read / os.write，
+不過其實可以用類似 "os.fdopen(1)" 的方法來拿到 stdout
+(不過要在 RPython function 裡，而不是 module global)，
+所以其實可以做到當我在 RPython 用 sys.stdout 時其實後面是 call rfile.py 裡面類似 getstdout() 的 function，
+它會取得並且 cache 用 os.fdopen() 取得的 rfile。
+
+畢竟 RPython 是要拿來寫 interpreter 的，
+有 os module 可以用來 I/O 其實也很夠，
+只是如果有 sys.stdout / sys.stdin 的支援對很多地方會更方便些，
+不過 PyPy team 應該也是缺錢缺人手，
+這也不算是核心大問題，
+暫時就先這樣吧，等看看哪天有人 contribute XD
+
+Comple with Clang
+------------------------------
+
+雖然前面有提到可以用 ``--cc=clang`` 來用 clang compile，
+但其實我在試的時候有出現問題，
+不過到 irc 上尋問後得到了解法，
+就是加上 ``--gcrootfinder=shadowstack`` ，
+以下是 Armin Rigo 的回覆 ::
+
+    I guess clang produces subtly different assembler that throws off "trackgcroot"
+    you can use --gcrootfinder=shadowstack
+    that will be slightly slower
+    (~10% and only before jit-compilation)
+    (trackgcroot is a hack used with --gcrootfinder=asmgcc, which is enabled only on Linux;
+    usually we have to fix it slightly for every new version of gcc...)
+
+if ... elif
+----------------------------------------
+
+在翻參數的時候，發現有個優化參數叫作 ``merge_if_blocks`` ，
+顧名思義就是把 Python 多層的 if ... elif block 合成 C 裡 switch 的形式，
+可以看
+`documentation 裡的說明 <https://pypy.readthedocs.org/en/latest/config/translation.backendopt.merge_if_blocks.html>`_
+裡面有示意圖 XD
+
+string replace
+----------------------------------------
+
+RPython 裡的 str 目前只支援 char 的 replace，
+但是可以從 ``rpython/rlib/rstring.py`` 裡找到 replace function 來替代，
+``from rpython.rlib.rstring import replace`` ，
+``replace(string, old, new, max)``
+
+以下是 irc 上詢問得到得回答 ::
+
+       wdv| any reason that RPython's string replace only works for char args ?
+     ronan| wdv: no very good reasons
+     ronan| wdv: it would be a bit of work to implement and interpreters are usually better off writing their own
+            replace at a low level
+    cfbolz| ronan, wdv: there is even a usable implementation, in rlib.rstring, I think
+
+rpython/rlib/jit.py
+------------------------------
+
+由於在看前面的 ``rpython/rlib/rstring.py`` 裡的 replace function 時，
+發現上面有一些 decorator，其中一個是 ``jit.elidable`` ，
+覺得好奇就去翻了一下，不翻還好，
+億翻發現就 tutorial 上寫的 ``purefunction`` 已經 deprecated 了 XD，
+現在要用剛剛看到的 "**elidable**"，
+趕快來改一下 ~
+
 Reference
 ========================================
 
-* `Tutorial: Writing an Interpreter with PyPy, Part 1 <http://morepypy.blogspot.tw/2011/04/tutorial-writing-interpreter-with-pypy.html>`_
-* `Tutorial Part 2: Adding a JIT <http://morepypy.blogspot.tw/2011/04/tutorial-part-2-adding-jit.html>`_
 * `Just-in-time compilation <http://en.wikipedia.org/wiki/Just-in-time_compilation>`_
 * `Tracing just-in-time compilation <http://en.wikipedia.org/wiki/Tracing_just-in-time_compilation>`_
+* `Interpreter (computing) <http://en.wikipedia.org/wiki/Interpreter_%28computing%29>`_
