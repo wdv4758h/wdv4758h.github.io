@@ -361,18 +361,9 @@ call 它後從它回傳的 function 開始翻譯，
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;接下來需要抓 PyPy 的 source code :&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;hg clone https://bitbucket.org/pypy/pypy
-
-&lt;span class="c"&gt;# 建環境&lt;/span&gt;
-virtualenv2 env
-&lt;span class="nb"&gt;source &lt;/span&gt;env/bin/activate
-
-cp -r pypy/py/ ../env/lib/python2.7/site-packages/
-cp -r pypy/rpython/ ../env/lib/python2.7/site-packages/
-
-pip install pytest
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;接下來就交給 PyPy 做轉換&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;python2 ./pypy/pypy/translator/goal/translate.py example2.py
+&lt;div class="highlight"&gt;&lt;pre&gt;pypy/rpython/bin/rpython example2.py
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;然後就會看到許多 PyPy 吐出來的訊息，最後產生 &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;example2-c&lt;/span&gt;&lt;/tt&gt; 這個執行檔，
 這個轉換在我機器 (虛擬機) 上大約需要 4x ~ 5x 秒&lt;/p&gt;
@@ -481,7 +472,7 @@ red 有 "tape"，
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;jitdriver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;jit_merge_point&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pc&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;pc&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tape&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;tape&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;program&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;program&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bracket_map&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;bracket_map&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;接下來轉換的時候多加一個 &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;--opt=jit&lt;/span&gt;&lt;/tt&gt; 參數&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;python2 ./pypy/rpython/translator/goal/translate.py --opt&lt;span class="o"&gt;=&lt;/span&gt;jit example3.py
+&lt;div class="highlight"&gt;&lt;pre&gt;pypy/rpython/bin/rpython --opt&lt;span class="o"&gt;=&lt;/span&gt;jit example3.py
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;總結需要做的事 :&lt;/p&gt;
 &lt;ul class="simple"&gt;
@@ -531,7 +522,7 @@ tracing mode 就停止，把追蹤紀錄丟給 optimizer，
             &lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;用跟前面一樣的方式轉換 :&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;python2 ./pypy/rpython/translator/goal/translate.py --opt&lt;span class="o"&gt;=&lt;/span&gt;jit example4.py
+&lt;div class="highlight"&gt;&lt;pre&gt;pypy/rpython/bin/rpython --opt&lt;span class="o"&gt;=&lt;/span&gt;jit example4.py
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;接下來跑程式的時候先加環境變數來把操作寫進 log&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;PYPYLOG&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;jit-log-opt:logfile ./example4-c test.b

@@ -490,18 +490,9 @@ call 它後從它回傳的 function 開始翻譯，
 </pre></div>
 <p>接下來需要抓 PyPy 的 source code :</p>
 <div class="highlight"><pre>hg clone https://bitbucket.org/pypy/pypy
-
-<span class="c"># 建環境</span>
-virtualenv2 env
-<span class="nb">source </span>env/bin/activate
-
-cp -r pypy/py/ ../env/lib/python2.7/site-packages/
-cp -r pypy/rpython/ ../env/lib/python2.7/site-packages/
-
-pip install pytest
 </pre></div>
 <p>接下來就交給 PyPy 做轉換</p>
-<div class="highlight"><pre>python2 ./pypy/pypy/translator/goal/translate.py example2.py
+<div class="highlight"><pre>pypy/rpython/bin/rpython example2.py
 </pre></div>
 <p>然後就會看到許多 PyPy 吐出來的訊息，最後產生 <tt class="docutils literal"><span class="pre">example2-c</span></tt> 這個執行檔，
 這個轉換在我機器 (虛擬機) 上大約需要 4x ~ 5x 秒</p>
@@ -610,7 +601,7 @@ red 有 "tape"，
 <div class="highlight"><pre><span class="n">jitdriver</span><span class="o">.</span><span class="n">jit_merge_point</span><span class="p">(</span><span class="n">pc</span><span class="o">=</span><span class="n">pc</span><span class="p">,</span> <span class="n">tape</span><span class="o">=</span><span class="n">tape</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">program</span><span class="p">,</span> <span class="n">bracket_map</span><span class="o">=</span><span class="n">bracket_map</span><span class="p">)</span>
 </pre></div>
 <p>接下來轉換的時候多加一個 <tt class="docutils literal"><span class="pre">--opt=jit</span></tt> 參數</p>
-<div class="highlight"><pre>python2 ./pypy/rpython/translator/goal/translate.py --opt<span class="o">=</span>jit example3.py
+<div class="highlight"><pre>pypy/rpython/bin/rpython --opt<span class="o">=</span>jit example3.py
 </pre></div>
 <p>總結需要做的事 :</p>
 <ul class="simple">
@@ -660,7 +651,7 @@ tracing mode 就停止，把追蹤紀錄丟給 optimizer，
             <span class="p">)</span>
 </pre></div>
 <p>用跟前面一樣的方式轉換 :</p>
-<div class="highlight"><pre>python2 ./pypy/rpython/translator/goal/translate.py --opt<span class="o">=</span>jit example4.py
+<div class="highlight"><pre>pypy/rpython/bin/rpython --opt<span class="o">=</span>jit example4.py
 </pre></div>
 <p>接下來跑程式的時候先加環境變數來把操作寫進 log</p>
 <div class="highlight"><pre><span class="nv">PYPYLOG</span><span class="o">=</span>jit-log-opt:logfile ./example4-c test.b
@@ -863,11 +854,11 @@ cfbolz| ronan, wdv: there is even a usable implementation, in rlib.rstring, I th
         <hr>
         <h2>Related Posts</h2>
         <ul>
+            <li><a href="/posts/2014/10/jitviewer/">Try the jitviewer</a></li>
             <li><a href="/posts/2014/10/RPython/">RPython Intro.</a></li>
             <li><a href="/posts/2014/09/incremental-gc/">Incremental Garbage Collector</a></li>
-            <li><a href="/posts/2014/09/ggc-spidermonkey/">Generational Garbage Collection for SpiderMonkey</a></li>
-            <li><a href="/posts/2014/10/jitviewer/">Try the jitviewer</a></li>
             <li><a href="/posts/2014/11/pypy-io-improvements/">[PyPy] IO improvements</a></li>
+            <li><a href="/posts/2014/09/ggc-spidermonkey/">Generational Garbage Collection for SpiderMonkey</a></li>
         </ul>
 
 	<hr>
