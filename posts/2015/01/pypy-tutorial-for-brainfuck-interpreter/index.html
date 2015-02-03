@@ -121,9 +121,10 @@
 <li><a class="reference internal" href="#if-elif" id="id22">if ... elif</a></li>
 <li><a class="reference internal" href="#string-replace" id="id23">string replace</a></li>
 <li><a class="reference internal" href="#rpython-rlib-jit-py" id="id24">rpython/rlib/jit.py</a></li>
+<li><a class="reference internal" href="#embedding-pypy" id="id25">Embedding PyPy</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#reference" id="id25">Reference</a></li>
+<li><a class="reference internal" href="#reference" id="id26">Reference</a></li>
 </ul>
 </div>
         </div>
@@ -840,9 +841,26 @@ cfbolz| ronan, wdv: there is even a usable implementation, in rlib.rstring, I th
 現在要用剛剛看到的 "<strong>elidable</strong>"，
 趕快來改一下 ~</p>
 </div>
+<div class="section" id="embedding-pypy">
+<h3><a class="toc-backref" href="#id25">Embedding PyPy</a></h3>
+<p>在 irc 上問問題的時候，剛好看到前面有人問了 <tt class="docutils literal"><span class="pre">libpypy-c.so</span></tt> 是幹嘛用的，
+原來是近期 PyPy 提供的功能，可以把 PyPy 嵌入其他地方，
+<a class="reference external" href="http://pypy.readthedocs.org/en/latest/embedding.html">官方 Document</a>
+有寫了簡單的 C 範例，include "PyPy.h" 後，
+把在 C 程式裡的 Python code char array 丟進去執行，
+甚至可以把丟參數給 Python 端的 function，
+提供了未來把 PyPy 嵌入別的地方的機會 ~</p>
+<p>附上 irc log :</p>
+<pre class="literal-block">
+mstuchli| This is prolly a stupid question, but the libpypy-c.so is a new thing, correct? What's it for?
+   fijal| mstuchli: for embedding
+ arigato| mstuchli: for embedding pypy into some other program, more precisely; now the "pypy" executable is
+          very small and just calls libpypy-c.so, but other programs may call it too
+</pre>
+</div>
 </div>
 <div class="section" id="reference">
-<h2><a class="toc-backref" href="#id25">Reference</a></h2>
+<h2><a class="toc-backref" href="#id26">Reference</a></h2>
 <ul class="simple">
 <li><a class="reference external" href="http://en.wikipedia.org/wiki/Just-in-time_compilation">Just-in-time compilation</a></li>
 <li><a class="reference external" href="http://en.wikipedia.org/wiki/Tracing_just-in-time_compilation">Tracing just-in-time compilation</a></li>
@@ -855,9 +873,9 @@ cfbolz| ronan, wdv: there is even a usable implementation, in rlib.rstring, I th
         <h2>Related Posts</h2>
         <ul>
             <li><a href="/posts/2014/10/jitviewer/">Try the jitviewer</a></li>
+            <li><a href="/posts/2014/11/pypy-io-improvements/">[PyPy] IO improvements</a></li>
             <li><a href="/posts/2014/10/RPython/">RPython Intro.</a></li>
             <li><a href="/posts/2014/09/incremental-gc/">Incremental Garbage Collector</a></li>
-            <li><a href="/posts/2014/11/pypy-io-improvements/">[PyPy] IO improvements</a></li>
             <li><a href="/posts/2014/09/ggc-spidermonkey/">Generational Garbage Collection for SpiderMonkey</a></li>
         </ul>
 
