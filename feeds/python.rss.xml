@@ -1,5 +1,500 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/python.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 06 Nov 2014 00:15:00 +0800</lastBuildDate><item><title>[PyPy] IO improvements</title><link>/posts/2014/11/pypy-io-improvements/</link><description>&lt;p&gt;剛剛看到 &lt;a class="reference external" href="http://morepypy.blogspot.tw/2014/11/pypy-io-improvements.html"&gt;PyPy status blog 上的新文章&lt;/a&gt; ，
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/python.rss.xml" rel="self"></atom:link><lastBuildDate>Sat, 31 Jan 2015 20:33:00 +0800</lastBuildDate><item><title>PyPy - Tutorial for Brainfuck Interpreter</title><link>/posts/2015/01/pypy-tutorial-for-brainfuck-interpreter/</link><description>&lt;p&gt;[&lt;strong&gt;Not finish yet&lt;/strong&gt;]&lt;/p&gt;
+
+&lt;div class="section" id="tutorial"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id4"&gt;Tutorial&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;PyPy 的官方 Blog 上，
+在 2011 年發了兩篇由 Andrew Brown 撰寫用 PyPy 來實作 Brainfuck Interpreter 的 Tutorial，
+時至今日，已經來到了 2015 年，中間也經過了許多 release，
+接下來將會以 PyPy 2.5 為試驗目標，
+更新一些舊 Tutorial 上需要改變的地方，並且和其他實作做初步比較。&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://morepypy.blogspot.tw/2011/04/tutorial-writing-interpreter-with-pypy.html"&gt;Tutorial: Writing an Interpreter with PyPy, Part 1&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://morepypy.blogspot.tw/2011/04/tutorial-part-2-adding-jit.html"&gt;Tutorial Part 2: Adding a JIT&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;PyPy 這個專案其實有兩個角色&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Python 的 Interpreter 實作&lt;/li&gt;
+&lt;li&gt;撰寫 Dynamic Languages 的 Interpreter 的 framework&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;接下來這篇的重點會放在 "撰寫 Interpreter"&lt;/p&gt;
+&lt;p&gt;要做一個 Language 的 Interpreter 會需要以下事情&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;source code parser&lt;/li&gt;
+&lt;li&gt;a bytecode interpretation loop&lt;/li&gt;
+&lt;li&gt;lots of standard library code&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;對於稍微複雜一點點的語言，實作這些這會需要不少的時間，
+更別提中間還得考慮 Memory 管理、Data Type 的實作，
+會有許多的東西需要煩惱。&lt;/p&gt;
+&lt;p&gt;如果可以用一個高階一點的語言來實作，那前面提到的事情就可以大幅化簡，
+可以利用到一些高階語言的特色，
+像是不用自己考慮記 Memory 管理、有好用的 Data Type 等，
+但是講到這，想必有人就會想到這個實作的速度應該會 "很慢"，
+在高階語言上在建一層來實作自己的語言，
+速度會比原本可能就不快的高階語言還來的更慢，
+所以 PyPy 就是來解決這部份的問題啦。&lt;/p&gt;
+&lt;p&gt;利用 PyPy 來寫 Interpreter 的話，要用的是一個叫作 RPython 的語言，
+看名字就知道跟 Python 有關，RPython 全名叫 Restricted Python，
+是一個 Python 的 subset，既然是 subset 也就代表寫出來的還是一個 Python 程式，
+但是 RPython 的特點是它的 type 是 inferable 的，
+所以雖然一樣不寫出 type，但是可以做到 statically typed，
+而 PyPy 的 toolchain 會把 RPython 的 code 轉成 C code 再丟給 GCC 或 Clang 這類 C compiler 來 compile 成 native code，
+藉此你可以獲得 native code 的 interpreter，所以會跑的比原本疊在 interpreter 上的 interpreter 來的快，
+在這當中 PyPy 還可以幫你處理 Garbage Collecion 和 JIT。&lt;/p&gt;
+&lt;p&gt;關於 RPython 的內容，有興趣的話可以看
+2007 年 "&lt;strong&gt;RPython: a Step Towards Reconciling Dynamically and Statically Typed OO Languages&lt;/strong&gt;"
+這篇 paper 裡的內容 (Bibtex key : AACM-DLS07)，
+或是這邊有 &lt;a class="reference external" href="https://speakerdeck.com/antocuni/rpython-a-step-towards-reconciling-dynamically-and-statically-typed-object-oriented-languages"&gt;slide 版本&lt;/a&gt; 。&lt;/p&gt;
+&lt;p&gt;關於 PyPy 裡面用到的 JIT 技術可以看這篇 &lt;a class="reference external" href="https://speakerdeck.com/antocuni/pypy-jit-under-the-hood"&gt;(2012) PyPy JIT under the hood&lt;/a&gt; 當作入門。&lt;/p&gt;
+&lt;div class="section" id="brainfuck-interpreter-begin"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id5"&gt;Brainfuck Interpreter - Begin&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Brainfuck spec :&lt;/p&gt;
+&lt;table border="1" class="table table-bordered docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="25%"&gt;&lt;/col&gt;
+&lt;col width="75%"&gt;&lt;/col&gt;
+&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;&lt;div class="first last"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;&amp;gt;&lt;/span&gt;&lt;span class="c"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;指標加一&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;div class="first last"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;&amp;lt;&lt;/span&gt;&lt;span class="c"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;指標減一&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;div class="first last"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;+&lt;/span&gt;&lt;span class="c"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;指標指向的 byte 的值加一&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;div class="first last"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;-&lt;/span&gt;&lt;span class="c"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;指標指向的 byte 的值減一&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;div class="first last"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nt"&gt;.&lt;/span&gt;&lt;span class="c"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;輸出指標指向的 byte (ASCII)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;div class="first last"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nt"&gt;,&lt;/span&gt;&lt;span class="c"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;輸入到指標指向的 byte (ASCII)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;div class="first last"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;[&lt;/span&gt;&lt;span class="c"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;如果指標指向的 byte 為零，向後跳到對應的 ] 指令的下一指令&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;div class="first last"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;如果指標指向的 byte 不為零，向前跳到對應的 [ 指令的下一指令&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Brainfuck to C (assuming "ptr" is of type "unsigned char*") :&lt;/p&gt;
+&lt;table border="1" class="table table-bordered docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="30%"&gt;&lt;/col&gt;
+&lt;col width="70%"&gt;&lt;/col&gt;
+&lt;/colgroup&gt;
+&lt;thead valign="bottom"&gt;
+&lt;tr&gt;&lt;th class="head"&gt;brainfuck command&lt;/th&gt;
+&lt;th class="head"&gt;C equivalent&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;(Program Start)&lt;/td&gt;
+&lt;td&gt;&lt;div class="first last"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;infinitely&lt;/span&gt; &lt;span class="n"&gt;large&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;ptr&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;div class="first last"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;&amp;gt;&lt;/span&gt;&lt;span class="c"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div class="first last"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="n"&gt;ptr&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;div class="first last"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;&amp;lt;&lt;/span&gt;&lt;span class="c"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div class="first last"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;ptr&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;div class="first last"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;+&lt;/span&gt;&lt;span class="c"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div class="first last"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;++*&lt;/span&gt;&lt;span class="n"&gt;ptr&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;div class="first last"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;-&lt;/span&gt;&lt;span class="c"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div class="first last"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;--*&lt;/span&gt;&lt;span class="n"&gt;ptr&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;div class="first last"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nt"&gt;.&lt;/span&gt;&lt;span class="c"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div class="first last"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;putchar&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;ptr&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;div class="first last"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nt"&gt;,&lt;/span&gt;&lt;span class="c"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div class="first last"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;ptr&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;getchar&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;div class="first last"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;[&lt;/span&gt;&lt;span class="c"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div class="first last"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;ptr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;div class="first last"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;td&gt;&lt;div class="first last"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;另外任何不在 Brainfuck spec 裡的東西都會被忽略&lt;/p&gt;
+&lt;p&gt;以下我們開始做 Brainfuck Interpreter&lt;/p&gt;
+&lt;p&gt;首先先做 parser 還有 main loop : (以下 code 大部份來自官方 Tutorial 的 example 1)&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;#!/usr/bin/env python&lt;/span&gt;
+&lt;span class="c"&gt;# -*- coding: utf-8 -*-&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sys&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Tape&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;object&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="sd"&gt;"""&lt;/span&gt;
+&lt;span class="sd"&gt;    因為 Brainfuck 的 code 就像是在 Tape 上操作一樣，&lt;/span&gt;
+&lt;span class="sd"&gt;    所以有這個 class 來處理所有 action&lt;/span&gt;
+&lt;span class="sd"&gt;    """&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;thetape&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;position&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;thetape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;position&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;set&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;val&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;thetape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;position&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;val&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;inc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;thetape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;position&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;dec&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;thetape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;position&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;-=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;advance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;position&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;thetape&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;position&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;thetape&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;devance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;position&lt;/span&gt; &lt;span class="o"&gt;-=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;main_loop&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;program&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bracket_map&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;pc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
+    &lt;span class="n"&gt;tape&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Tape&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+    &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="n"&gt;pc&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;program&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+
+        &lt;span class="n"&gt;code&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;program&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;pc&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;code&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;'&amp;gt;'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="n"&gt;tape&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;advance&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+        &lt;span class="k"&gt;elif&lt;/span&gt; &lt;span class="n"&gt;code&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;'&amp;lt;'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="n"&gt;tape&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;devance&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+        &lt;span class="k"&gt;elif&lt;/span&gt; &lt;span class="n"&gt;code&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;'+'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="n"&gt;tape&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;inc&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+        &lt;span class="k"&gt;elif&lt;/span&gt; &lt;span class="n"&gt;code&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;'-'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="n"&gt;tape&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;dec&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+        &lt;span class="k"&gt;elif&lt;/span&gt; &lt;span class="n"&gt;code&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;'.'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="c"&gt;# print&lt;/span&gt;
+            &lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;stdout&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;write&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;chr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tape&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;()))&lt;/span&gt;
+
+        &lt;span class="k"&gt;elif&lt;/span&gt; &lt;span class="n"&gt;code&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;','&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="c"&gt;# read from stdin&lt;/span&gt;
+            &lt;span class="n"&gt;tape&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;ord&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;stdin&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+
+        &lt;span class="k"&gt;elif&lt;/span&gt; &lt;span class="n"&gt;code&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;'['&lt;/span&gt; &lt;span class="ow"&gt;and&lt;/span&gt; &lt;span class="n"&gt;tape&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="c"&gt;# Skip forward to the matching ]&lt;/span&gt;
+            &lt;span class="n"&gt;pc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;bracket_map&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;pc&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+
+        &lt;span class="k"&gt;elif&lt;/span&gt; &lt;span class="n"&gt;code&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;']'&lt;/span&gt; &lt;span class="ow"&gt;and&lt;/span&gt; &lt;span class="n"&gt;tape&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="c"&gt;# Skip back to the matching [&lt;/span&gt;
+            &lt;span class="n"&gt;pc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;bracket_map&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;pc&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+
+        &lt;span class="n"&gt;pc&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;parse&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;program&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;parsed&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+    &lt;span class="n"&gt;bracket_map&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{}&lt;/span&gt;
+    &lt;span class="n"&gt;leftstack&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+
+    &lt;span class="n"&gt;pc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;char&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;program&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;char&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'['&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;']'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'&amp;lt;'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'&amp;gt;'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'+'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'-'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;','&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'.'&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+            &lt;span class="n"&gt;parsed&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;char&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;char&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;'['&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+                &lt;span class="n"&gt;leftstack&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pc&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="k"&gt;elif&lt;/span&gt; &lt;span class="n"&gt;char&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;']'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+                &lt;span class="n"&gt;left&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;leftstack&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pop&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+                &lt;span class="n"&gt;right&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pc&lt;/span&gt;
+                &lt;span class="n"&gt;bracket_map&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;left&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;right&lt;/span&gt;
+                &lt;span class="n"&gt;bracket_map&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;right&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;left&lt;/span&gt;
+            &lt;span class="n"&gt;pc&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s"&gt;''&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;parsed&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;bracket_map&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;input_file&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+
+    &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;input_file&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'r'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;program&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bracket_map&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;parse&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+
+    &lt;span class="n"&gt;main_loop&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;program&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bracket_map&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;"__main__"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;argv&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="section" id="pypy-translation"&gt;
+&lt;h4&gt;&lt;a class="toc-backref" href="#id6"&gt;PyPy Translation&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;在 PyPy repo 的 &lt;tt class="docutils literal"&gt;pypy/rpython/translator/goal/&lt;/tt&gt; 裡有一些範例，
+其中 &lt;tt class="docutils literal"&gt;targetnopstandalone.py&lt;/tt&gt; 是簡單的 Hello World&lt;/p&gt;
+&lt;p&gt;在這邊，我們需要一個叫做 &lt;tt class="docutils literal"&gt;target&lt;/tt&gt; 的 function，
+它會回傳另一個 function 作為 entry point，
+PyPy 翻譯時會先找叫作 &lt;tt class="docutils literal"&gt;target&lt;/tt&gt; 的 function，
+call 它後從它回傳的 function 開始翻譯，
+而最後產生的執行檔在執行時傳入的參數也是給這個回傳的 function&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;input_file&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+
+    &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;input_file&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'r'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;program&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bracket_map&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;parse&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+
+    &lt;span class="n"&gt;main_loop&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;program&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bracket_map&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;entry_point&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;argv&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;argv&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;filename&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;argv&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"You must supply a filename"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+
+    &lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;target&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;entry_point&lt;/span&gt;
+
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;"__main__"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;entry_point&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;argv&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;接下來需要抓 PyPy 的 source code :&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;hg clone https://bitbucket.org/pypy/pypy
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;接下來就交給 PyPy 做轉換&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;python2 ./pypy/pypy/translator/goal/translate.py example2.py
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;然後就會看到許多 PyPy 吐出來的訊息，最後產生 &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;example2-c&lt;/span&gt;&lt;/tt&gt; 這個執行檔，
+這個轉換在我機器上大約需要 4x ~ 5x 秒&lt;/p&gt;
+&lt;p&gt;接著試跑一下&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;./example2-c mandel.b
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Bash 裡有自己的 time command 可以看執行時間，
+但是如果要更多資訊的話 (-v)，需要 GNU 版的 time command&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo pacman -S &lt;span class="nb"&gt;time&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;time&lt;/span&gt; -v ./example2-c mandel.b
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;以上是成功的利用 RPython 寫了 Brainfuck Interpreter 交給 PyPy 的 toolchain 轉成 machine code ~&lt;/p&gt;
+&lt;p&gt;複習一下，要可以給 PyPy toolchain 轉換需要以下條件&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;符合 RPython 語法、功能&lt;/li&gt;
+&lt;li&gt;有 &lt;tt class="docutils literal"&gt;target&lt;/tt&gt; 這個 function 回傳進入的 function&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如果想看更多 translate 時可以開的優化參數的話可以看
+&lt;a class="reference external" href="https://pypy.readthedocs.org/en/latest/config/commandline.html"&gt;這裡&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="compile-with-clang"&gt;
+&lt;h4&gt;&lt;a class="toc-backref" href="#id7"&gt;Compile with Clang&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;參數 : &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;--cc=clang&lt;/span&gt;&lt;/tt&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="more-jobs"&gt;
+&lt;h4&gt;&lt;a class="toc-backref" href="#id8"&gt;More Jobs&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;參數 : &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;--make-jobs=8&lt;/span&gt;&lt;/tt&gt;&lt;/p&gt;
+&lt;p&gt;(針對 C backend compile 時的 &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;-j&lt;/span&gt;&lt;/tt&gt; 參數)&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="garbage-collection"&gt;
+&lt;h4&gt;&lt;a class="toc-backref" href="#id9"&gt;Garbage Collection&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;參數 : &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;--gc=incminimark&lt;/span&gt;&lt;/tt&gt;&lt;/p&gt;
+&lt;p&gt;目前可用的選項 :&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;boehm&lt;/li&gt;
+&lt;li&gt;ref (default)&lt;/li&gt;
+&lt;li&gt;semispace&lt;/li&gt;
+&lt;li&gt;statistics&lt;/li&gt;
+&lt;li&gt;generation&lt;/li&gt;
+&lt;li&gt;hybrid&lt;/li&gt;
+&lt;li&gt;minimark&lt;/li&gt;
+&lt;li&gt;incminimark&lt;/li&gt;
+&lt;li&gt;none&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="brainfuck-interpreter-jit"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id10"&gt;Brainfuck Interpreter - JIT&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;前面試過了利用 PyPy toolchain 幫我們把 RPython code 轉成 C 去 compile，
+接下來是利用 PyPy 幫我們做 JIT 出來，
+感謝 PyPy 開發者的努力，我們要在 RPython 上做出 JIT 並不難，
+因為 PyPy 的 JIT generator 有幾個目標 :&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;簡單 (基於原本的 Interpreter 上，只要做少許修改就能有 JIT)&lt;/li&gt;
+&lt;li&gt;Maintainable (不會因為加了 JIT 就造成需要開另外的 project 分別 maintain)&lt;/li&gt;
+&lt;li&gt;夠快 (雖然 JIT 是生出來的，但是也要速度也要夠快)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在這目標下，就算是沒有大量人力、金錢贊助的語言，也能簡單做出不錯的 JIT，
+下面就讓我們來嘗試一下 ~&lt;/p&gt;
+&lt;p&gt;(詳細訊息請看 &lt;a class="reference external" href="http://rpython.readthedocs.org/en/latest/jit/index.html"&gt;RPython Documentation - JIT&lt;/a&gt; )&lt;/p&gt;
+&lt;p&gt;要讓 PyPy toolchain 生出 JIT 需要提供一些資訊給它，
+首先是告訴它哪些東西構成一個 execution frame，
+在我們的 Brainfuck Interpreter 中並沒有真的 stack frame，
+這問題就變成在執行一個 command 的時候，
+哪些東西是不變的，哪些是會變的，
+不變的被稱做 "&lt;strong&gt;green&lt;/strong&gt;"，會變的稱做 "&lt;strong&gt;red&lt;/strong&gt;"，
+在我們的例子中，green 有 "pc"、"program"、"brakcet_map"，
+red 有 "tape"，
+接著就從 &lt;tt class="docutils literal"&gt;rpython.rlib.jit&lt;/tt&gt; 取得 &lt;tt class="docutils literal"&gt;JitDriver&lt;/tt&gt; 這個 metaclass 來生出我們需要要的 class&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;rpython.rlib.jit&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;JitDriver&lt;/span&gt;
+&lt;span class="n"&gt;jitdriver&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;JitDriver&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;greens&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;'pc'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'program'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'bracket_map'&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;reds&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;'tape'&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;然後在 main loop 裡的 while 開頭 call jit_merge_point&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;jitdriver&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;jit_merge_point&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pc&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;pc&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tape&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;tape&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;program&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;program&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bracket_map&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;bracket_map&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;接下來轉換的時候多加一個 &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;--opt=jit&lt;/span&gt;&lt;/tt&gt; 參數&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;python2 ./pypy/rpython/translator/goal/translate.py --opt&lt;span class="o"&gt;=&lt;/span&gt;jit example3.py
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;總結需要做的事 :&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;import &lt;tt class="docutils literal"&gt;JitDriver&lt;/tt&gt; 進來，把 green 和 red 變數分好&lt;/li&gt;
+&lt;li&gt;在 main loop 裡 while 一開始的地方 call &lt;tt class="docutils literal"&gt;jit_merge_point&lt;/tt&gt; 把變數傳進去&lt;/li&gt;
+&lt;li&gt;translate 的時候加上 &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;--opt=jit&lt;/span&gt;&lt;/tt&gt; 參數&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;開 JIT 參數後，轉換的時間就變長，檔案也變大，但是跑下去就快很多&lt;/p&gt;
+&lt;p&gt;註 :&lt;/p&gt;
+&lt;p&gt;以前還需要寫一個 jitpolicy function，
+但是現在已經是 default 了 (看 &lt;tt class="docutils literal"&gt;rpython/translator/driver.py&lt;/tt&gt;)，
+所以不用寫&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;jitpolicy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;driver&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;rpython.jit.codewriter.policy&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;JitPolicy&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;JitPolicy&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="tracing-jit"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id11"&gt;Tracing JIT&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;在試完生出的 JIT 的速度後，
+來了解一下它是怎麼運作的。&lt;/p&gt;
+&lt;p&gt;Interpreter 執行的是我們寫的 interpreter code，
+當發現 target laugange (Brainfuck) 寫的某段 code 很常跑時，
+會把這部份標成 "Hot"，並且會做追蹤，當下一次進到這個循環的時候，
+interpreter 會進入 tracing mode，把每個指令紀錄下來，循環結束後，
+tracing mode 就停止，把追蹤紀錄丟給 optimizer，
+接著丟給 assembler，產生 machine code 在之後執行時使用。&lt;/p&gt;
+&lt;p&gt;基於對原本 interpreter 的一些 assumption，
+生出的 machine code 通常會對很多地方進行優化，
+因此生出的 machine code 會包含一些 guard 做驗證，
+驗證失敗的話就退回去使用原本 interpreter 的 code。&lt;/p&gt;
+&lt;div class="section" id="debug-and-trace-log"&gt;
+&lt;h4&gt;&lt;a class="toc-backref" href="#id12"&gt;Debug and Trace Log&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;雖然前面已經生出了不錯的結果，
+但是總是會想要知道還能不能更好，
+所以我們需要知道 JIT 做了些什麼事，
+接下來就寫一個紀錄用的 function (參數是前面提過的 green 變數) 並傳給 jitdriver&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_location&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pc&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;program&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bracket_map&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s"&gt;"&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt;_&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt;_&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt;"&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;
+        &lt;span class="n"&gt;program&lt;/span&gt;&lt;span class="p"&gt;[:&lt;/span&gt;&lt;span class="n"&gt;pc&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;program&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;pc&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;program&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;pc&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:]&lt;/span&gt;
+    &lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;jitdriver&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;JitDriver&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+                &lt;span class="n"&gt;greens&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;'pc'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'program'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'bracket_map'&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
+                &lt;span class="n"&gt;reds&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;'tape'&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
+                &lt;span class="n"&gt;get_printable_location&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;get_location&lt;/span&gt;
+            &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;用跟前面一樣的方式轉換 :&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;python2 ./pypy/rpython/translator/goal/translate.py --opt&lt;span class="o"&gt;=&lt;/span&gt;jit example4.py
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;接下來跑程式的時候先加環境變數來把操作寫進 log&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;PYPYLOG&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;jit-log-opt:logfile ./example4-c test.b
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;這 log 可以看出有哪些部份被轉成了 machine code，
+這在尋找有那邊可以優化的時候很有用&lt;/p&gt;
+&lt;p&gt;每個 trace 的開頭都是像這樣&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+[3c091099e7a4a7] {jit-log-opt-loop
+&lt;/pre&gt;
+&lt;p&gt;結尾都是像這樣&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+[3c091099eae17d] jit-log-opt-loop}
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="optimize"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id13"&gt;Optimize&lt;/a&gt;&lt;/h3&gt;
+&lt;div class="section" id="purefunction"&gt;
+&lt;h4&gt;&lt;a class="toc-backref" href="#id14"&gt;purefunction&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;由於每次的 loop 都會去 dictionary 裡查對應的位址，
+但是其實這個 dictionary 裡的資訊是不會變的，
+所以是可以直接編成 machine code 來加速，
+但是對 PyPy 而言，那個 dictionary 有可能會變動，
+但它不知道其實資料不會再改了，
+所以我們可以告訴它同樣的輸入一定會有相同的輸出，
+這可以用 PyPy 裡的 &lt;tt class="docutils literal"&gt;purefunction&lt;/tt&gt; decorator 做告知&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;rpython.rlib.jit&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;purefunction&lt;/span&gt;
+
+&lt;span class="nd"&gt;@purefunction&lt;/span&gt;
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_matching_bracket&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;bracket_map&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;pc&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;bracket_map&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;pc&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="c"&gt;# 下面把查 bracket_map 的地方換掉&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;接下來跟前面一樣做轉換，最後拿到的程式就比原本快很多&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="reference"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id15"&gt;Reference&lt;/a&gt;&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://morepypy.blogspot.tw/2011/04/tutorial-writing-interpreter-with-pypy.html"&gt;Tutorial: Writing an Interpreter with PyPy, Part 1&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://morepypy.blogspot.tw/2011/04/tutorial-part-2-adding-jit.html"&gt;Tutorial Part 2: Adding a JIT&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Just-in-time_compilation"&gt;Just-in-time compilation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Tracing_just-in-time_compilation"&gt;Tracing just-in-time compilation&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Sat, 31 Jan 2015 20:33:00 +0800</pubDate><guid>tag:,2015-01-31:posts/2015/01/pypy-tutorial-for-brainfuck-interpreter/</guid><category>PyPy</category><category>Brainfuck</category><category>Interpreter</category><category>JIT</category><category>GC</category></item><item><title>[PyPy] IO improvements</title><link>/posts/2014/11/pypy-io-improvements/</link><description>&lt;p&gt;剛剛看到 &lt;a class="reference external" href="http://morepypy.blogspot.tw/2014/11/pypy-io-improvements.html"&gt;PyPy status blog 上的新文章&lt;/a&gt; ，
 以下是大概的內容&lt;/p&gt;
 &lt;p&gt;PyPy 在 Warsaw (為波蘭的首都及最大的城市) 的 sprint 順利結束了 (wrapped up)，
 有些 branch (gc_no_cleanup_nursery, gc-incminimark-pinning) 已經順利 merge 回 master (improve I/O &amp;amp; GC)&lt;/p&gt;
