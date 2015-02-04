@@ -778,7 +778,7 @@ Brainfuck 的 code 裡面常常會出現連續的 "+" 或 "-" 或 "<" 或 ">"，
 
 最後複習整個流程 :
 
-1. 用 RPython 寫你的 Interpreter
+1. 用 RPython 寫你的 Interpreter (需要有 target function)
 2. 針對 main loop 把變數分類、call JIT 的 Driver class
 3. 丟下去 toolchain 轉換
 4. 效能還不夠時，找出不會變得地方用 "**elidable**" decorator 做告知
