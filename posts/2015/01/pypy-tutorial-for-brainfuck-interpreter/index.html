@@ -865,7 +865,7 @@ Well, okay: money. (And time, people, resources, but if you have money, you can 
 當中累積的技術都將為未來奠定基礎。</p>
 <p>最後複習整個流程 :</p>
 <ol class="arabic simple">
-<li>用 RPython 寫你的 Interpreter</li>
+<li>用 RPython 寫你的 Interpreter (需要有 target function)</li>
 <li>針對 main loop 把變數分類、call JIT 的 Driver class</li>
 <li>丟下去 toolchain 轉換</li>
 <li>效能還不夠時，找出不會變得地方用 "<strong>elidable</strong>" decorator 做告知</li>
@@ -996,11 +996,11 @@ mstuchli| This is prolly a stupid question, but the libpypy-c.so is a new thing,
         <hr>
         <h2>Related Posts</h2>
         <ul>
-            <li><a href="/posts/2014/09/incremental-gc/">Incremental Garbage Collector</a></li>
-            <li><a href="/posts/2014/09/ggc-spidermonkey/">Generational Garbage Collection for SpiderMonkey</a></li>
             <li><a href="/posts/2014/10/jitviewer/">Try the jitviewer</a></li>
             <li><a href="/posts/2014/11/pypy-io-improvements/">[PyPy] IO improvements</a></li>
+            <li><a href="/posts/2014/09/incremental-gc/">Incremental Garbage Collector</a></li>
             <li><a href="/posts/2014/10/RPython/">RPython Intro.</a></li>
+            <li><a href="/posts/2014/09/ggc-spidermonkey/">Generational Garbage Collection for SpiderMonkey</a></li>
         </ul>
 
 	<hr>

@@ -734,7 +734,7 @@ Well, okay: money. (And time, people, resources, but if you have money, you can 
 當中累積的技術都將為未來奠定基礎。&lt;/p&gt;
 &lt;p&gt;最後複習整個流程 :&lt;/p&gt;
 &lt;ol class="arabic simple"&gt;
-&lt;li&gt;用 RPython 寫你的 Interpreter&lt;/li&gt;
+&lt;li&gt;用 RPython 寫你的 Interpreter (需要有 target function)&lt;/li&gt;
 &lt;li&gt;針對 main loop 把變數分類、call JIT 的 Driver class&lt;/li&gt;
 &lt;li&gt;丟下去 toolchain 轉換&lt;/li&gt;
 &lt;li&gt;效能還不夠時，找出不會變得地方用 "&lt;strong&gt;elidable&lt;/strong&gt;" decorator 做告知&lt;/li&gt;
