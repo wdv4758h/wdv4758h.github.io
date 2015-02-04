@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 04 Feb 2015 00:33:00 +0800</lastBuildDate><item><title>PyPy - Tutorial for Brainfuck Interpreter</title><link>/posts/2015/01/pypy-tutorial-for-brainfuck-interpreter/</link><description>
 &lt;div class="section" id="introduction"&gt;
-&lt;h2&gt;&lt;a class="toc-backref" href="#id3"&gt;Introduction&lt;/a&gt;&lt;/h2&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id4"&gt;Introduction&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;Python 是一個 Dynamic Language，
 官方提供了一個叫作 CPython 的 Interpreter 實作，
 Interpreter 讓這類 Dynamic Language 不用事先 compile 過才可以執行，
@@ -32,12 +32,13 @@ PyPy 的效能來自於 JIT、更有效率 Garbage Collection、更有效率的 
 不過專案目前還在早期開發中，就靜觀其變囉。&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="tutorial"&gt;
-&lt;h2&gt;&lt;a class="toc-backref" href="#id4"&gt;Tutorial&lt;/a&gt;&lt;/h2&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id5"&gt;Tutorial&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;PyPy 的官方 Blog 上，
 在 2011 年發了兩篇由 Andrew Brown 撰寫用 PyPy 來實作 Brainfuck Interpreter 的 Tutorial，
 時至今日，已經來到了 2015 年，中間也經過了許多 release，
 接下來將會以 PyPy 2.5 為試驗目標，
-更新一些舊 Tutorial 上需要改變的地方，並且和其他實作做初步比較。&lt;/p&gt;
+更新一些舊 Tutorial 上需要改變的地方，並且和其他實作做初步比較。
+(本練習的 code 會放在 GitHub &lt;a class="reference external" href="https://github.com/wdv4758h/brainfuck_bench"&gt;wdv4758h/brainfuck_bench&lt;/a&gt; )&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://morepypy.blogspot.tw/2011/04/tutorial-writing-interpreter-with-pypy.html"&gt;Tutorial: Writing an Interpreter with PyPy, Part 1&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://morepypy.blogspot.tw/2011/04/tutorial-part-2-adding-jit.html"&gt;Tutorial Part 2: Adding a JIT&lt;/a&gt;&lt;/li&gt;
@@ -70,7 +71,8 @@ PyPy 的效能來自於 JIT、更有效率 Garbage Collection、更有效率的 
 是一個 Python 的 subset，既然是 subset 也就代表寫出來的還是一個 Python 程式，
 但是 RPython 的特點是它的 type 是 inferable 的，
 所以雖然一樣不寫出 type，但是可以做到 statically typed，
-而 PyPy 的 toolchain 會把 RPython 的 code 轉成 C code 再丟給 GCC 或 Clang 這類 C compiler 來 compile 成 native code，
+而 PyPy 的 RPython toolchain 會把 RPython 的 code 轉成 C code
+再丟給 GCC 或 Clang 這類 C compiler 來 compile 成 native code，
 藉此你可以獲得 native code 的 interpreter，所以會跑的比原本疊在 interpreter 上的 interpreter 來的快，
 在這當中 PyPy 還可以幫你處理 Garbage Collecion 和 JIT。&lt;/p&gt;
 &lt;p&gt;關於 RPython 的內容，有興趣的話可以看
@@ -79,7 +81,7 @@ PyPy 的效能來自於 JIT、更有效率 Garbage Collection、更有效率的 
 或是這邊有 &lt;a class="reference external" href="https://speakerdeck.com/antocuni/rpython-a-step-towards-reconciling-dynamically-and-statically-typed-object-oriented-languages"&gt;slide 版本&lt;/a&gt; 。&lt;/p&gt;
 &lt;p&gt;關於 PyPy 裡面用到的 JIT 技術可以看這篇 &lt;a class="reference external" href="https://speakerdeck.com/antocuni/pypy-jit-under-the-hood"&gt;(2012) PyPy JIT under the hood&lt;/a&gt; 當作入門。&lt;/p&gt;
 &lt;div class="section" id="brainfuck-interpreter-begin"&gt;
-&lt;h3&gt;&lt;a class="toc-backref" href="#id5"&gt;Brainfuck Interpreter - Begin&lt;/a&gt;&lt;/h3&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id6"&gt;Brainfuck Interpreter - Begin&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;Brainfuck spec :&lt;/p&gt;
 &lt;table border="1" class="table table-bordered docutils"&gt;
 &lt;colgroup&gt;
@@ -313,7 +315,7 @@ PyPy 的效能來自於 JIT、更有效率 Garbage Collection、更有效率的 
     &lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;argv&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;div class="section" id="pypy-translation"&gt;
-&lt;h4&gt;&lt;a class="toc-backref" href="#id6"&gt;PyPy Translation&lt;/a&gt;&lt;/h4&gt;
+&lt;h4&gt;&lt;a class="toc-backref" href="#id7"&gt;PyPy Translation&lt;/a&gt;&lt;/h4&gt;
 &lt;p&gt;在 PyPy repo 的 &lt;tt class="docutils literal"&gt;pypy/rpython/translator/goal/&lt;/tt&gt; 裡有一些範例，
 其中 &lt;tt class="docutils literal"&gt;targetnopstandalone.py&lt;/tt&gt; 是簡單的 Hello World&lt;/p&gt;
 &lt;p&gt;在這邊，我們需要一個叫做 &lt;tt class="docutils literal"&gt;target&lt;/tt&gt; 的 function，
@@ -407,8 +409,8 @@ call 它後從它回傳的 function 開始翻譯，
 &lt;/pre&gt;&lt;/div&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;time&lt;/span&gt; -v ./example2-c mandel.b
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;以上是成功的利用 RPython 寫了 Brainfuck Interpreter 交給 PyPy 的 toolchain 轉成 machine code ~&lt;/p&gt;
-&lt;p&gt;複習一下，要可以給 PyPy toolchain 轉換需要以下條件&lt;/p&gt;
+&lt;p&gt;以上是成功的利用 RPython 寫了 Brainfuck Interpreter 交給 PyPy 的 RPython toolchain 轉成 machine code ~&lt;/p&gt;
+&lt;p&gt;複習一下，要可以給 PyPy 的 RPython toolchain 轉換需要以下條件&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;符合 RPython 語法、功能&lt;/li&gt;
 &lt;li&gt;有 &lt;tt class="docutils literal"&gt;target&lt;/tt&gt; 這個 function 回傳進入的 function&lt;/li&gt;
@@ -417,16 +419,16 @@ call 它後從它回傳的 function 開始翻譯，
 &lt;a class="reference external" href="https://pypy.readthedocs.org/en/latest/config/commandline.html"&gt;這裡&lt;/a&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="compile-with-clang"&gt;
-&lt;h4&gt;&lt;a class="toc-backref" href="#id7"&gt;Compile with Clang&lt;/a&gt;&lt;/h4&gt;
+&lt;h4&gt;&lt;a class="toc-backref" href="#id8"&gt;Compile with Clang&lt;/a&gt;&lt;/h4&gt;
 &lt;p&gt;參數 : &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;--cc=clang&lt;/span&gt;&lt;/tt&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="more-jobs"&gt;
-&lt;h4&gt;&lt;a class="toc-backref" href="#id8"&gt;More Jobs&lt;/a&gt;&lt;/h4&gt;
+&lt;h4&gt;&lt;a class="toc-backref" href="#id9"&gt;More Jobs&lt;/a&gt;&lt;/h4&gt;
 &lt;p&gt;參數 : &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;--make-jobs=8&lt;/span&gt;&lt;/tt&gt;&lt;/p&gt;
 &lt;p&gt;(針對 C backend compile 時的 &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;-j&lt;/span&gt;&lt;/tt&gt; 參數)&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="garbage-collection"&gt;
-&lt;h4&gt;&lt;a class="toc-backref" href="#id9"&gt;Garbage Collection&lt;/a&gt;&lt;/h4&gt;
+&lt;h4&gt;&lt;a class="toc-backref" href="#id10"&gt;Garbage Collection&lt;/a&gt;&lt;/h4&gt;
 &lt;p&gt;參數 : &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;--gc=incminimark&lt;/span&gt;&lt;/tt&gt;&lt;/p&gt;
 &lt;p&gt;目前可用的選項 :&lt;/p&gt;
 &lt;ul class="simple"&gt;
@@ -443,8 +445,8 @@ call 它後從它回傳的 function 開始翻譯，
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="section" id="brainfuck-interpreter-jit"&gt;
-&lt;h3&gt;&lt;a class="toc-backref" href="#id10"&gt;Brainfuck Interpreter - JIT&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;前面試過了利用 PyPy toolchain 幫我們把 RPython code 轉成 C 去 compile，
+&lt;h3&gt;&lt;a class="toc-backref" href="#id11"&gt;Brainfuck Interpreter - JIT&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;前面試過了利用 PyPy 的 RPython toolchain 幫我們把 RPython code 轉成 C 去 compile，
 接下來是利用 PyPy 幫我們做 JIT 出來，
 感謝 PyPy 開發者的努力，我們要在 RPython 上做出 JIT 並不難，
 因為 PyPy 的 JIT generator 有幾個目標 :&lt;/p&gt;
@@ -456,7 +458,7 @@ call 它後從它回傳的 function 開始翻譯，
 &lt;p&gt;在這目標下，就算是沒有大量人力、金錢贊助的語言，也能簡單做出不錯的 JIT，
 下面就讓我們來嘗試一下 ~&lt;/p&gt;
 &lt;p&gt;(詳細訊息請看 &lt;a class="reference external" href="http://rpython.readthedocs.org/en/latest/jit/index.html"&gt;RPython Documentation - JIT&lt;/a&gt; )&lt;/p&gt;
-&lt;p&gt;要讓 PyPy toolchain 生出 JIT 需要提供一些資訊給它，
+&lt;p&gt;要讓 PyPy 的 RPython toolchain 生出 JIT 需要提供一些資訊給它，
 首先是告訴它哪些東西構成一個 execution frame，
 在我們的 Brainfuck Interpreter 中並沒有真的 stack frame，
 這問題就變成在執行一個 command 的時候，
@@ -491,7 +493,7 @@ red 有 "tape"，
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="section" id="tracing-jit"&gt;
-&lt;h3&gt;&lt;a class="toc-backref" href="#id11"&gt;Tracing JIT&lt;/a&gt;&lt;/h3&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id12"&gt;Tracing JIT&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;在試完生出的 JIT 的速度後，
 來了解一下它是怎麼運作的。&lt;/p&gt;
 &lt;p&gt;Interpreter 執行的是我們寫的 interpreter code，
@@ -505,7 +507,7 @@ tracing mode 就停止，把追蹤紀錄丟給 optimizer，
 因此生出的 machine code 會包含一些 guard 做驗證，
 驗證失敗的話就退回去使用原本 interpreter 的 code。&lt;/p&gt;
 &lt;div class="section" id="debug-and-trace-log"&gt;
-&lt;h4&gt;&lt;a class="toc-backref" href="#id12"&gt;Debug and Trace Log&lt;/a&gt;&lt;/h4&gt;
+&lt;h4&gt;&lt;a class="toc-backref" href="#id13"&gt;Debug and Trace Log&lt;/a&gt;&lt;/h4&gt;
 &lt;p&gt;雖然前面已經生出了不錯的結果，
 但是總是會想要知道還能不能更好，
 所以我們需要知道 JIT 做了些什麼事，
@@ -541,9 +543,9 @@ tracing mode 就停止，把追蹤紀錄丟給 optimizer，
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="section" id="optimize"&gt;
-&lt;h3&gt;&lt;a class="toc-backref" href="#id13"&gt;Optimize&lt;/a&gt;&lt;/h3&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id14"&gt;Optimize&lt;/a&gt;&lt;/h3&gt;
 &lt;div class="section" id="elidable-old-purefunction"&gt;
-&lt;h4&gt;&lt;a class="toc-backref" href="#id14"&gt;elidable (old : purefunction)&lt;/a&gt;&lt;/h4&gt;
+&lt;h4&gt;&lt;a class="toc-backref" href="#id15"&gt;elidable (old : purefunction)&lt;/a&gt;&lt;/h4&gt;
 &lt;p&gt;由於每次的 loop 都會去 dictionary 裡查對應的位址，
 但是其實這個 dictionary 裡的資訊是不會變的，
 所以是可以直接編成 machine code 來加速，
@@ -562,7 +564,7 @@ tracing mode 就停止，把追蹤紀錄丟給 optimizer，
 &lt;p&gt;接下來跟前面一樣做轉換，最後拿到的程式就比原本快很多&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="delay-output"&gt;
-&lt;h4&gt;&lt;a class="toc-backref" href="#id15"&gt;Delay Output&lt;/a&gt;&lt;/h4&gt;
+&lt;h4&gt;&lt;a class="toc-backref" href="#id16"&gt;Delay Output&lt;/a&gt;&lt;/h4&gt;
 &lt;p&gt;對電腦來說 I/O 是很慢的，所以原本每個 byte 這樣讀讀寫寫也會有一點效能損失，
 所以可以把直先存起來，之後再一次 output，
 對於有大量 output 的 brainfuck 程式可能可以有一點點的幫助 (不多)&lt;/p&gt;
@@ -615,13 +617,13 @@ tracing mode 就停止，把追蹤紀錄丟給 optimizer，
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="section" id="zero"&gt;
-&lt;h4&gt;&lt;a class="toc-backref" href="#id16"&gt;Zero&lt;/a&gt;&lt;/h4&gt;
+&lt;h4&gt;&lt;a class="toc-backref" href="#id17"&gt;Zero&lt;/a&gt;&lt;/h4&gt;
 &lt;p&gt;Brainfuck code 裡面的 "[-]" 這樣的 loop 其實就是把目前指到的值歸零，
 所以可以直接把它 assign 成零，不要再慢慢減了，
 這樣換掉後可以有些許的提升&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="compact"&gt;
-&lt;h4&gt;&lt;a class="toc-backref" href="#id17"&gt;Compact&lt;/a&gt;&lt;/h4&gt;
+&lt;h4&gt;&lt;a class="toc-backref" href="#id18"&gt;Compact&lt;/a&gt;&lt;/h4&gt;
 &lt;p&gt;Brainfuck 的 code 裡面常常會出現連續的 "+" 或 "-" 或 "&amp;lt;" 或 "&amp;gt;"，
 但是這是可以一次完成的 (連續的 "&amp;gt;"、"&amp;lt;" 都可以和起來，"+"、"-" 也可以)，
 不需要一個一個慢慢加、一個一個慢慢移，
@@ -630,11 +632,27 @@ tracing mode 就停止，把追蹤紀錄丟給 optimizer，
 可以獲得一部份的效能提升 ~&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;
 &lt;div class="section" id="id2"&gt;
-&lt;h2&gt;&lt;a class="toc-backref" href="#id18"&gt;額外紀錄&lt;/a&gt;&lt;/h2&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id19"&gt;總結&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;這個 Tutorial 做的只是簡單的 Brainfuck Interpreter，
+離真正實用的語言的 interpreter 還有很大的差距，
+但這邊可以讓我們看出在還沒化很多心力下去調整效能前，
+例用 RPython 提供給我們的 toolchain 是可以簡單獲得不錯的效益的，
+當然事實上是還有很多可以調整的空間，
+不過已經讓我們跨出例用 RPython toolchain 的第一步了 ~&lt;/p&gt;
+&lt;p&gt;最後複習整個流程 :&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;用 RPython 寫你的 Interpreter&lt;/li&gt;
+&lt;li&gt;針對 main loop 把變數分類、call JIT 的 Driver class&lt;/li&gt;
+&lt;li&gt;丟下去 toolchain 轉換&lt;/li&gt;
+&lt;li&gt;效能還不夠時，找出不會變得地方用 "&lt;strong&gt;elidable&lt;/strong&gt;" decorator 做告知&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id3"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id20"&gt;額外紀錄&lt;/a&gt;&lt;/h2&gt;
 &lt;div class="section" id="with-statement-in-rpython"&gt;
-&lt;h3&gt;&lt;a class="toc-backref" href="#id19"&gt;with statement in RPython&lt;/a&gt;&lt;/h3&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id21"&gt;with statement in RPython&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;在寫 example 的時候，我開檔案那邊用的是 with statement 來幫我 handle，
 結果發現丟下去轉換的時候不會過，去 PyPy irc 問了後，
 發現其實 RPython 是有支援 with statement 的，
@@ -648,7 +666,7 @@ RPython 的 RFile 實作的是完整的 Python files 的 subset，
 于是乎，我可以繼續用 with statement 丟下去給 PyPy 轉了 ~&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="rpython-s-print-statement"&gt;
-&lt;h3&gt;&lt;a class="toc-backref" href="#id20"&gt;RPython's print statement&lt;/a&gt;&lt;/h3&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id22"&gt;RPython's print statement&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;RPython 裡面其實是有支援 print statement 的，
 但是那大多只用於 debug，
 多數情況都用 os.read / os.write，
@@ -664,7 +682,7 @@ RPython 的 RFile 實作的是完整的 Python files 的 subset，
 暫時就先這樣吧，等看看哪天有人 contribute XD&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="comple-with-clang"&gt;
-&lt;h3&gt;&lt;a class="toc-backref" href="#id21"&gt;Comple with Clang&lt;/a&gt;&lt;/h3&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id23"&gt;Comple with Clang&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;雖然前面有提到可以用 &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;--cc=clang&lt;/span&gt;&lt;/tt&gt; 來用 clang compile，
 但其實我在試的時候有出現問題，
 不過到 irc 上尋問後得到了解法，
@@ -680,7 +698,7 @@ usually we have to fix it slightly for every new version of gcc...)
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;div class="section" id="if-elif"&gt;
-&lt;h3&gt;&lt;a class="toc-backref" href="#id22"&gt;if ... elif&lt;/a&gt;&lt;/h3&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id24"&gt;if ... elif&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;在翻參數的時候，發現有個優化參數叫作 &lt;tt class="docutils literal"&gt;merge_if_blocks&lt;/tt&gt; ，
 顧名思義就是把 Python 多層的 if ... elif block 合成 C 裡 switch 的形式，
 可以看
@@ -688,7 +706,7 @@ usually we have to fix it slightly for every new version of gcc...)
 裡面有示意圖 XD&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="string-replace"&gt;
-&lt;h3&gt;&lt;a class="toc-backref" href="#id23"&gt;string replace&lt;/a&gt;&lt;/h3&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id25"&gt;string replace&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;RPython 裡的 str 目前只支援 char 的 replace，
 但是可以從 &lt;tt class="docutils literal"&gt;rpython/rlib/rstring.py&lt;/tt&gt; 裡找到 replace function 來替代，
 &lt;tt class="docutils literal"&gt;from rpython.rlib.rstring import replace&lt;/tt&gt; ，
@@ -703,7 +721,7 @@ cfbolz| ronan, wdv: there is even a usable implementation, in rlib.rstring, I th
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;div class="section" id="rpython-rlib-jit-py"&gt;
-&lt;h3&gt;&lt;a class="toc-backref" href="#id24"&gt;rpython/rlib/jit.py&lt;/a&gt;&lt;/h3&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id26"&gt;rpython/rlib/jit.py&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;由於在看前面的 &lt;tt class="docutils literal"&gt;rpython/rlib/rstring.py&lt;/tt&gt; 裡的 replace function 時，
 發現上面有一些 decorator，其中一個是 &lt;tt class="docutils literal"&gt;jit.elidable&lt;/tt&gt; ，
 覺得好奇就去翻了一下，不翻還好，
@@ -712,7 +730,7 @@ cfbolz| ronan, wdv: there is even a usable implementation, in rlib.rstring, I th
 趕快來改一下 ~&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="embedding-pypy"&gt;
-&lt;h3&gt;&lt;a class="toc-backref" href="#id25"&gt;Embedding PyPy&lt;/a&gt;&lt;/h3&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id27"&gt;Embedding PyPy&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;在 irc 上問問題的時候，剛好看到前面有人問了 &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;libpypy-c.so&lt;/span&gt;&lt;/tt&gt; 是幹嘛用的，
 原來是近期 PyPy 提供的功能，可以把 PyPy 嵌入其他地方，
 &lt;a class="reference external" href="http://pypy.readthedocs.org/en/latest/embedding.html"&gt;官方 Document&lt;/a&gt;
@@ -730,11 +748,12 @@ mstuchli| This is prolly a stupid question, but the libpypy-c.so is a new thing,
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class="section" id="reference"&gt;
-&lt;h2&gt;&lt;a class="toc-backref" href="#id26"&gt;Reference&lt;/a&gt;&lt;/h2&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id28"&gt;Reference&lt;/a&gt;&lt;/h2&gt;
 &lt;ul class="simple"&gt;
-&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Just-in-time_compilation"&gt;Just-in-time compilation&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Tracing_just-in-time_compilation"&gt;Tracing just-in-time compilation&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Interpreter_%28computing%29"&gt;Interpreter (computing)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Just-in-time_compilation"&gt;Wikipedia - Just-in-time compilation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Tracing_just-in-time_compilation"&gt;Wikipedia - Tracing just-in-time compilation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Interpreter_%28computing%29"&gt;Wikipedia - Interpreter (computing)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Unladen_Swallow"&gt;Wikipedia - Unladen Swallow&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 </description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Wed, 04 Feb 2015 00:33:00 +0800</pubDate><guid>tag:,2015-01-31:posts/2015/01/pypy-tutorial-for-brainfuck-interpreter/</guid><category>PyPy</category><category>Brainfuck</category><category>Interpreter</category><category>JIT</category><category>GC</category></item><item><title>Xorg with libinput as driver</title><link>/posts/2015/01/xorg-with-libinput-as-driver/</link><description>&lt;div class="section" id="libinput"&gt;
