@@ -5,7 +5,7 @@
 :category: Python
 :tags: PyPy, Brainfuck, Interpreter, JIT, GC
 :author: wdv4758h
-:summary: use PyPy's toolchain to make a Brinfuck Interpreter with JIT
+:summary: use PyPy's RPython toolchain to make a Brinfuck Interpreter with JIT
 
 .. contents::
 
@@ -59,6 +59,7 @@ PyPy 的官方 Blog 上，
 時至今日，已經來到了 2015 年，中間也經過了許多 release，
 接下來將會以 PyPy 2.5 為試驗目標，
 更新一些舊 Tutorial 上需要改變的地方，並且和其他實作做初步比較。
+(本練習的 code 會放在 GitHub `wdv4758h/brainfuck_bench <https://github.com/wdv4758h/brainfuck_bench>`_ )
 
 * `Tutorial: Writing an Interpreter with PyPy, Part 1 <http://morepypy.blogspot.tw/2011/04/tutorial-writing-interpreter-with-pypy.html>`_
 * `Tutorial Part 2: Adding a JIT <http://morepypy.blogspot.tw/2011/04/tutorial-part-2-adding-jit.html>`_
@@ -94,7 +95,8 @@ PyPy 這個專案其實有兩個角色
 是一個 Python 的 subset，既然是 subset 也就代表寫出來的還是一個 Python 程式，
 但是 RPython 的特點是它的 type 是 inferable 的，
 所以雖然一樣不寫出 type，但是可以做到 statically typed，
-而 PyPy 的 toolchain 會把 RPython 的 code 轉成 C code 再丟給 GCC 或 Clang 這類 C compiler 來 compile 成 native code，
+而 PyPy 的 RPython toolchain 會把 RPython 的 code 轉成 C code
+再丟給 GCC 或 Clang 這類 C compiler 來 compile 成 native code，
 藉此你可以獲得 native code 的 interpreter，所以會跑的比原本疊在 interpreter 上的 interpreter 來的快，
 在這當中 PyPy 還可以幫你處理 Garbage Collecion 和 JIT。
 
@@ -417,9 +419,9 @@ Bash 裡有自己的 time command 可以看執行時間，
 
     time -v ./example2-c mandel.b
 
-以上是成功的利用 RPython 寫了 Brainfuck Interpreter 交給 PyPy 的 toolchain 轉成 machine code ~
+以上是成功的利用 RPython 寫了 Brainfuck Interpreter 交給 PyPy 的 RPython toolchain 轉成 machine code ~
 
-複習一下，要可以給 PyPy toolchain 轉換需要以下條件
+複習一下，要可以給 PyPy 的 RPython toolchain 轉換需要以下條件
 
 * 符合 RPython 語法、功能
 * 有 ``target`` 這個 function 回傳進入的 function
@@ -459,7 +461,7 @@ Garbage Collection
 Brainfuck Interpreter - JIT
 ----------------------------------------
 
-前面試過了利用 PyPy toolchain 幫我們把 RPython code 轉成 C 去 compile，
+前面試過了利用 PyPy 的 RPython toolchain 幫我們把 RPython code 轉成 C 去 compile，
 接下來是利用 PyPy 幫我們做 JIT 出來，
 感謝 PyPy 開發者的努力，我們要在 RPython 上做出 JIT 並不難，
 因為 PyPy 的 JIT generator 有幾個目標 :
@@ -473,7 +475,7 @@ Brainfuck Interpreter - JIT
 
 (詳細訊息請看 `RPython Documentation - JIT <http://rpython.readthedocs.org/en/latest/jit/index.html>`_ )
 
-要讓 PyPy toolchain 生出 JIT 需要提供一些資訊給它，
+要讓 PyPy 的 RPython toolchain 生出 JIT 需要提供一些資訊給它，
 首先是告訴它哪些東西構成一個 execution frame，
 在我們的 Brainfuck Interpreter 中並沒有真的 stack frame，
 這問題就變成在執行一個 command 的時候，
@@ -686,6 +688,23 @@ Brainfuck 的 code 裡面常常會出現連續的 "+" 或 "-" 或 "<" 或 ">"，
 做更有效率的計算，
 可以獲得一部份的效能提升 ~
 
+總結
+------------------------------
+
+這個 Tutorial 做的只是簡單的 Brainfuck Interpreter，
+離真正實用的語言的 interpreter 還有很大的差距，
+但這邊可以讓我們看出在還沒化很多心力下去調整效能前，
+例用 RPython 提供給我們的 toolchain 是可以簡單獲得不錯的效益的，
+當然事實上是還有很多可以調整的空間，
+不過已經讓我們跨出例用 RPython toolchain 的第一步了 ~
+
+最後複習整個流程 :
+
+1. 用 RPython 寫你的 Interpreter
+2. 針對 main loop 把變數分類、call JIT 的 Driver class
+3. 丟下去 toolchain 轉換
+4. 效能還不夠時，找出不會變得地方用 "**elidable**" decorator 做告知
+
 額外紀錄
 ========================================
 
@@ -796,6 +815,7 @@ Embedding PyPy
 Reference
 ========================================
 
-* `Just-in-time compilation <http://en.wikipedia.org/wiki/Just-in-time_compilation>`_
-* `Tracing just-in-time compilation <http://en.wikipedia.org/wiki/Tracing_just-in-time_compilation>`_
-* `Interpreter (computing) <http://en.wikipedia.org/wiki/Interpreter_%28computing%29>`_
+* `Wikipedia - Just-in-time compilation <http://en.wikipedia.org/wiki/Just-in-time_compilation>`_
+* `Wikipedia - Tracing just-in-time compilation <http://en.wikipedia.org/wiki/Tracing_just-in-time_compilation>`_
+* `Wikipedia - Interpreter (computing) <http://en.wikipedia.org/wiki/Interpreter_%28computing%29>`_
+* `Wikipedia - Unladen Swallow <http://en.wikipedia.org/wiki/Unladen_Swallow>`_
