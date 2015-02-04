@@ -614,6 +614,41 @@ red 有 "tape"，
 <li>translate 的時候加上 <tt class="docutils literal"><span class="pre">--opt=jit</span></tt> 參數</li>
 </ul>
 <p>開 JIT 參數後，轉換的時間就變長，檔案也變大，但是跑下去就快很多</p>
+<p>結果 :</p>
+<table border="1" class="table table-bordered docutils">
+<colgroup>
+<col width="55%"></col>
+<col width="45%"></col>
+</colgroup>
+<tbody valign="top">
+<tr><td>File Size</td>
+<td>5954320 bytes</td>
+</tr>
+<tr><td>Translation Time</td>
+<td>977.4 s</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="table table-bordered docutils">
+<colgroup>
+<col width="41%"></col>
+<col width="59%"></col>
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Test File</th>
+<th class="head">Execution Time</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>mandel.b</td>
+<td>27.64 s</td>
+</tr>
+</tbody>
+</table>
+<p>沒改很多 code，只做了 import 和寫幾行去 call import 進來的東西，
+時間從 68.61 s 變 27.64 s (不過還是很慢)</p>
+<p>附上轉換時的圖 XD</p>
+<img alt="PyPy Translation" src="/img/pypy/pypy-translate.png"/>
 <p>註 :</p>
 <p>以前還需要寫一個 jitpolicy function，
 但是現在已經是 default 了 (看 <tt class="docutils literal">rpython/translator/driver.py</tt>)，
@@ -693,6 +728,37 @@ tracing mode 就停止，把追蹤紀錄丟給 optimizer，
 <span class="c"># 下面把查 bracket_map 的地方換掉</span>
 </pre></div>
 <p>接下來跟前面一樣做轉換，最後拿到的程式就比原本快很多</p>
+<table border="1" class="table table-bordered docutils">
+<colgroup>
+<col width="55%"></col>
+<col width="45%"></col>
+</colgroup>
+<tbody valign="top">
+<tr><td>File Size</td>
+<td>5852352 bytes</td>
+</tr>
+<tr><td>Translation Time</td>
+<td>960.2 s</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="table table-bordered docutils">
+<colgroup>
+<col width="41%"></col>
+<col width="59%"></col>
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Test File</th>
+<th class="head">Execution Time</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>mandel.b</td>
+<td>9.58 s</td>
+</tr>
+</tbody>
+</table>
+<p>結果從 27.64 s 降到了 9.58 s</p>
 </div>
 <div class="section" id="delay-output">
 <h4><a class="toc-backref" href="#id17">Delay Output</a></h4>
@@ -793,7 +859,10 @@ Well, okay: money. (And time, people, resources, but if you have money, you can 
 而有了一個完整的 toolchain，
 而且包含幫忙處理 GC 和 JIT，
 這樣的專案和成熟度，
-目前應該找不到相似對手 (或許只是我沒聽過)。</p>
+目前應該找不到相似對手
+(從 <a class="reference external" href="http://stackoverflow.com/a/12126562">這篇 StackOverflow 的回答</a> 也可以看出還沒有類似的成熟專案)，
+無論數年後這專案走向如何，
+當中累積的技術都將為未來奠定基礎。</p>
 <p>最後複習整個流程 :</p>
 <ol class="arabic simple">
 <li>用 RPython 寫你的 Interpreter</li>
@@ -910,9 +979,16 @@ mstuchli| This is prolly a stupid question, but the libpypy-c.so is a new thing,
 <li><a class="reference external" href="http://en.wikipedia.org/wiki/Unladen_Swallow">Wikipedia - Unladen Swallow</a></li>
 <li><a class="reference external" href="http://www.slideshare.net/jserv/pypy-dynamic-language-compilation-framework">PyPy: Dynamic Language Compilation Framework</a></li>
 <li><a class="reference external" href="https://speakerdeck.com/nzpug/ryan-kelly-pypy-dot-js-what-how-why">Ryan Kelly: PyPy.js: What? How? Why?</a></li>
+<li><a class="reference external" href="http://www.aosabook.org/en/pypy.html">The Architecture of Open Source Applications - PyPy</a></li>
 <li><a class="reference external" href="http://calmerthanyouare.org/2015/01/07/optimizing-brainfuck.html">brainfuck optimization strategies</a></li>
 <li><a class="reference external" href="http://blog.linux.org.tw/~jserv/archives/002119.html">打造 Brainfuck 的 JIT compiler</a></li>
 <li><a class="reference external" href="http://blog.linux.org.tw/~jserv/archives/2011/04/_llvm_brainfuck.html">透過 LLVM 打造 Brainfuck JIT compiler</a></li>
+<li><a class="reference external" href="http://www.nayuki.io/page/optimizing-brainfuck-compiler">Optimizing brainfuck compiler</a></li>
+<li><a class="reference external" href="http://copy.sh/brainfuck/">Brainfuck Interpreter</a></li>
+<li><a class="reference external" href="http://www.stups.uni-duesseldorf.de/mediawiki/images/1/18/Pub-BoCuFiRi09_246.pdf">Tracing the Meta-Level: PyPy’s Tracing JIT Compiler</a></li>
+<li><a class="reference external" href="http://cfbolz.de/">Carl Friedrich Bolz's site</a></li>
+<li><a class="reference external" href="https://speakerdeck.com/antocuni/rpython-a-step-towards-reconciling-dynamically-and-statically-typed-object-oriented-languages">RPython: a Step Towards Reconciling Dynamically and Statically Typed OO Languages</a></li>
+<li><a class="reference external" href="http://llvm.org/pubs/2006-10-DLS-PyPy.pdf">PyPy's Approach to Virtual Machine Construction</a></li>
 </ul>
 </div>
 </div>
@@ -920,11 +996,11 @@ mstuchli| This is prolly a stupid question, but the libpypy-c.so is a new thing,
         <hr>
         <h2>Related Posts</h2>
         <ul>
+            <li><a href="/posts/2014/09/incremental-gc/">Incremental Garbage Collector</a></li>
+            <li><a href="/posts/2014/09/ggc-spidermonkey/">Generational Garbage Collection for SpiderMonkey</a></li>
             <li><a href="/posts/2014/10/jitviewer/">Try the jitviewer</a></li>
             <li><a href="/posts/2014/11/pypy-io-improvements/">[PyPy] IO improvements</a></li>
-            <li><a href="/posts/2014/09/ggc-spidermonkey/">Generational Garbage Collection for SpiderMonkey</a></li>
             <li><a href="/posts/2014/10/RPython/">RPython Intro.</a></li>
-            <li><a href="/posts/2014/09/incremental-gc/">Incremental Garbage Collector</a></li>
         </ul>
 
 	<hr>

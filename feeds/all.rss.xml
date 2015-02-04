@@ -483,6 +483,41 @@ red 有 "tape"，
 &lt;li&gt;translate 的時候加上 &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;--opt=jit&lt;/span&gt;&lt;/tt&gt; 參數&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;開 JIT 參數後，轉換的時間就變長，檔案也變大，但是跑下去就快很多&lt;/p&gt;
+&lt;p&gt;結果 :&lt;/p&gt;
+&lt;table border="1" class="table table-bordered docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="55%"&gt;&lt;/col&gt;
+&lt;col width="45%"&gt;&lt;/col&gt;
+&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;File Size&lt;/td&gt;
+&lt;td&gt;5954320 bytes&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Translation Time&lt;/td&gt;
+&lt;td&gt;977.4 s&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;table border="1" class="table table-bordered docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="41%"&gt;&lt;/col&gt;
+&lt;col width="59%"&gt;&lt;/col&gt;
+&lt;/colgroup&gt;
+&lt;thead valign="bottom"&gt;
+&lt;tr&gt;&lt;th class="head"&gt;Test File&lt;/th&gt;
+&lt;th class="head"&gt;Execution Time&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;mandel.b&lt;/td&gt;
+&lt;td&gt;27.64 s&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;沒改很多 code，只做了 import 和寫幾行去 call import 進來的東西，
+時間從 68.61 s 變 27.64 s (不過還是很慢)&lt;/p&gt;
+&lt;p&gt;附上轉換時的圖 XD&lt;/p&gt;
+&lt;img alt="PyPy Translation" src="/img/pypy/pypy-translate.png"/&gt;
 &lt;p&gt;註 :&lt;/p&gt;
 &lt;p&gt;以前還需要寫一個 jitpolicy function，
 但是現在已經是 default 了 (看 &lt;tt class="docutils literal"&gt;rpython/translator/driver.py&lt;/tt&gt;)，
@@ -562,6 +597,37 @@ tracing mode 就停止，把追蹤紀錄丟給 optimizer，
 &lt;span class="c"&gt;# 下面把查 bracket_map 的地方換掉&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;接下來跟前面一樣做轉換，最後拿到的程式就比原本快很多&lt;/p&gt;
+&lt;table border="1" class="table table-bordered docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="55%"&gt;&lt;/col&gt;
+&lt;col width="45%"&gt;&lt;/col&gt;
+&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;File Size&lt;/td&gt;
+&lt;td&gt;5852352 bytes&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Translation Time&lt;/td&gt;
+&lt;td&gt;960.2 s&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;table border="1" class="table table-bordered docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="41%"&gt;&lt;/col&gt;
+&lt;col width="59%"&gt;&lt;/col&gt;
+&lt;/colgroup&gt;
+&lt;thead valign="bottom"&gt;
+&lt;tr&gt;&lt;th class="head"&gt;Test File&lt;/th&gt;
+&lt;th class="head"&gt;Execution Time&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;mandel.b&lt;/td&gt;
+&lt;td&gt;9.58 s&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;結果從 27.64 s 降到了 9.58 s&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="delay-output"&gt;
 &lt;h4&gt;&lt;a class="toc-backref" href="#id17"&gt;Delay Output&lt;/a&gt;&lt;/h4&gt;
@@ -662,7 +728,10 @@ Well, okay: money. (And time, people, resources, but if you have money, you can 
 而有了一個完整的 toolchain，
 而且包含幫忙處理 GC 和 JIT，
 這樣的專案和成熟度，
-目前應該找不到相似對手 (或許只是我沒聽過)。&lt;/p&gt;
+目前應該找不到相似對手
+(從 &lt;a class="reference external" href="http://stackoverflow.com/a/12126562"&gt;這篇 StackOverflow 的回答&lt;/a&gt; 也可以看出還沒有類似的成熟專案)，
+無論數年後這專案走向如何，
+當中累積的技術都將為未來奠定基礎。&lt;/p&gt;
 &lt;p&gt;最後複習整個流程 :&lt;/p&gt;
 &lt;ol class="arabic simple"&gt;
 &lt;li&gt;用 RPython 寫你的 Interpreter&lt;/li&gt;
@@ -779,9 +848,16 @@ mstuchli| This is prolly a stupid question, but the libpypy-c.so is a new thing,
 &lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Unladen_Swallow"&gt;Wikipedia - Unladen Swallow&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://www.slideshare.net/jserv/pypy-dynamic-language-compilation-framework"&gt;PyPy: Dynamic Language Compilation Framework&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="https://speakerdeck.com/nzpug/ryan-kelly-pypy-dot-js-what-how-why"&gt;Ryan Kelly: PyPy.js: What? How? Why?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.aosabook.org/en/pypy.html"&gt;The Architecture of Open Source Applications - PyPy&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://calmerthanyouare.org/2015/01/07/optimizing-brainfuck.html"&gt;brainfuck optimization strategies&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://blog.linux.org.tw/~jserv/archives/002119.html"&gt;打造 Brainfuck 的 JIT compiler&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://blog.linux.org.tw/~jserv/archives/2011/04/_llvm_brainfuck.html"&gt;透過 LLVM 打造 Brainfuck JIT compiler&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.nayuki.io/page/optimizing-brainfuck-compiler"&gt;Optimizing brainfuck compiler&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://copy.sh/brainfuck/"&gt;Brainfuck Interpreter&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.stups.uni-duesseldorf.de/mediawiki/images/1/18/Pub-BoCuFiRi09_246.pdf"&gt;Tracing the Meta-Level: PyPy’s Tracing JIT Compiler&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://cfbolz.de/"&gt;Carl Friedrich Bolz's site&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://speakerdeck.com/antocuni/rpython-a-step-towards-reconciling-dynamically-and-statically-typed-object-oriented-languages"&gt;RPython: a Step Towards Reconciling Dynamically and Statically Typed OO Languages&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://llvm.org/pubs/2006-10-DLS-PyPy.pdf"&gt;PyPy's Approach to Virtual Machine Construction&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
 </description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Wed, 04 Feb 2015 00:33:00 +0800</pubDate><guid>tag:,2015-01-31:posts/2015/01/pypy-tutorial-for-brainfuck-interpreter/</guid><category>PyPy</category><category>Brainfuck</category><category>Interpreter</category><category>JIT</category><category>GC</category></item><item><title>Xorg with libinput as driver</title><link>/posts/2015/01/xorg-with-libinput-as-driver/</link><description>&lt;div class="section" id="libinput"&gt;
