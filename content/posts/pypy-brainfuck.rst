@@ -511,6 +511,35 @@ red 有 "tape"，
 
 開 JIT 參數後，轉換的時間就變長，檔案也變大，但是跑下去就快很多
 
+
+結果 :
+
+.. table::
+    :class: table table-bordered
+
+    +------------------+---------------+
+    | File Size        | 5954320 bytes |
+    +------------------+---------------+
+    | Translation Time | 977.4 s       |
+    +------------------+---------------+
+
+.. table::
+    :class: table table-bordered
+
+    +-----------+----------------+
+    | Test File | Execution Time |
+    +===========+================+
+    | mandel.b  | 27.64 s        |
+    +-----------+----------------+
+
+沒改很多 code，只做了 import 和寫幾行去 call import 進來的東西，
+時間從 68.61 s 變 27.64 s (不過還是很慢)
+
+附上轉換時的圖 XD
+
+.. image:: /img/pypy/pypy-translate.png
+    :alt: PyPy Translation
+
 註 :
 
 以前還需要寫一個 jitpolicy function，
@@ -614,6 +643,26 @@ elidable (old : purefunction)
     # 下面把查 bracket_map 的地方換掉
 
 接下來跟前面一樣做轉換，最後拿到的程式就比原本快很多
+
+.. table::
+    :class: table table-bordered
+
+    +------------------+---------------+
+    | File Size        | 5852352 bytes |
+    +------------------+---------------+
+    | Translation Time | 960.2 s       |
+    +------------------+---------------+
+
+.. table::
+    :class: table table-bordered
+
+    +-----------+----------------+
+    | Test File | Execution Time |
+    +===========+================+
+    | mandel.b  | 9.58 s         |
+    +-----------+----------------+
+
+結果從 27.64 s 降到了 9.58 s
 
 Delay Output
 ++++++++++++++++++++
@@ -722,7 +771,10 @@ Brainfuck 的 code 裡面常常會出現連續的 "+" 或 "-" 或 "<" 或 ">"，
 而有了一個完整的 toolchain，
 而且包含幫忙處理 GC 和 JIT，
 這樣的專案和成熟度，
-目前應該找不到相似對手 (或許只是我沒聽過)。
+目前應該找不到相似對手
+(從 `這篇 StackOverflow 的回答 <http://stackoverflow.com/a/12126562>`_ 也可以看出還沒有類似的成熟專案)，
+無論數年後這專案走向如何，
+當中累積的技術都將為未來奠定基礎。
 
 最後複習整個流程 :
 
@@ -847,6 +899,13 @@ Reference
 * `Wikipedia - Unladen Swallow <http://en.wikipedia.org/wiki/Unladen_Swallow>`_
 * `PyPy: Dynamic Language Compilation Framework <http://www.slideshare.net/jserv/pypy-dynamic-language-compilation-framework>`_
 * `Ryan Kelly: PyPy.js: What? How? Why? <https://speakerdeck.com/nzpug/ryan-kelly-pypy-dot-js-what-how-why>`_
+* `The Architecture of Open Source Applications - PyPy <http://www.aosabook.org/en/pypy.html>`_
 * `brainfuck optimization strategies <http://calmerthanyouare.org/2015/01/07/optimizing-brainfuck.html>`_
 * `打造 Brainfuck 的 JIT compiler <http://blog.linux.org.tw/~jserv/archives/002119.html>`_
 * `透過 LLVM 打造 Brainfuck JIT compiler <http://blog.linux.org.tw/~jserv/archives/2011/04/_llvm_brainfuck.html>`_
+* `Optimizing brainfuck compiler <http://www.nayuki.io/page/optimizing-brainfuck-compiler>`_
+* `Brainfuck Interpreter <http://copy.sh/brainfuck/>`_
+* `Tracing the Meta-Level: PyPy’s Tracing JIT Compiler <http://www.stups.uni-duesseldorf.de/mediawiki/images/1/18/Pub-BoCuFiRi09_246.pdf>`_
+* `Carl Friedrich Bolz's site <http://cfbolz.de/>`_
+* `RPython: a Step Towards Reconciling Dynamically and Statically Typed OO Languages <https://speakerdeck.com/antocuni/rpython-a-step-towards-reconciling-dynamically-and-statically-typed-object-oriented-languages>`_
+* `PyPy's Approach to Virtual Machine Construction <http://llvm.org/pubs/2006-10-DLS-PyPy.pdf>`_
