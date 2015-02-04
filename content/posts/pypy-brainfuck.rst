@@ -698,6 +698,32 @@ Brainfuck 的 code 裡面常常會出現連續的 "+" 或 "-" 或 "<" 或 ">"，
 當然事實上是還有很多可以調整的空間，
 不過已經讓我們跨出例用 RPython toolchain 的第一步了 ~
 
+這整個流程試下來，覺得有很多地方看到是可以做的更好的，
+像是 RPython 可以做到更完善的支援，
+這樣寫起來會更順利，
+還有 toolchain 轉換的時間也可能再降低，
+出來的 code size 可能也可以更小，
+速度也可能更快，
+背後 backend 也可能更多樣 (LLVM backend 好像碰到一些障礙要先幫 LLVM 上 patch 才能接起來？)，
+諸如此類的問題，
+總結一個問題就是 ... 缺錢，
+就像是 StackOverflow 上 `這篇 <http://stackoverflow.com/a/5172833>`_ 的答案一樣 ...
+
+::
+
+    What blocks Ruby, Python to get Javascript V8 speed?
+
+    Nothing.
+
+    Well, okay: money. (And time, people, resources, but if you have money, you can buy those.)
+
+不過 PyPy 做到現在也算是個有特色的專案了，
+不僅僅是一個 Python 的實作，
+而有了一個完整的 toolchain，
+而且包含幫忙處理 GC 和 JIT，
+這樣的專案和成熟度，
+目前應該找不到相似對手 (或許只是我沒聽過)。
+
 最後複習整個流程 :
 
 1. 用 RPython 寫你的 Interpreter
@@ -819,3 +845,8 @@ Reference
 * `Wikipedia - Tracing just-in-time compilation <http://en.wikipedia.org/wiki/Tracing_just-in-time_compilation>`_
 * `Wikipedia - Interpreter (computing) <http://en.wikipedia.org/wiki/Interpreter_%28computing%29>`_
 * `Wikipedia - Unladen Swallow <http://en.wikipedia.org/wiki/Unladen_Swallow>`_
+* `PyPy: Dynamic Language Compilation Framework <http://www.slideshare.net/jserv/pypy-dynamic-language-compilation-framework>`_
+* `Ryan Kelly: PyPy.js: What? How? Why? <https://speakerdeck.com/nzpug/ryan-kelly-pypy-dot-js-what-how-why>`_
+* `brainfuck optimization strategies <http://calmerthanyouare.org/2015/01/07/optimizing-brainfuck.html>`_
+* `打造 Brainfuck 的 JIT compiler <http://blog.linux.org.tw/~jserv/archives/002119.html>`_
+* `透過 LLVM 打造 Brainfuck JIT compiler <http://blog.linux.org.tw/~jserv/archives/2011/04/_llvm_brainfuck.html>`_
