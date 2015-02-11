@@ -210,3 +210,8 @@ Reference
 
 * `CPython benchmark suite <https://hg.python.org/benchmarks/>`_
 * `IronPython Performance Report <https://ironpython.codeplex.com/wikipage?title=IP26RC1VsCPy26Perf>`_
+* `Wikipedia - IronPython <http://en.wikipedia.org/wiki/IronPython>`_
+* `Wikipedia - Jython <http://en.wikipedia.org/wiki/Jython>`_
+* `Wikipedia - Dynamic Language Runtime <http://en.wikipedia.org/wiki/Dynamic_Language_Runtime>`_
+* `Wikipedia - Common Language Infrastructure <http://en.wikipedia.org/wiki/Common_Language_Infrastructure>`_
+* `Wikipedia - Cython <http://en.wikipedia.org/wiki/Cython>`_
