@@ -900,6 +900,7 @@ Reference
 * `PyPy: Dynamic Language Compilation Framework <http://www.slideshare.net/jserv/pypy-dynamic-language-compilation-framework>`_
 * `Ryan Kelly: PyPy.js: What? How? Why? <https://speakerdeck.com/nzpug/ryan-kelly-pypy-dot-js-what-how-why>`_
 * `The Architecture of Open Source Applications - PyPy <http://www.aosabook.org/en/pypy.html>`_
+* `(2013) (video) [jserv] PyPy 簡介 <https://www.youtube.com/watch?v=VxGMp_xqTa4>`_
 * `brainfuck optimization strategies <http://calmerthanyouare.org/2015/01/07/optimizing-brainfuck.html>`_
 * `打造 Brainfuck 的 JIT compiler <http://blog.linux.org.tw/~jserv/archives/002119.html>`_
 * `透過 LLVM 打造 Brainfuck JIT compiler <http://blog.linux.org.tw/~jserv/archives/2011/04/_llvm_brainfuck.html>`_
