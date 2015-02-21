@@ -1,0 +1,1 @@
+var result_20152220572254714 = { "value":{"forgetPasswordUrl":"http://my.mtime.com/member/forget_password/","isSaveEmail":false,"isAutoExit":false,"email":"","cityId":290,"cityName":"北京"},"error":null};var getUserInfoResult=result_20152220572254714;

@@ -1,0 +1,1 @@
+var result_2015222057236496 = { "value":[{"movieId":"195299","ratingFinal":8.3,"ratingCount":1385,"attitudeCount":905},{"movieId":"217685","ratingFinal":-1,"ratingCount":3,"attitudeCount":16}],"error":null};var result=result_2015222057236496;
