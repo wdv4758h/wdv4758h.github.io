@@ -227,3 +227,9 @@ pre {
     padding-top: 3px;
     background-color: #F6F5E7;
 }
+
+/* image */
+
+.article-body > img {
+    padding-bottom: 25px;
+}
