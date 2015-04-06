@@ -84,7 +84,7 @@ PyStone
 Background
 ------------------------------
 
-PyStone 是 CPython 裡面一個非常 high-level 的 benchmark (CPython ``lib\test\pystone.py`` ，
+PyStone 是 CPython 裡面一個非常 high-level 的 benchmark (CPython ``lib/test/pystone.py`` ，
 拿不同的實作跑下去會拿到各自的 PyStone，代表著整體的效能分數，
 愈多的 PyStone 愈好。
 
