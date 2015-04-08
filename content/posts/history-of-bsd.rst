@@ -19,4 +19,4 @@
 
 (目前還沒全部完成，等比較有空會繼續做，完成後應該會移過來吧)
 
-`\ 紀錄連結 / <https://fossapc.hackpad.com/Homework-1-YMW0xMrUczk#:h=A-Narrative-History-of-BSD>`_
+`紀錄連結 ~~~ <https://fossapc.hackpad.com/Homework-1-YMW0xMrUczk#:h=A-Narrative-History-of-BSD>`_
