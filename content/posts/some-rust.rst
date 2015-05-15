@@ -14,7 +14,7 @@
 但是有許多東西已經差不多定型了，
 開始紀錄一下狀況 XD
 
-[O] Big Number 支援？
+[Ｏ] Big Number 支援？
 ========================================
 
 有！
@@ -25,7 +25,7 @@
 
 
 
-[O] First-class function 支援？
+[Ｏ] First-class function 支援？
 ========================================
 
 有！
@@ -45,7 +45,7 @@
 
 
 
-[O] map / reduce / filter 之類的東西？
+[Ｏ] map / reduce / filter 之類的東西？
 ========================================
 
 有！在 iterator
@@ -68,8 +68,8 @@
 
 
 
-[O] Option type (maybe type) ?
-==============================
+[Ｏ] Option type (maybe type) ?
+===============================
 
 有！
 
@@ -108,4 +108,75 @@
 * `Error Handling in Rust <http://blog.burntsushi.net/rust-error-handling/>`_
 * `On Error Handling in Rust <http://lucumr.pocoo.org/2014/10/16/on-error-handling/>`_
 * `Rust - Error Handling <https://doc.rust-lang.org/book/error-handling.html>`_
+* `Using The Option Type Effectively <http://blog.8thlight.com/uku-taht/2015/04/29/using-the-option-type-effectively.html>`_
+* `The Option Type <http://blog.8thlight.com/dave-torre/2015/03/11/the-option-type.html>`_
 * `Wikipedia - Option type <http://en.wikipedia.org/wiki/Option_type>`_
+
+[Ｏ] OOP (object-oriented programming)？
+========================================
+
+(研讀中 XD)
+
+* `Abstraction without overhead: traits in Rust <http://blog.rust-lang.org/2015/05/11/traits.html>`_
+* `[2013] The Rise of the Gang of Four with Rust <https://joshldavis.com/2013/06/16/the-rise-of-the-gang-of-four-with-rust/>`_
+* `Go and Rust — objects without class <https://lwn.net/Articles/548560/>`_
+* `Rust Book - Traits <https://doc.rust-lang.org/book/traits.html>`_
+* `Rust Book - Traits Objects <https://doc.rust-lang.org/book/trait-objects.html>`_
+* `rust-guidelines - traits/objects <https://github.com/rust-lang/rust-guidelines/blob/master/features/traits/objects.md>`_
+* `Wikipedia - Trait (computer programming) <http://en.wikipedia.org/wiki/Trait_%28computer_programming%29>`_
+
+[Ｏ] Type Inference
+========================================
+
+[Ｏ] 高度的 Memory Control？
+========================================
+
+* `Guaranteeing Memory Safety in Rust <http://www.slideshare.net/nikomatsakis/guaranteeing-memory-safety-in-rust-39042975>`_
+
+[－] REPL？
+========================================
+
+官方目前沒有提供，
+但是有專案正在進行中
+
+* `[GitHub] rusti <https://github.com/murarth/rusti>`_
+
+[？] 預設提供的 Sort Algorithm 是啥？
+========================================
+
+目前看 ``src/libcollections/slice.rs`` 裡面的 ``sort_by`` 是去 call ``merge_sort``
+
+.. table::
+    :class: table table-bordered
+
+    +--------------+------------+
+    | Worst Case   | O(n log n) |
+    +--------------+------------+
+    | Average Case | O(n log n) |
+    +--------------+------------+
+    | Best Case    | O(n log n) |
+    +--------------+------------+
+    | Space        | O(2 n)     |
+    +--------------+------------+
+    | Stable       | Yes        |
+    +--------------+------------+
+
+* `Rust - Primitive Type slice - sort_by <https://doc.rust-lang.org/std/primitive.slice.html#method.sort_by>`_
+
+[Ｏ] Regular Expression 支援？
+========================================
+
+官方有實作，也有文件，不過放在另外一個 package
+
+* `[GitHub] rust-lang/regex <https://github.com/rust-lang/regex>`_
+* `Rust - Crate regex <http://doc.rust-lang.org/regex/regex/>`_
+
+[Ｏ] FFI (Foreign Function Interface)？
+========================================
+
+* `Rust Once, Run Everywhere <http://blog.rust-lang.org/2015/04/24/Rust-Once-Run-Everywhere.html>`_
+* `Rust Book - Foreign Function Interface <https://doc.rust-lang.org/book/ffi.html>`_
+* `Rust - Module std::ffi <https://doc.rust-lang.org/std/ffi/>`_
+* `Rust - Crate libc <http://doc.rust-lang.org/libc/libc/>`_
+* `[GitHub] rust-lang/libc <https://github.com/rust-lang/libc>`_
+* `[GitHub] rust-ffi-examples - FFI examples written in Rust <https://github.com/alexcrichton/rust-ffi-examples>`_
