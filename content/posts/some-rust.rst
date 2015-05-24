@@ -1,7 +1,7 @@
 :title: Rust 的一些紀錄
 :slug: some-rust
 :date: 2015-05-14 21:57
-:modified: 2015-05-14 21:57
+:modified: 2015-05-24 21:57
 :category: Rust
 :tags:
 :author: wdv4758h
@@ -10,9 +10,25 @@
 .. contents::
 
 最近又心血來潮翻了一點 Rust，
-目前版本還在 1.0 beta，
+目前版本還在 1.0 beta (現在已經正式 release 啦~)，
 但是有許多東西已經差不多定型了，
 開始紀錄一下狀況 XD
+
+* 待研究列表
+    - traits
+    - format! 實作
+    - macro
+    - Ownership
+        * Box
+    - Lifetime
+    - static variable
+    - dylib, rlib, and staticlib
+    - coroutine
+
+----
+
+* `[GitHub] awesome-rust <https://github.com/kud1ing/awesome-rust>`_
+* `Reddit - Rust <http://www.reddit.com/r/rust/>`_
 
 [Ｏ] Big Number 支援？
 ========================================
@@ -144,6 +160,11 @@
 [？] 預設提供的 Sort Algorithm 是啥？
 ========================================
 
+.. code-block:: rust
+
+    let mut v = [-5, 4, 1, -3, 2];
+    v.sort();
+
 目前看 ``src/libcollections/slice.rs`` 裡面的 ``sort_by`` 是去 call ``merge_sort``
 
 .. table::
@@ -180,3 +201,75 @@
 * `Rust - Crate libc <http://doc.rust-lang.org/libc/libc/>`_
 * `[GitHub] rust-lang/libc <https://github.com/rust-lang/libc>`_
 * `[GitHub] rust-ffi-examples - FFI examples written in Rust <https://github.com/alexcrichton/rust-ffi-examples>`_
+
+[Ｏ] Import third party library？
+========================================
+
+[Ｏ] Native Threading Support？
+========================================
+
+(Native Threads) 目前是 1:1 的 thread，每個 user thread 都會對應到一個 kernel thread
+
+* `Rust - Module std::thread <https://doc.rust-lang.org/std/thread/>`_
+* `Rust Book - Concurrency <https://doc.rust-lang.org/book/concurrency.html>`_
+* `Fearless Concurrency with Rust <http://blog.rust-lang.org/2015/04/10/Fearless-Concurrency.html>`_
+
+[Ｘ] Garbage Collection？
+========================================
+
+[Ｏ] Format String？
+========================================
+
+使用 macro ``format!``
+
+.. code-block:: rust
+
+    format!("the value is {}", 123)
+
+* `Rust - Module std::fmt <https://doc.rust-lang.org/std/fmt/>`_
+
+[Ｏ] Ownership？
+========================================
+
+* `Rust ownership, the hard way <http://chrismorgan.info/blog/rust-ownership-the-hard-way.html>`_
+* `[GitHub] Rust RFCs - 0599 - Default Object Bound <https://github.com/rust-lang/rfcs/blob/master/text/0599-default-object-bound.md>`_
+* `[2013] Using the Pointer Ownership Model to Secure Memory Management in C and C++ <http://blog.sei.cmu.edu/post.cfm/using-the-pointer-ownership-model-to-secure-memory-management-in-c-and-c>`_
+    - 不錯的 Memory Management 相關背景知識解說
+* `CERT C Coding Standard <https://www.securecoding.cert.org/confluence/display/c/CERT+C+Coding+Standard>`_
+
+
+
+Third Party
+=============================================
+
+Django-like project？
+------------------------------
+
+還在發展中，漸漸有一些 web framework 出現。
+
+* `Introducing Teepee: the next step for rust-http <http://chrismorgan.info/blog/introducing-teepee.html>`_
+
+上面那篇的作者有寫過 Django，後來跳出來用 Rust 想做另一套自己想要的 web framework，
+但是 Rust 在當時還沒有強大的 HTTP library 可以用，
+所以寫了 rust-http，後來對 Rust 更熟悉以及有了 rust-http 的經驗後，
+決定重設計一個 library 並增加更多支援，這 library 被取名為 ``Teepee`` 。
+
+現在出現的 framework 有 :
+
+* `Iron <http://ironframework.io/>`_
+* `nickel.rs <http://nickel.rs/>`_
+
+----
+
+* `Are there any Rust projects that have similar goals to Django (i.e. full-featured web framework)? If not, want to start one? <http://www.reddit.com/r/rust/comments/2myght/are_there_any_rust_projects_that_have_similar/>`_
+
+
+
+Game Engine？
+------------------------------
+
+* http://www.piston.rs/
+
+
+Template Engine？
+------------------------------
