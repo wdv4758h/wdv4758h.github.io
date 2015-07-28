@@ -1,0 +1,1 @@
+var result_20152220572397672 = { "value":{"isAnonymous":true,"avatarUrl":"http://img1.mtime.cn/images/default/head_48X48.gif","avatarUrl58":"http://img1.mtime.cn/images/default/head_48X48.gif"},"error":null};var GetUserInfoResult=result_20152220572397672;

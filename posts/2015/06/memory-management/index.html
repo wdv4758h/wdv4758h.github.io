@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Memory Management — Dv 名字很難念</title>
+	<meta name="description" content="Title: Memory Management; Date: 2015-06-16; Author: wdv4758h">
+	<meta name="author" content="wdv4758h">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="/theme/html5.js"></script>
+		<![endif]-->
+	<link href="/theme/css/ipython.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/simplex/bootstrap.min.css" rel="stylesheet">
+	<link href="/theme/css/local.css" rel="stylesheet">
+	<link href="/theme/css/pygments.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/tipuesearch/tipuesearch.css">
+</head>
+
+<body>
+<div class="container">
+	<div class="page-header">
+		<h1>
+            <a href="/">Dv 名字很難念</a>
+			<br>
+            <small>Aquí hay gato encerrado. </small>
+            <form id="searchform" action="/search.html" onsubmit="return (this.elements['q'].value.length > 0)">
+                    <input id="searchbox" type="text" name="q" size="12" placeholder="Search">
+            </form>
+        </h1>
+        <a class="top-line-label" href="/about.html">About</a>
+	</div>
+	<div class="row">
+        <div>
+            <div class="row-fluid">
+                <div class="col-md-8 col-md-offset-2">
+<div class="article">
+
+	<div class="text-center article-header">
+
+		<h1 class="article-title">Memory Management</h1>
+		<span>
+			<h4>wdv4758h</h4>
+		</span>
+        <span>publish: <time datetime="2015-06-16T20:42:00+08:00">Tue 16 June 2015</time></span>
+
+            <br>
+            <span>update: <time datetime="2015-06-16 20:42:00+08:00">Tue 16 June 2015</time></span>
+
+	</div>
+
+	<div>
+		Category:
+		<span>
+			<a href="/category/misc.html" rel="category">Misc</a>
+		</span>
+	</div>
+
+	<div>
+		Tags:
+		<span>
+			<a href="/tag/memory.html" rel="tag">memory</a>
+		</span>
+		<span>
+			<a href="/tag/malloc.html" rel="tag">malloc</a>
+		</span>
+	</div>
+
+</div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-8">
+    <div class="well">
+        <h2>Table of Content</h2>
+        <div class="contents topic">
+            <div class="toc" id="">
+
+<ul class="simple">
+<li><a class="reference internal" href="#stack-heap" id="id10">Stack &amp; Heap</a></li>
+<li><a class="reference internal" href="#common-memory-problem" id="id11">Common Memory Problem</a><ul>
+<li><a class="reference internal" href="#double-free" id="id12">double free</a></li>
+<li><a class="reference internal" href="#memory-leak" id="id13">memory leak</a></li>
+<li><a class="reference internal" href="#use-after-free" id="id14">use after free</a></li>
+<li><a class="reference internal" href="#heap-overflow" id="id15">heap overflow</a></li>
+<li><a class="reference internal" href="#stack-buffer-overflow" id="id16">stack buffer overflow</a></li>
+<li><a class="reference internal" href="#buffer-over-read" id="id17">buffer over-read</a></li>
+<li><a class="reference internal" href="#stack-overflow" id="id18">stack overflow</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#debugger" id="id19">Debugger</a><ul>
+<li><a class="reference internal" href="#valgrind" id="id20">Valgrind</a><ul>
+<li><a class="reference internal" href="#id1" id="id21">double free</a></li>
+<li><a class="reference internal" href="#id2" id="id22">memory leak</a></li>
+<li><a class="reference internal" href="#id3" id="id23">use after free</a></li>
+<li><a class="reference internal" href="#id4" id="id24">heap overflow</a></li>
+<li><a class="reference internal" href="#id5" id="id25">stack buffer overflow</a></li>
+<li><a class="reference internal" href="#id6" id="id26">buffer over-read</a></li>
+<li><a class="reference internal" href="#id7" id="id27">stack overflow</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#raii-resource-acquisition-is-initialization" id="id28">RAII (Resource Acquisition Is Initialization)</a></li>
+<li><a class="reference internal" href="#ownership" id="id29">Ownership</a><ul>
+<li><a class="reference internal" href="#c-smart-pointer" id="id30">C++ Smart Pointer</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#garbage-collection" id="id31">Garbage Collection</a><ul>
+<li><a class="reference internal" href="#reference-counting" id="id32">Reference Counting</a></li>
+<li><a class="reference internal" href="#tracing-garbage-collectors" id="id33">Tracing Garbage Collectors</a><ul>
+<li><a class="reference internal" href="#basic-algorithm" id="id34">Basic Algorithm</a></li>
+<li><a class="reference internal" href="#strategies" id="id35">Strategies</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#cases" id="id36">Cases</a></li>
+<li><a class="reference internal" href="#allocator-implementations" id="id37">Allocator Implementations</a><ul>
+<li><a class="reference internal" href="#ptmalloc" id="id38">ptmalloc</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#debugging-data-format" id="id39">Debugging Data Format</a></li>
+<li><a class="reference internal" href="#reference" id="id40">Reference</a><ul>
+<li><a class="reference internal" href="#id8" id="id41">Ownership</a></li>
+<li><a class="reference internal" href="#allocators" id="id42">Allocators</a></li>
+<li><a class="reference internal" href="#dwarf" id="id43">DWARF</a></li>
+<li><a class="reference internal" href="#wikipedia" id="id44">Wikipedia</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+    </div>
+	<div class="article-body">
+<hr class="docutils"/>
+<p>這篇主要放在 <a class="reference external" href="https://github.com/wdv4758h/notes/blob/master/memory-management.rst">https://github.com/wdv4758h/notes/blob/master/memory-management.rst</a>
+那邊才保證是最新的 :P</p>
+<hr class="docutils"/>
+<p>在現今流通的電腦架構中，要執行一個程式就會需要用到記憶體，
+而我們在撰寫程式時，依照不同的語言，會給程式設計師不同的記憶體操作程度。
+例如 C 會給你操控 pointer 來對記憶體做各式各樣的處理，
+但是像是 Python 這種相對高階的語言則會把記憶體相關的處理打包起來，
+讓程式設計師可以專注在計算的撰寫上而不是底層記憶體的掌控。
+這當然有好有壞，端看需求來做 tradeoff，
+一邊是可以對資源做細部的控制，來用少量的資源達到要做的事，
+一邊則是更注重在快速的把可以用的程式寫出來。</p>
+<p>在實際開始之前，我們需要先知道一些概念。
+在現代常見的電腦中，每隻程式所能看到的記憶體是受限的，
+大家會被區隔開來，每隻程式都會以為只有自己在執行，看不到其他人，
+這麼做可以保護程式，讓程式間不互相干擾。
+想像一下，假如在沒有區隔開的情況下，我寫了一個 C 程式，
+不小心沒寫好，裡面的 pointer 可能指向別的程式的資料，
+然後還不小心改到，這是多麼可怕的事。
+這樣的區隔機制稱為 "Virtual Memory"，
+其中的 Virtual 指的意思是分給程式的記憶體空間不是真的實體記憶體，
+而是做了一層控管，在存取時中間會把 Virtual Address 轉換成實際的 Physical Address，
+而各程式看到的都是同樣的一大塊空間，但其實底下對應到的是不同實體記憶體。
+(要做到這樣的機制需要 MMU (memory management unit) 的硬體支援)</p>
+<p>在 Virtual Memory 之上，每隻程式看到的記憶體又會依照不同的使用而分區塊，
+其中在程式執行時，變數常存在的地方為 Stack 和 Heap，
+接下來就來看看裡面在幹嘛。</p>
+<div class="section" id="stack-heap">
+<h2><a class="toc-backref" href="#id10">Stack &amp; Heap</a></h2>
+<p>在講記憶體管理的一開始，我們先來看看資料在記憶體中是如何被放置的。</p>
+<p>Linux process :</p>
+<img alt="Linux Address Layout" src="/img/memory-management/Linux-Address-Layout.png"/>
+<p>其中 Stack 是 <strong>local variables</strong> 和 <strong>function parameters</strong> 的地方，
+每呼叫一次 function 就會 push 一個 stack frame 進去，
+每次 function 回傳時就會被清掉。</p>
+<p>[Error] 這邊可以注意到，如果我們不斷地 push 到 stack 裡，
+最後超過可容許的大小，就會產生 <tt class="docutils literal">stack overflow</tt></p>
+<p>因為放在 stack 上的資料會在回傳時被清掉，
+當遇到回傳後仍需使用的情況，
+就要把資料放在 Heap。</p>
+<p>在 C 中要使用 Heap 就需要用 <strong>malloc</strong> 並設定需要的大小，
+用完後需要使用 <strong>free</strong> 來清除。
+這些步驟在一般使用 Stack 的情況中都不需要，
+但是 Heap 的特別處就在於不會受限於特定的 scope 裡，
+就算 function 回傳還是可以正常使用，也常用動態決定資料大小的情況。</p>
+<p>example :</p>
+<div class="highlight"><pre><span class="c1">// C</span>
+
+<span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &lt;stdlib.h&gt;     </span><span class="c1">// malloc, free, atoi</span>
+
+<span class="kt">int</span> <span class="nf">main</span> <span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+
+    <span class="kt">int</span> <span class="o">*</span><span class="n">dynamic_array</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Please give a number</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+
+        <span class="kt">int</span> <span class="n">size</span> <span class="o">=</span> <span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+
+        <span class="n">dynamic_array</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="o">*</span><span class="p">)</span> <span class="n">malloc</span> <span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="o">*</span> <span class="n">size</span><span class="p">);</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">dynamic_array</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+        <span class="p">}</span>
+
+        <span class="n">free</span><span class="p">(</span><span class="n">dynamic_array</span><span class="p">);</span>
+
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+<p>more example (新 malloc 的記憶體真的是新的嗎？) :</p>
+<div class="highlight"><pre><span class="c1">// C</span>
+
+<span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &lt;stdlib.h&gt;     </span><span class="c1">// malloc, free, atoi</span>
+
+<span class="kt">int</span> <span class="nf">main</span> <span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+
+    <span class="kt">int</span> <span class="o">*</span><span class="n">dynamic_array</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="kt">int</span> <span class="n">size</span> <span class="o">=</span> <span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+
+
+
+        <span class="n">dynamic_array</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="o">*</span><span class="p">)</span> <span class="n">malloc</span> <span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="o">*</span> <span class="n">size</span><span class="p">);</span>
+
+        <span class="n">printf</span><span class="p">(</span><span class="s">"first time</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">dynamic_array</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+        <span class="p">}</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// modify</span>
+            <span class="n">dynamic_array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">i</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">free</span><span class="p">(</span><span class="n">dynamic_array</span><span class="p">);</span>
+
+
+
+        <span class="c1">// get some new memory</span>
+        <span class="n">dynamic_array</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="o">*</span><span class="p">)</span> <span class="n">malloc</span> <span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="o">*</span> <span class="n">size</span><span class="p">);</span>
+
+        <span class="n">printf</span><span class="p">(</span><span class="s">"second time</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">dynamic_array</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+        <span class="p">}</span>
+
+        <span class="n">free</span><span class="p">(</span><span class="n">dynamic_array</span><span class="p">);</span>
+
+
+
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Please give a number</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="common-memory-problem">
+<h2><a class="toc-backref" href="#id11">Common Memory Problem</a></h2>
+<p>管理</p>
+<ul class="simple">
+<li>double free (清多次)</li>
+<li>memory leak (沒清到)</li>
+</ul>
+<p>使用</p>
+<ul class="simple">
+<li>use after free (清了還用)</li>
+<li>dangling pointer (清了還用)</li>
+<li>heap overflow (寫超過)</li>
+<li>stack buffer overflow (寫超過)</li>
+<li>buffer over-read (讀超過)</li>
+<li>stack overflow (用太多)</li>
+</ul>
+<div class="section" id="double-free">
+<h3><a class="toc-backref" href="#id12">double free</a></h3>
+<p>source code :</p>
+<div class="highlight"><pre><span class="c1">// C</span>
+
+<span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &lt;stdlib.h&gt;     </span><span class="c1">// malloc, free</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="o">*</span><span class="n">x</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"origin : %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="o">*</span><span class="n">x</span><span class="p">);</span>
+    <span class="o">*</span><span class="n">x</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"assign : %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="o">*</span><span class="n">x</span><span class="p">);</span>
+    <span class="n">free</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+    <span class="n">free</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+<p>compile :</p>
+<div class="highlight"><pre><span class="nv">$ </span>gcc -Wall -std<span class="o">=</span>c11 -g double-free.c -o double-free
+</pre></div>
+<p>執行</p>
+<pre class="literal-block">
+origin : 0
+assign : 10
+*** Error in `./double-free': double free or corruption (fasttop): 0x00000000013e3010 ***
+======= Backtrace: =========
+/usr/lib/libc.so.6(+0x71bad)[0x7ffb1c21cbad]
+/usr/lib/libc.so.6(+0x770fe)[0x7ffb1c2220fe]
+/usr/lib/libc.so.6(+0x778db)[0x7ffb1c2228db]
+./double-free[0x4005fc]
+/usr/lib/libc.so.6(__libc_start_main+0xf0)[0x7ffb1c1cb790]
+./double-free[0x4004c9]
+======= Memory map: ========
+00400000-00401000 r-xp 00000000 00:1e 1685697                            /tmp/memory/double-free
+00600000-00601000 rw-p 00000000 00:1e 1685697                            /tmp/memory/double-free
+013e3000-01404000 rw-p 00000000 00:00 0                                  [heap]
+7ffb1bf95000-7ffb1bfab000 r-xp 00000000 08:01 137661                     /usr/lib/libgcc_s.so.1
+7ffb1bfab000-7ffb1c1aa000 ---p 00016000 08:01 137661                     /usr/lib/libgcc_s.so.1
+7ffb1c1aa000-7ffb1c1ab000 rw-p 00015000 08:01 137661                     /usr/lib/libgcc_s.so.1
+7ffb1c1ab000-7ffb1c344000 r-xp 00000000 08:01 134345                     /usr/lib/libc-2.21.so
+7ffb1c344000-7ffb1c543000 ---p 00199000 08:01 134345                     /usr/lib/libc-2.21.so
+7ffb1c543000-7ffb1c547000 r--p 00198000 08:01 134345                     /usr/lib/libc-2.21.so
+7ffb1c547000-7ffb1c549000 rw-p 0019c000 08:01 134345                     /usr/lib/libc-2.21.so
+7ffb1c549000-7ffb1c54d000 rw-p 00000000 00:00 0
+7ffb1c54d000-7ffb1c56f000 r-xp 00000000 08:01 134444                     /usr/lib/ld-2.21.so
+7ffb1c72a000-7ffb1c72d000 rw-p 00000000 00:00 0
+7ffb1c76c000-7ffb1c76e000 rw-p 00000000 00:00 0
+7ffb1c76e000-7ffb1c76f000 r--p 00021000 08:01 134444                     /usr/lib/ld-2.21.so
+7ffb1c76f000-7ffb1c770000 rw-p 00022000 08:01 134444                     /usr/lib/ld-2.21.so
+7ffb1c770000-7ffb1c771000 rw-p 00000000 00:00 0
+7ffe79fa4000-7ffe79fc5000 rw-p 00000000 00:00 0                          [stack]
+7ffe79fdf000-7ffe79fe1000 r--p 00000000 00:00 0                          [vvar]
+7ffe79fe1000-7ffe79fe3000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
+Aborted (core dumped)
+</pre>
+</div>
+<div class="section" id="memory-leak">
+<h3><a class="toc-backref" href="#id13">memory leak</a></h3>
+<p>source code :</p>
+<div class="highlight"><pre><span class="c1">// C</span>
+
+<span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &lt;stdlib.h&gt;     </span><span class="c1">// malloc</span>
+<span class="cp">#include &lt;unistd.h&gt;     </span><span class="c1">// getpid</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">long</span> <span class="kt">long</span> <span class="o">*</span><span class="n">x</span><span class="p">;</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">"pid : %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">getpid</span><span class="p">());</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"per size %lu</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">long</span> <span class="kt">long</span><span class="p">));</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// malloc, no free</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">);</span>
+        <span class="n">getchar</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+<p>compile :</p>
+<div class="highlight"><pre><span class="nv">$ </span>gcc -Wall -std<span class="o">=</span>c11 -g memory-leak.c -o memory-leak
+</pre></div>
+<p>觀看 Memory 使用：</p>
+<div class="highlight"><pre><span class="nv">$ </span>pmap -x <span class="nv">$pid</span>
+30593:   ./a.out
+Address           Kbytes     RSS   Dirty Mode  Mapping
+<span class="m">0000000000400000</span>       <span class="m">4</span>       <span class="m">4</span>       <span class="m">0</span> r-x-- a.out
+<span class="m">0000000000600000</span>       <span class="m">4</span>       <span class="m">4</span>       <span class="m">4</span> rw--- a.out
+<span class="m">0000000002572000</span>     <span class="m">136</span>       <span class="m">8</span>       <span class="m">8</span> rw---   <span class="o">[</span> anon <span class="o">]</span>
+00007fe14389b000    <span class="m">1636</span>    <span class="m">1044</span>       <span class="m">0</span> r-x-- libc-2.21.so
+00007fe143a34000    <span class="m">2044</span>       <span class="m">0</span>       <span class="m">0</span> ----- libc-2.21.so
+00007fe143c33000      <span class="m">16</span>      <span class="m">16</span>      <span class="m">16</span> r---- libc-2.21.so
+00007fe143c37000       <span class="m">8</span>       <span class="m">8</span>       <span class="m">8</span> rw--- libc-2.21.so
+00007fe143c39000      <span class="m">16</span>       <span class="m">8</span>       <span class="m">8</span> rw---   <span class="o">[</span> anon <span class="o">]</span>
+00007fe143c3d000     <span class="m">136</span>     <span class="m">136</span>       <span class="m">0</span> r-x-- ld-2.21.so
+00007fe143e1b000      <span class="m">12</span>      <span class="m">12</span>      <span class="m">12</span> rw---   <span class="o">[</span> anon <span class="o">]</span>
+00007fe143e5c000       <span class="m">8</span>       <span class="m">4</span>       <span class="m">4</span> rw---   <span class="o">[</span> anon <span class="o">]</span>
+00007fe143e5e000       <span class="m">4</span>       <span class="m">4</span>       <span class="m">4</span> r---- ld-2.21.so
+00007fe143e5f000       <span class="m">4</span>       <span class="m">4</span>       <span class="m">4</span> rw--- ld-2.21.so
+00007fe143e60000       <span class="m">4</span>       <span class="m">4</span>       <span class="m">4</span> rw---   <span class="o">[</span> anon <span class="o">]</span>
+00007fff33951000     <span class="m">132</span>       <span class="m">8</span>       <span class="m">8</span> rw---   <span class="o">[</span> stack <span class="o">]</span>
+00007fff3397a000       <span class="m">8</span>       <span class="m">0</span>       <span class="m">0</span> r----   <span class="o">[</span> anon <span class="o">]</span>
+00007fff3397c000       <span class="m">8</span>       <span class="m">4</span>       <span class="m">0</span> r-x--   <span class="o">[</span> anon <span class="o">]</span>
+ffffffffff600000       <span class="m">4</span>       <span class="m">0</span>       <span class="m">0</span> r-x--   <span class="o">[</span> anon <span class="o">]</span>
+---------------- ------- ------- -------
+total kB            <span class="m">4184</span>    <span class="m">1268</span>      80
+</pre></div>
+<div class="highlight"><pre><span class="nv">$ </span>cat /proc/<span class="nv">$pid</span>/smaps <span class="p">|</span> grep -A <span class="m">15</span> heap
+02572000-02594000 rw-p <span class="m">00000000</span> 00:00 <span class="m">0</span>                                  <span class="o">[</span>heap<span class="o">]</span>
+Size:                <span class="m">136</span> kB
+Rss:                   <span class="m">8</span> kB
+Pss:                   <span class="m">8</span> kB
+Shared_Clean:          <span class="m">0</span> kB
+Shared_Dirty:          <span class="m">0</span> kB
+Private_Clean:         <span class="m">0</span> kB
+Private_Dirty:         <span class="m">8</span> kB
+Referenced:            <span class="m">8</span> kB
+Anonymous:             <span class="m">8</span> kB
+AnonHugePages:         <span class="m">0</span> kB
+Swap:                  <span class="m">0</span> kB
+KernelPageSize:        <span class="m">4</span> kB
+MMUPageSize:           <span class="m">4</span> kB
+Locked:                <span class="m">0</span> kB
+VmFlags: rd wr mr mw me ac
+</pre></div>
+</div>
+<div class="section" id="use-after-free">
+<h3><a class="toc-backref" href="#id14">use after free</a></h3>
+<p>source code :</p>
+<div class="highlight"><pre><span class="c1">// C</span>
+
+<span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &lt;stdlib.h&gt;     </span><span class="c1">// malloc</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="o">*</span><span class="n">x</span><span class="p">;</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span>
+    <span class="o">*</span><span class="n">x</span> <span class="o">=</span> <span class="mi">9</span><span class="p">;</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">"use before free : %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="o">*</span><span class="n">x</span><span class="p">);</span>
+
+    <span class="n">free</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">"use after free : %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="o">*</span><span class="n">x</span><span class="p">);</span>
+
+    <span class="kt">int</span> <span class="o">*</span><span class="n">y</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span>
+    <span class="o">*</span><span class="n">y</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">"use after free : %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="o">*</span><span class="n">x</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+<p>compile :</p>
+<div class="highlight"><pre><span class="nv">$ </span>gcc -Wall -std<span class="o">=</span>c11 -g use-after-free.c -o use-after-free
+</pre></div>
+<div class="highlight"><pre><span class="nv">$ </span>./use-after-free
+use before free : 9
+use after free : 0
+use after free : 10
+</pre></div>
+</div>
+<div class="section" id="heap-overflow">
+<h3><a class="toc-backref" href="#id15">heap overflow</a></h3>
+<p>source code :</p>
+<div class="highlight"><pre><span class="c1">// C</span>
+
+<span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &lt;stdlib.h&gt;     </span><span class="c1">// malloc, free</span>
+<span class="cp">#include &lt;string.h&gt;     </span><span class="c1">// strlen</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="k">const</span> <span class="kt">char</span> <span class="n">s1</span><span class="p">[]</span> <span class="o">=</span> <span class="s">"This is a test."</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="n">s2</span><span class="p">[]</span> <span class="o">=</span> <span class="s">"This is a test. This is a test."</span><span class="p">;</span>
+
+    <span class="kt">char</span> <span class="o">*</span><span class="n">x</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">char</span><span class="p">)</span> <span class="o">*</span> <span class="n">strlen</span><span class="p">(</span><span class="n">s1</span><span class="p">));</span>
+
+    <span class="n">strcpy</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">s2</span><span class="p">);</span>
+
+    <span class="n">free</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+<p>compile :</p>
+<div class="highlight"><pre><span class="nv">$ </span>gcc -Wall -std<span class="o">=</span>c11 -g heap-overflow.c -o heap-overflow
+</pre></div>
+<p>執行：</p>
+<div class="highlight"><pre><span class="nv">$ </span>./heap-overflow
+*** Error in <span class="sb">`</span>./heap-overflow<span class="err">'</span>: free<span class="o">()</span>: invalid next size <span class="o">(</span>fast<span class="o">)</span>: 0x000000000250e010 ***
+<span class="o">=======</span> Backtrace: <span class="o">=========</span>
+/usr/lib/libc.so.6<span class="o">(</span>+0x71bad<span class="o">)[</span>0x7f38d091cbad<span class="o">]</span>
+/usr/lib/libc.so.6<span class="o">(</span>+0x770fe<span class="o">)[</span>0x7f38d09220fe<span class="o">]</span>
+/usr/lib/libc.so.6<span class="o">(</span>+0x778db<span class="o">)[</span>0x7f38d09228db<span class="o">]</span>
+./heap-overflow<span class="o">[</span>0x400669<span class="o">]</span>
+/usr/lib/libc.so.6<span class="o">(</span>__libc_start_main+0xf0<span class="o">)[</span>0x7f38d08cb790<span class="o">]</span>
+./heap-overflow<span class="o">[</span>0x400509<span class="o">]</span>
+<span class="o">=======</span> Memory map: <span class="o">========</span>
+00400000-00401000 r-xp <span class="m">00000000</span> 00:1e <span class="m">1894065</span>                            /tmp/memory/heap-overflow
+00600000-00601000 rw-p <span class="m">00000000</span> 00:1e <span class="m">1894065</span>                            /tmp/memory/heap-overflow
+0250e000-0252f000 rw-p <span class="m">00000000</span> 00:00 <span class="m">0</span>                                  <span class="o">[</span>heap<span class="o">]</span>
+7f38d0695000-7f38d06ab000 r-xp <span class="m">00000000</span> 08:01 <span class="m">137661</span>                     /usr/lib/libgcc_s.so.1
+7f38d06ab000-7f38d08aa000 ---p <span class="m">00016000</span> 08:01 <span class="m">137661</span>                     /usr/lib/libgcc_s.so.1
+7f38d08aa000-7f38d08ab000 rw-p <span class="m">00015000</span> 08:01 <span class="m">137661</span>                     /usr/lib/libgcc_s.so.1
+7f38d08ab000-7f38d0a44000 r-xp <span class="m">00000000</span> 08:01 <span class="m">134345</span>                     /usr/lib/libc-2.21.so
+7f38d0a44000-7f38d0c43000 ---p <span class="m">00199000</span> 08:01 <span class="m">134345</span>                     /usr/lib/libc-2.21.so
+7f38d0c43000-7f38d0c47000 r--p <span class="m">00198000</span> 08:01 <span class="m">134345</span>                     /usr/lib/libc-2.21.so
+7f38d0c47000-7f38d0c49000 rw-p 0019c000 08:01 <span class="m">134345</span>                     /usr/lib/libc-2.21.so
+7f38d0c49000-7f38d0c4d000 rw-p <span class="m">00000000</span> 00:00 0
+7f38d0c4d000-7f38d0c6f000 r-xp <span class="m">00000000</span> 08:01 <span class="m">134444</span>                     /usr/lib/ld-2.21.so
+7f38d0e2a000-7f38d0e2d000 rw-p <span class="m">00000000</span> 00:00 0
+7f38d0e6d000-7f38d0e6e000 rw-p <span class="m">00000000</span> 00:00 0
+7f38d0e6e000-7f38d0e6f000 r--p <span class="m">00021000</span> 08:01 <span class="m">134444</span>                     /usr/lib/ld-2.21.so
+7f38d0e6f000-7f38d0e70000 rw-p <span class="m">00022000</span> 08:01 <span class="m">134444</span>                     /usr/lib/ld-2.21.so
+7f38d0e70000-7f38d0e71000 rw-p <span class="m">00000000</span> 00:00 0
+7fffdc083000-7fffdc0a4000 rw-p <span class="m">00000000</span> 00:00 <span class="m">0</span>                          <span class="o">[</span>stack<span class="o">]</span>
+7fffdc13b000-7fffdc13d000 r--p <span class="m">00000000</span> 00:00 <span class="m">0</span>                          <span class="o">[</span>vvar<span class="o">]</span>
+7fffdc13d000-7fffdc13f000 r-xp <span class="m">00000000</span> 00:00 <span class="m">0</span>                          <span class="o">[</span>vdso<span class="o">]</span>
+ffffffffff600000-ffffffffff601000 r-xp <span class="m">00000000</span> 00:00 <span class="m">0</span>                  <span class="o">[</span>vsyscall<span class="o">]</span>
+Aborted <span class="o">(</span>core dumped<span class="o">)</span>
+</pre></div>
+</div>
+<div class="section" id="stack-buffer-overflow">
+<h3><a class="toc-backref" href="#id16">stack buffer overflow</a></h3>
+<p>source code:</p>
+<div class="highlight"><pre><span class="c1">// C</span>
+
+<span class="cp">#include &lt;stdio.h&gt;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"x : %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+    <span class="n">scanf</span><span class="p">(</span><span class="s">"%s"</span><span class="p">,</span> <span class="n">c</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"x : %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+<p>compile :</p>
+<div class="highlight"><pre><span class="nv">$ </span>gcc -Wall -std<span class="o">=</span>c11 -g stack-buffer-overflow.c -o stack-buffer-overflow
+</pre></div>
+<p>執行：</p>
+<div class="highlight"><pre><span class="nv">$ </span>./stack-buffer-overflow
+x : 0
+<span class="nb">test</span>
+x : 7631717
+</pre></div>
+</div>
+<div class="section" id="buffer-over-read">
+<h3><a class="toc-backref" href="#id17">buffer over-read</a></h3>
+<p>source code :</p>
+<div class="highlight"><pre><span class="c1">// C</span>
+
+<span class="cp">#include &lt;stdio.h&gt;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="sc">'z'</span><span class="p">;</span>
+
+    <span class="kt">char</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+    <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="sc">'a'</span><span class="p">;</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">"c[0] : %c</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"c[1] : %c</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>    <span class="c1">// read x</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+<p>compile :</p>
+<div class="highlight"><pre><span class="nv">$ </span>gcc -Wall -std<span class="o">=</span>c11 -g buffer-over-read.c -o buffer-over-read
+</pre></div>
+<p>執行：</p>
+<div class="highlight"><pre><span class="nv">$ </span>./buffer-over-read
+c<span class="o">[</span>0<span class="o">]</span> : a
+c<span class="o">[</span>1<span class="o">]</span> : z
+</pre></div>
+</div>
+<div class="section" id="stack-overflow">
+<h3><a class="toc-backref" href="#id18">stack overflow</a></h3>
+<div class="highlight"><pre><span class="c1">// C</span>
+
+<span class="cp">#include &lt;stdio.h&gt;</span>
+
+<span class="kt">void</span> <span class="nf">stack_overflow</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">static</span> <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="n">count</span><span class="o">++</span><span class="p">;</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">"count : %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">count</span><span class="p">);</span>
+
+    <span class="n">stack_overflow</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">stack_overflow</span><span class="p">();</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+<div class="highlight"><pre><span class="nv">$ </span>gcc -Wall -O0 -std<span class="o">=</span>c11 -g stack-overflow.c -o stack-overflow     <span class="c"># avoid optimization</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="debugger">
+<h2><a class="toc-backref" href="#id19">Debugger</a></h2>
+<ul class="simple">
+<li>Valgrind</li>
+</ul>
+<div class="section" id="valgrind">
+<h3><a class="toc-backref" href="#id20">Valgrind</a></h3>
+<div class="section" id="id1">
+<h4><a class="toc-backref" href="#id21">double free</a></h4>
+<p>執行：</p>
+<div class="highlight"><pre><span class="nv">$ </span>valgrind ./double-free
+</pre></div>
+<p>Valgrind output</p>
+<pre class="literal-block">
+==22811== Memcheck, a memory error detector
+==22811== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==22811== Using Valgrind-3.10.1 and LibVEX; rerun with -h for copyright info
+==22811== Command: ./double-free
+==22811==
+==22811== Conditional jump or move depends on uninitialised value(s)
+==22811==    at 0x4E7D3DC: vfprintf (in /usr/lib/libc-2.21.so)
+==22811==    by 0x4E84E38: printf (in /usr/lib/libc-2.21.so)
+==22811==    by 0x4005C2: main (double-free.c:8)
+==22811==
+==22811== Use of uninitialised value of size 8
+==22811==    at 0x4E7A33B: _itoa_word (in /usr/lib/libc-2.21.so)
+==22811==    by 0x4E7D6BD: vfprintf (in /usr/lib/libc-2.21.so)
+==22811==    by 0x4E84E38: printf (in /usr/lib/libc-2.21.so)
+==22811==    by 0x4005C2: main (double-free.c:8)
+==22811==
+==22811== Conditional jump or move depends on uninitialised value(s)
+==22811==    at 0x4E7A345: _itoa_word (in /usr/lib/libc-2.21.so)
+==22811==    by 0x4E7D6BD: vfprintf (in /usr/lib/libc-2.21.so)
+==22811==    by 0x4E84E38: printf (in /usr/lib/libc-2.21.so)
+==22811==    by 0x4005C2: main (double-free.c:8)
+==22811==
+==22811== Conditional jump or move depends on uninitialised value(s)
+==22811==    at 0x4E7D730: vfprintf (in /usr/lib/libc-2.21.so)
+==22811==    by 0x4E84E38: printf (in /usr/lib/libc-2.21.so)
+==22811==    by 0x4005C2: main (double-free.c:8)
+==22811==
+==22811== Conditional jump or move depends on uninitialised value(s)
+==22811==    at 0x4E7D4AB: vfprintf (in /usr/lib/libc-2.21.so)
+==22811==    by 0x4E84E38: printf (in /usr/lib/libc-2.21.so)
+==22811==    by 0x4005C2: main (double-free.c:8)
+==22811==
+==22811== Conditional jump or move depends on uninitialised value(s)
+==22811==    at 0x4E7D837: vfprintf (in /usr/lib/libc-2.21.so)
+==22811==    by 0x4E84E38: printf (in /usr/lib/libc-2.21.so)
+==22811==    by 0x4005C2: main (double-free.c:8)
+==22811==
+==22811== Conditional jump or move depends on uninitialised value(s)
+==22811==    at 0x4E7D4FB: vfprintf (in /usr/lib/libc-2.21.so)
+==22811==    by 0x4E84E38: printf (in /usr/lib/libc-2.21.so)
+==22811==    by 0x4005C2: main (double-free.c:8)
+==22811==
+==22811== Conditional jump or move depends on uninitialised value(s)
+==22811==    at 0x4E7D53B: vfprintf (in /usr/lib/libc-2.21.so)
+==22811==    by 0x4E84E38: printf (in /usr/lib/libc-2.21.so)
+==22811==    by 0x4005C2: main (double-free.c:8)
+==22811==
+==22811== Invalid free() / delete / delete[] / realloc()
+==22811==    at 0x4C2B200: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22811==    by 0x4005FB: main (double-free.c:12)
+==22811==  Address 0x51d8040 is 0 bytes inside a block of size 4 free'd
+==22811==    at 0x4C2B200: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==22811==    by 0x4005EF: main (double-free.c:11)
+==22811==
+==22811==
+==22811== HEAP SUMMARY:
+==22811==     in use at exit: 0 bytes in 0 blocks
+==22811==   total heap usage: 1 allocs, 2 frees, 4 bytes allocated
+==22811==
+==22811== All heap blocks were freed -- no leaks are possible
+==22811==
+==22811== For counts of detected and suppressed errors, rerun with: -v
+==22811== Use --track-origins=yes to see where uninitialised values come from
+==22811== ERROR SUMMARY: 9 errors from 9 contexts (suppressed: 0 from 0)
+</pre>
+</div>
+<div class="section" id="id2">
+<h4><a class="toc-backref" href="#id22">memory leak</a></h4>
+<p>執行：</p>
+<div class="highlight"><pre><span class="nv">$ </span>valgrind --leak-check<span class="o">=</span>full --show-leak-kinds<span class="o">=</span>all ./memory-leak
+</pre></div>
+<p>Valgrind output</p>
+<pre class="literal-block">
+==27173== Memcheck, a memory error detector
+==27173== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==27173== Using Valgrind-3.10.1 and LibVEX; rerun with -h for copyright info
+==27173== Command: ./memory-leak
+==27173==
+==27173==
+==27173== HEAP SUMMARY:
+==27173==     in use at exit: 32,000 bytes in 4 blocks
+==27173==   total heap usage: 4 allocs, 0 frees, 32,000 bytes allocated
+==27173==
+==27173== 8,000 bytes in 1 blocks are still reachable in loss record 1 of 2
+==27173==    at 0x4C29F90: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27173==    by 0x400621: main (memory-leak.c:15)
+==27173==
+==27173== 24,000 bytes in 3 blocks are definitely lost in loss record 2 of 2
+==27173==    at 0x4C29F90: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==27173==    by 0x400621: main (memory-leak.c:15)
+==27173==
+==27173== LEAK SUMMARY:
+==27173==    definitely lost: 24,000 bytes in 3 blocks
+==27173==    indirectly lost: 0 bytes in 0 blocks
+==27173==      possibly lost: 0 bytes in 0 blocks
+==27173==    still reachable: 8,000 bytes in 1 blocks
+==27173==         suppressed: 0 bytes in 0 blocks
+==27173==
+==27173== For counts of detected and suppressed errors, rerun with: -v
+==27173== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+</pre>
+</div>
+<div class="section" id="id3">
+<h4><a class="toc-backref" href="#id23">use after free</a></h4>
+<p>執行：</p>
+<div class="highlight"><pre><span class="nv">$ </span>valgrind ./use-after-free
+</pre></div>
+<p>Valgrind output</p>
+<pre class="literal-block">
+==32017== Memcheck, a memory error detector
+==32017== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==32017== Using Valgrind-3.10.1 and LibVEX; rerun with -h for copyright info
+==32017== Command: ./use-after-free
+==32017==
+==32017== Invalid read of size 4
+==32017==    at 0x4005DD: main (use-after-free.c:16)
+==32017==  Address 0x51d8040 is 0 bytes inside a block of size 4 free'd
+==32017==    at 0x4C2B200: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==32017==    by 0x4005D8: main (use-after-free.c:14)
+==32017==
+==32017== Invalid read of size 4
+==32017==    at 0x40060C: main (use-after-free.c:21)
+==32017==  Address 0x51d8040 is 0 bytes inside a block of size 4 free'd
+==32017==    at 0x4C2B200: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==32017==    by 0x4005D8: main (use-after-free.c:14)
+==32017==
+==32017==
+==32017== HEAP SUMMARY:
+==32017==     in use at exit: 4 bytes in 1 blocks
+==32017==   total heap usage: 2 allocs, 1 frees, 8 bytes allocated
+==32017==
+==32017== LEAK SUMMARY:
+==32017==    definitely lost: 4 bytes in 1 blocks
+==32017==    indirectly lost: 0 bytes in 0 blocks
+==32017==      possibly lost: 0 bytes in 0 blocks
+==32017==    still reachable: 0 bytes in 0 blocks
+==32017==         suppressed: 0 bytes in 0 blocks
+==32017== Rerun with --leak-check=full to see details of leaked memory
+==32017==
+==32017== For counts of detected and suppressed errors, rerun with: -v
+==32017== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+</pre>
+</div>
+<div class="section" id="id4">
+<h4><a class="toc-backref" href="#id24">heap overflow</a></h4>
+<p>執行：</p>
+<div class="highlight"><pre><span class="nv">$ </span>valgrind ./stack-overflow
+</pre></div>
+<p>Valgrind output</p>
+<pre class="literal-block">
+==31005== Memcheck, a memory error detector
+==31005== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==31005== Using Valgrind-3.10.1 and LibVEX; rerun with -h for copyright info
+==31005== Command: ./heap-overflow
+==31005==
+==31005== Invalid write of size 1
+==31005==    at 0x4C2D610: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31005==    by 0x40065C: main (heap-overflow.c:12)
+==31005==  Address 0x51d804f is 0 bytes after a block of size 15 alloc'd
+==31005==    at 0x4C29F90: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31005==    by 0x400645: main (heap-overflow.c:10)
+==31005==
+==31005== Invalid write of size 1
+==31005==    at 0x4C2D623: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31005==    by 0x40065C: main (heap-overflow.c:12)
+==31005==  Address 0x51d805f is 16 bytes after a block of size 15 alloc'd
+==31005==    at 0x4C29F90: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==31005==    by 0x400645: main (heap-overflow.c:10)
+==31005==
+==31005==
+==31005== HEAP SUMMARY:
+==31005==     in use at exit: 0 bytes in 0 blocks
+==31005==   total heap usage: 1 allocs, 1 frees, 15 bytes allocated
+==31005==
+==31005== All heap blocks were freed -- no leaks are possible
+==31005==
+==31005== For counts of detected and suppressed errors, rerun with: -v
+==31005== ERROR SUMMARY: 17 errors from 2 contexts (suppressed: 0 from 0)
+</pre>
+</div>
+<div class="section" id="id5">
+<h4><a class="toc-backref" href="#id25">stack buffer overflow</a></h4>
+<p>Valgrind 的 Memcheck 目前沒有針對 global / stack array 的 bounds checking，
+但是有另外一個實驗的工具叫 "SGcheck" 可以偵測這類問題</p>
+<ul class="simple">
+<li><a class="reference external" href="http://valgrind.org/docs/manual/faq.html#faq.overruns">Why doesn't Memcheck find the array overruns in this program?</a></li>
+</ul>
+<p>執行：</p>
+<div class="highlight"><pre><span class="nv">$ </span>valgrind --tool<span class="o">=</span>exp-sgcheck ./stack-buffer-overflow
+</pre></div>
+<p>Valgrind output</p>
+<pre class="literal-block">
+==6617== exp-sgcheck, a stack and global array overrun detector
+==6617== NOTE: This is an Experimental-Class Valgrind Tool
+==6617== Copyright (C) 2003-2013, and GNU GPL'd, by OpenWorks Ltd et al.
+==6617== Using Valgrind-3.10.1 and LibVEX; rerun with -h for copyright info
+==6617== Command: ./stack-buffer-overflow
+==6617==
+==6617== Invalid write of size 1
+==6617==    at 0x4E854A5: _IO_vfscanf (in /usr/lib/libc-2.21.so)
+==6617==    by 0x4E9571E: __isoc99_scanf (in /usr/lib/libc-2.21.so)
+==6617==    by 0x4005AE: main (stack-buffer-overflow.c:9)
+==6617==  Address 0xfff0000cc expected vs actual:
+==6617==  Expected: stack array "c" of size 1 in frame 2 back from here
+==6617==  Actual:   unknown
+==6617==  Actual:   is 0 after Expected
+==6617==
+==6617==
+==6617== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+</pre>
+</div>
+<div class="section" id="id6">
+<h4><a class="toc-backref" href="#id26">buffer over-read</a></h4>
+<p>暫時沒看到 Valgrind 上的解法 ...</p>
+<p>GCC 的話可以在 compile 時，加上 <tt class="docutils literal"><span class="pre">-fsanitize=address</span></tt> 參數來 check</p>
+<p>compile :</p>
+<div class="highlight"><pre><span class="nv">$ </span>gcc -Wall -std<span class="o">=</span>c11 -fsanitize<span class="o">=</span>address -g buffer-over-read.c -o buffer-over-read
+</pre></div>
+<p>執行 :</p>
+<div class="highlight"><pre><span class="nv">$ </span>./buffer-over-read
+</pre></div>
+<p>output (terminal 上有上色)</p>
+<pre class="literal-block">
+=================================================================
+==10965==ERROR: AddressSanitizer: stack-buffer-overflow on address 0x7ffde2d80511 at pc 0x00000040095e bp 0x7ffde2d804d0 sp 0x7ffde2d804c0
+READ of size 1 at 0x7ffde2d80511 thread T0
+    #0 0x40095d in main /tmp/memory/buffer-over-read.c:13
+    #1 0x7f43ee71a78f in __libc_start_main (/usr/lib/libc.so.6+0x2078f)
+    #2 0x4007b8 in _start (/tmp/memory/buffer-over-read+0x4007b8)
+
+Address 0x7ffde2d80511 is located in stack of thread T0 at offset 33 in frame
+    #0 0x400895 in main /tmp/memory/buffer-over-read.c:5
+
+  This frame has 1 object(s):
+    [32, 33) 'c' &lt;== Memory access at offset 33 overflows this variable
+HINT: this may be a false positive if your program uses some custom stack unwind mechanism or swapcontext
+      (longjmp and C++ exceptions *are* supported)
+SUMMARY: AddressSanitizer: stack-buffer-overflow /tmp/memory/buffer-over-read.c:13 main
+Shadow bytes around the buggy address:
+  0x10003c5a8050: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x10003c5a8060: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x10003c5a8070: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x10003c5a8080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x10003c5a8090: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f1 f1
+=&gt;0x10003c5a80a0: f1 f1[01]f4 f4 f4 f3 f3 f3 f3 00 00 00 00 00 00
+  0x10003c5a80b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x10003c5a80c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x10003c5a80d0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x10003c5a80e0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x10003c5a80f0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07
+  Heap left redzone:       fa
+  Heap right redzone:      fb
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack partial redzone:   f4
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+==10965==ABORTING
+</pre>
+</div>
+<div class="section" id="id7">
+<h4><a class="toc-backref" href="#id27">stack overflow</a></h4>
+<p>執行：</p>
+<div class="highlight"><pre><span class="nv">$ </span>valgrind ./stack-overflow
+</pre></div>
+<p>Valgrind output</p>
+<pre class="literal-block">
+==12380== Memcheck, a memory error detector
+==12380== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==12380== Using Valgrind-3.10.1 and LibVEX; rerun with -h for copyright info
+==12380== Command: ./stack-overflow
+==12380==
+==12380== Stack overflow in thread 1: can't grow stack to 0xffe801ff8
+==12380==
+==12380== Process terminating with default action of signal 11 (SIGSEGV)
+==12380==  Access not within mapped region at address 0xFFE801FF8
+==12380==    at 0x4EA8E8A: _IO_file_write@@GLIBC_2.2.5 (in /usr/lib/libc-2.21.so)
+==12380==  If you believe this happened as a result of a stack
+==12380==  overflow in your program's main thread (unlikely but
+==12380==  possible), you can try to increase the size of the
+==12380==  main thread stack using the --main-stacksize= flag.
+==12380==  The main thread stack size used in this run was 8388608.
+==12380== Stack overflow in thread 1: can't grow stack to 0xffe801ff0
+==12380==
+==12380== Process terminating with default action of signal 11 (SIGSEGV)
+==12380==  Access not within mapped region at address 0xFFE801FF0
+==12380==    at 0x4A246D0: _vgnU_freeres (in /usr/lib/valgrind/vgpreload_core-amd64-linux.so)
+==12380==  If you believe this happened as a result of a stack
+==12380==  overflow in your program's main thread (unlikely but
+==12380==  possible), you can try to increase the size of the
+==12380==  main thread stack using the --main-stacksize= flag.
+==12380==  The main thread stack size used in this run was 8388608.
+==12380==
+==12380== HEAP SUMMARY:
+==12380==     in use at exit: 0 bytes in 0 blocks
+==12380==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated
+==12380==
+==12380== All heap blocks were freed -- no leaks are possible
+==12380==
+==12380== For counts of detected and suppressed errors, rerun with: -v
+==12380== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+</pre>
+</div>
+</div>
+</div>
+<div class="section" id="raii-resource-acquisition-is-initialization">
+<h2><a class="toc-backref" href="#id28">RAII (Resource Acquisition Is Initialization)</a></h2>
+<p>RAII 為在數個 OO 語言中使用的 programming idiom，
+為 C++ 於 1984 到 1989 年間發展出來，主要由 Bjarne Stroustrup 和 Andrew Koenig 來完成，
+後來也用於 D、Ada、Vala、Rust 等語言。</p>
+<p>主要概念為把資源和物件的 lifetime 綁在一起，
+當物件由 constructor 建立時，就做 resource allocation，
+當物件由 destructor 拆掉時，就做 resource deallocation，
+如此一來只要物件正常的拆掉，就不會有 resource leak 發生。</p>
+</div>
+<div class="section" id="ownership">
+<h2><a class="toc-backref" href="#id29">Ownership</a></h2>
+<p>Pointer Ownership Model 會把 pointer 分成好幾個種類來區分出哪些資源需要被回收，
+而這件事情會在編譯時期做處理，利用靜態分析來得知這些訊息，
+但是這個靜態分析需要程式設計師在程式中提供一些訊息，
+藉此才能提供強大的安全保證。</p>
+<div class="section" id="c-smart-pointer">
+<h3><a class="toc-backref" href="#id30">C++ Smart Pointer</a></h3>
+<p>在 <tt class="docutils literal">&lt;memory&gt;</tt> 裡有以下幾種 pointer：</p>
+<ul>
+<li><dl class="first docutils">
+<dt>unique_ptr</dt>
+<dd><ul class="first last simple">
+<li>獨占的 ownership</li>
+<li>不可複製</li>
+<li>可以用 <strong>std::move()</strong> 轉移所有權</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>shared_ptr</dt>
+<dd><ul class="first last simple">
+<li>共享的 ownership</li>
+<li>使用 reference counting</li>
+<li>當 counter 變成 0 時就做 deallocation</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>weak_ptr</dt>
+<dd><ul class="first last simple">
+<li>類似 shared_ptr，但是沒有權利做 deallocation</li>
+<li>不會增加 reference counter 的計算</li>
+<li>不能用來做資料的存取，主要用來監控 shared_ptr 的狀況</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>有了 ownership 後只要擁有者都不見了就代表可以清掉，
+其中 C++ 有好幾種 pointer 來指定 ownership，
+<strong>unique_ptr</strong> 可以指定說只有自己是擁有者，
+自己不用時就可以清掉，不用管其他人，
+<strong>shared_ptr</strong> 則是指定說會有多個人分享、使用，
+當大家都不用時才清掉，
+<strong>weak_ptr</strong> 則是和 shared_ptr 類似，
+但是沒有清除的權利，也不會被算進資源的使用者裡，當 shared_ptr 要清掉時，不用理 weak_ptr</p>
+</div>
+</div>
+<div class="section" id="garbage-collection">
+<h2><a class="toc-backref" href="#id31">Garbage Collection</a></h2>
+<p>和前面提到自己管理記憶體的狀況相反的是自動管理記憶體，
+這邊所要提的 Gabrage Collection 就是自動管理的一個方式。
+Garbage Collection 不自己寫說要在什麼時候把記憶體回收，
+而是等程式發現沒人要用的時候再自動回收，
+缺點就是要多花點時間和記憶體，以及不確定回收的時間點，
+優點就是不自己經手那些管理，可以減少出現 double free、dangling pointer 之類的 bug。</p>
+<p>Garbage Collection 這樣的技術早在 1959 年就由 John McCarthy 發明，
+用來解決 Lisp 上的一些問題。
+至今使用 Garbage Collection 的程式語言很多，
+知名的 Java、Python、Ruby、Lua、Go 皆在這當中。</p>
+<p>Garbage Collection 主要分成兩大種類：</p>
+<ul class="simple">
+<li>reference counting</li>
+<li>tracing garbage collectors</li>
+</ul>
+<div class="section" id="reference-counting">
+<h3><a class="toc-backref" href="#id32">Reference Counting</a></h3>
+<p>reference counting 就是在每個 object 後附上一個計數器，
+有人用到就加一，不用了就減一，
+當變成 0 時就代表沒有人在用了，
+也就是說可以清掉，此時再自動做記憶體的回收。</p>
+<p>優點是好實作，缺點是每個 object 都需要一個計數器，
+會多消耗一些記憶體，
+另外如果有人互相使用的話就會形成 cycle，
+此時計數器就永遠不會變成 0，
+因此會需要額外的 cycle 偵測的演算法來處理。</p>
+</div>
+<div class="section" id="tracing-garbage-collectors">
+<h3><a class="toc-backref" href="#id33">Tracing Garbage Collectors</a></h3>
+<p>tracing garbage collectors 的概念則是一段時間後去爬那些給出去的記憶體，
+看看有誰沒在用，沒在用的就清掉。</p>
+<p>tracing garbage collectors 有很多種實作方式，
+不同實作方式會有不同的優缺點以及適合的狀況。</p>
+<div class="section" id="basic-algorithm">
+<h4><a class="toc-backref" href="#id34">Basic Algorithm</a></h4>
+<ul class="simple">
+<li>mark-and-sweep</li>
+</ul>
+<p>最簡單的概念就是 mark-and-sweep，
+爬過使用清單上的 object 做標記，
+最後沒做到標記的 object 就是沒在用的，
+此時就可以清掉。</p>
+</div>
+<div class="section" id="strategies">
+<h4><a class="toc-backref" href="#id35">Strategies</a></h4>
+<p>由於 tracing garbage collectors 這邊依照實作的方式不同，
+結果會有極大的差異，
+所以當中又可以列出幾個實作的策略方向。</p>
+<ul class="simple">
+<li>Generational</li>
+<li>Incremental</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="cases">
+<h2><a class="toc-backref" href="#id36">Cases</a></h2>
+<ul>
+<li><dl class="first docutils">
+<dt>Python</dt>
+<dd><ul class="first last simple">
+<li>CPython : GC with reference counting</li>
+<li>PyPy : GC with incremental generational tracing (incminimark)</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="allocator-implementations">
+<h2><a class="toc-backref" href="#id37">Allocator Implementations</a></h2>
+<ul>
+<li><dl class="first docutils">
+<dt>dlmalloc</dt>
+<dd><ul class="first last simple">
+<li>general purpose allocator</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>ptmalloc2</dt>
+<dd><ul class="first last simple">
+<li>改自 dlmalloc</li>
+<li>glibc 內建使用的 memory allocator</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>jemalloc</dt>
+<dd><ul class="first last simple">
+<li>從 FreeBSD 7.0 和 NetBSD 5.0 開始，兩個 OS 上的 malloc 使用 Jason Evans 寫的 jemalloc 取代舊有的 phkmalloc</li>
+<li>用於 Firefox</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>tcmalloc</dt>
+<dd><ul class="first last simple">
+<li>thread-caching malloc</li>
+<li>Google 開發的 malloc</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">nedmalloc</p>
+</li>
+<li><p class="first">hoard</p>
+</li>
+<li><dl class="first docutils">
+<dt>libumem</dt>
+<dd><ul class="first last simple">
+<li>用於 Solaris</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>ptmalloc2 是在 2006 年從 dlmalloc fork 出去，並且加上 multithreading 支援的版本，
+後來取代 dlmalloc 成為 linux 上內建的 memory allocator。</p>
+<div class="section" id="ptmalloc">
+<h3><a class="toc-backref" href="#id38">ptmalloc</a></h3>
+<div class="highlight"><pre><span class="c1">// C</span>
+
+<span class="k">struct</span> <span class="n">malloc_chunk</span> <span class="p">{</span>
+
+    <span class="n">INTERNAL_SIZE_T</span>      <span class="n">prev_size</span><span class="p">;</span>  <span class="cm">/* Size of previous chunk (if free).  */</span>
+    <span class="n">INTERNAL_SIZE_T</span>      <span class="n">size</span><span class="p">;</span>       <span class="cm">/* Size in bytes, including overhead. */</span>
+
+    <span class="k">struct</span> <span class="n">malloc_chunk</span><span class="o">*</span> <span class="n">fd</span><span class="p">;</span>         <span class="cm">/* double links -- used only if free. */</span>
+    <span class="k">struct</span> <span class="n">malloc_chunk</span><span class="o">*</span> <span class="n">bk</span><span class="p">;</span>
+
+    <span class="cm">/* Only used for large blocks: pointer to next larger size.  */</span>
+    <span class="k">struct</span> <span class="n">malloc_chunk</span><span class="o">*</span> <span class="n">fd_nextsize</span><span class="p">;</span> <span class="cm">/* double links -- used only if free. */</span>
+    <span class="k">struct</span> <span class="n">malloc_chunk</span><span class="o">*</span> <span class="n">bk_nextsize</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="debugging-data-format">
+<h2><a class="toc-backref" href="#id39">Debugging Data Format</a></h2>
+</div>
+<div class="section" id="reference">
+<h2><a class="toc-backref" href="#id40">Reference</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://duartes.org/gustavo/blog/post/anatomy-of-a-program-in-memory/">[2009] Anatomy of a Program in Memory</a></li>
+<li><a class="reference external" href="http://blog.sei.cmu.edu/post.cfm/using-the-pointer-ownership-model-to-secure-memory-management-in-c-and-c">[2013] Using the Pointer Ownership Model to Secure Memory Management in C and C++</a></li>
+</ul>
+<div class="section" id="id8">
+<h3><a class="toc-backref" href="#id41">Ownership</a></h3>
+<ul class="simple">
+<li><a class="reference external" href="https://kheresy.wordpress.com/2012/03/03/c11_smartpointer_p1/">[2012] 避免 memory leak：C++11 Smart Pointer（上）</a></li>
+<li><a class="reference external" href="https://kheresy.wordpress.com/2012/03/05/c11_smartpointer_p2/">[2012] 避免 memory leak：C++11 Smart Pointer（下）</a></li>
+</ul>
+</div>
+<div class="section" id="allocators">
+<h3><a class="toc-backref" href="#id42">Allocators</a></h3>
+<ul>
+<li><p class="first"><a class="reference external" href="https://sploitfun.wordpress.com/2015/02/10/understanding-glibc-malloc/">[2015] Understanding glibc malloc</a></p>
+</li>
+<li><p class="first"><a class="reference external" href="https://github.com/emeryberger/Malloc-Implementations">[GitHub] emeryberger/Malloc-Implementations</a></p>
+</li>
+<li><p class="first"><a class="reference external" href="http://blog.reverberate.org/2009/02/one-malloc-to-rule-them-all.html">[2009] one malloc to rule them all</a></p>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference external" href="https://www.facebook.com/notes/facebook-engineering/scalable-memory-allocation-using-jemalloc/480222803919">[2011] Scalable memory allocation using jemalloc</a></dt>
+<dd><ul class="first last simple">
+<li>algorithm behind jemalloc</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first"><a class="reference external" href="http://jamesgolick.com/2013/5/19/how-tcmalloc-works.html">[2013] How tcmalloc Works</a></p>
+</li>
+<li><p class="first"><a class="reference external" href="http://jamesgolick.com/2013/5/15/memory-allocators-101.html">[2013] Memory Allocators 101</a></p>
+</li>
+<li><p class="first"><a class="reference external" href="http://locklessinc.com/benchmarks_allocator.shtml">Memory Allocator Benchmarks</a></p>
+</li>
+<li><p class="first"><a class="reference external" href="http://www.gii.upv.es/tlsf/files/papers/tlsf_slides.pdf">Dynamic Memory Management for Embedded Real-Time Systems</a></p>
+</li>
+<li><p class="first"><a class="reference external" href="http://www.andrew.cmu.edu/user/apodolsk/418/index.html">Nah Lock: A Lock-Free Memory Allocator</a></p>
+</li>
+<li><p class="first"><a class="reference external" href="http://symas.com/mdb/inmem/malloc/">[2015] Malloc Microbenchmark</a></p>
+</li>
+<li><p class="first"><a class="reference external" href="http://smallcultfollowing.com/babysteps/blog/2014/11/14/allocators-in-rust/">[2014] Allocators in Rust</a></p>
+</li>
+<li><p class="first"><a class="reference external" href="http://www.hoard.org/">Hoard</a></p>
+</li>
+<li><p class="first"><a class="reference external" href="http://www.cocoawithlove.com/2010/05/look-at-how-malloc-works-on-mac.html">[2010] A look at how malloc works on the Mac</a></p>
+</li>
+<li><p class="first"><a class="reference external" href="http://wiki.osdev.org/Memory_Allocation">OSDev wiki - Memory Allocation</a></p>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference external" href="http://www.cs.umass.edu/~emery/pubs/berger-asplos2000.pdf">[2000] Hoard: A Scalable Memory Allocator for Multithreaded Applications</a></dt>
+<dd><ul class="first last simple">
+<li><a class="reference external" href="http://emeryberger.com/">Emery Berger</a></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first"><a class="reference external" href="http://ieeexplore.ieee.org/xpl/articleDetails.jsp?arnumber=6118957">[2011] An Experimental Study on Memory Allocators in Multicore and Multithreaded Applications</a></p>
+</li>
+<li><p class="first"><a class="reference external" href="http://g.oswego.edu/dl/html/malloc.html">dlmalloc - A Memory Allocator</a></p>
+</li>
+<li><p class="first"><a class="reference external" href="http://www.citi.umich.edu/projects/citi-netscape/reports/malloc.html">Projects: Linux scalability: malloc() performance report</a></p>
+</li>
+</ul>
+</div>
+<div class="section" id="dwarf">
+<h3><a class="toc-backref" href="#id43">DWARF</a></h3>
+<ul class="simple">
+<li><a class="reference external" href="http://eli.thegreenplace.net/2011/01/23/how-debuggers-work-part-1">How debuggers work: Part 1 - Basics</a></li>
+<li><a class="reference external" href="http://eli.thegreenplace.net/2011/01/27/how-debuggers-work-part-2-breakpoints">How debuggers work: Part 2 - Breakpoints</a></li>
+<li><a class="reference external" href="http://eli.thegreenplace.net/2011/02/07/how-debuggers-work-part-3-debugging-information">How debuggers work: Part 3 - Debugging information</a></li>
+<li><a class="reference external" href="http://eli.thegreenplace.net/2011/09/29/an-interesting-tree-serialization-algorithm-from-dwarf">An interesting tree serialization algorithm from DWARF</a></li>
+<li><a class="reference external" href="http://eli.thegreenplace.net/2011/12/26/the-contents-of-dwarf-sections">The contents of DWARF sections</a></li>
+</ul>
+</div>
+<div class="section" id="wikipedia">
+<h3><a class="toc-backref" href="#id44">Wikipedia</a></h3>
+<ul class="simple">
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/C_dynamic_memory_allocation">Wikipedia - C dynamic memory allocation</a></li>
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/Memory_management_unit">Wikipedia - Memory management unit</a></li>
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/Virtual_memory">Wikipedia - Virtual memory</a></li>
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/Memory_management">Wikipedia - Memory management</a></li>
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/Bounds_checking">Wikipedia - Bounds checking</a></li>
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/Memory_debugger">Wikipedia - Memory debugger</a></li>
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/Tracing_garbage_collection">Wikipedia - Tracing garbage collection</a></li>
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/Hoard_memory_allocator">Wikipedia - Hoard memory allocator</a></li>
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/Smart_pointer">Wikipedia - Smart pointer</a></li>
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/DWARF">Wikipedia - DWARF</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+	<hr>
+
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'wdv4758h-blog';
+    var disqus_title = 'Memory Management';
+	var disqus_identifier = 'posts/2015/06/memory-management/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+                </div>
+            </div>
+		</div>
+	</div> 	<!-- <hr> -->
+</div> <!-- /container -->
+<footer class="aw-footer bg-danger">
+	<div class="container"> <!-- footer -->
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+				<div class="row">
+					<div class="col-md-3">
+						<h4>Navigation</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="">Dv 名字很難念</a></li>
+                            <li><a href="/about.html">About</a></li>
+							<li><a href="/archives"><i class="fa fa-archive "></i> archive</a></li>
+							<li><a href="/tags"><i class="fa fa-tags "></i> tags</a></li>
+							<li><a href="/feeds/all.rss.xml"><i class="fa fa-rss "></i> rss</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Author</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="https://wdv4758h.github.com">Homepage</a></li>
+							<li><a href="https://github.com/wdv4758h/">Github</a></li>
+							<li><a href="https://plus.google.com/103751737509044116269/posts">Google+</a></li>
+							<li><a href="https://www.facebook.com/wdv4758h">Facebook</a></li>
+							<li><a href="https://www.linkedin.com/pub/chiu-hsiang-hsu/69/83/530">Linked-in</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Categories</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="/category/c++.html">C++ (1)</a></li>
+							<li><a href="/category/compiler.html">Compiler (1)</a></li>
+							<li><a href="/category/django.html">Django (2)</a></li>
+							<li><a href="/category/functional.html">Functional (2)</a></li>
+							<li><a href="/category/fuzzy.html">Fuzzy (1)</a></li>
+							<li><a href="/category/gc.html">GC (1)</a></li>
+							<li><a href="/category/html5.html">HTML5 (1)</a></li>
+							<li><a href="/category/linux.html">Linux (3)</a></li>
+							<li><a href="/category/misc.html">Misc (40)</a></li>
+							<li><a href="/category/prolog.html">Prolog (1)</a></li>
+							<li><a href="/category/python.html">Python (14)</a></li>
+							<li><a href="/category/qemu.html">QEMU (1)</a></li>
+							<li><a href="/category/rust.html">Rust (3)</a></li>
+							<li><a href="/category/ted.html">TED (1)</a></li>
+							<li><a href="/category/vim.html">Vim (3)</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Links</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="https://www.python.org/">Python</a></li>
+							<li><a href="https://www.djangoproject.com/">Django</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; wdv4758h 2014</p>
+            <small>Arch Linux + Vim + reStructuredText + Pelican = Blog</small>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<!-- search -->
+<script type="text/javascript" src="/theme/tipuesearch/tipuesearch_set.js"></script>
+<script type="text/javascript" src="/theme/tipuesearch/tipuesearch.min.js"></script>
+<!------------>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-42810012-2', 'auto');
+  ga('send', 'pageview');
+</script>
+</body>
+</html>

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Rust Example - Project Euler #1 - Try Some Features in Simple Problem — Dv 名字很難念</title>
+	<meta name="description" content="Title: Rust Example - Project Euler #1 - Try Some Features in Simple Problem; Date: 2015-07-26; Author: wdv4758h">
+	<meta name="author" content="wdv4758h">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="/theme/html5.js"></script>
+		<![endif]-->
+	<link href="/theme/css/ipython.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/simplex/bootstrap.min.css" rel="stylesheet">
+	<link href="/theme/css/local.css" rel="stylesheet">
+	<link href="/theme/css/pygments.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/tipuesearch/tipuesearch.css">
+</head>
+
+<body>
+<div class="container">
+	<div class="page-header">
+		<h1>
+            <a href="/">Dv 名字很難念</a>
+			<br>
+            <small>Aquí hay gato encerrado. </small>
+            <form id="searchform" action="/search.html" onsubmit="return (this.elements['q'].value.length > 0)">
+                    <input id="searchbox" type="text" name="q" size="12" placeholder="Search">
+            </form>
+        </h1>
+        <a class="top-line-label" href="/about.html">About</a>
+	</div>
+	<div class="row">
+        <div>
+            <div class="row-fluid">
+                <div class="col-md-8 col-md-offset-2">
+<div class="article">
+
+	<div class="text-center article-header">
+
+		<h1 class="article-title">Rust Example - Project Euler #1 - Try Some Features in Simple Problem</h1>
+		<span>
+			<h4>wdv4758h</h4>
+		</span>
+        <span>publish: <time datetime="2015-07-26T16:17:00+08:00">Sun 26 July 2015</time></span>
+
+            <br>
+            <span>update: <time datetime="2015-07-28 21:46:00+08:00">Tue 28 July 2015</time></span>
+
+	</div>
+
+	<div>
+		Category:
+		<span>
+			<a href="/category/rust.html" rel="category">Rust</a>
+		</span>
+	</div>
+
+	<div>
+		Tags:
+		<span>
+			<a href="/tag/rust.html" rel="tag">Rust</a>
+		</span>
+		<span>
+			<a href="/tag/macro.html" rel="tag">macro</a>
+		</span>
+	</div>
+
+</div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-8">
+	<div class="article-body"><p>心血來潮跑去用 Rust 寫一下 Project Euler #1 的題目，
+題目其實很簡單，算出 1000 以下 3 或 5 的倍數的總和，
+就是個簡單的數學題，這樣的題目如果也只用非常簡單的作法來解就太無聊了，
+所以就拿簡單的題目試試看可以展現出 Rust 的哪些 features (?</p>
+<div class="highlight"><pre><span class="cp">#![feature(iter_arith)]</span><span class="w">     </span><span class="c1">// for .sum()</span>
+<span class="w">                            </span><span class="c1">// unstable library feature &#39;iter_arith&#39; : bounds recently changed</span>
+
+<span class="k">fn</span><span class="w"> </span><span class="n">p1_sol1</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">u64</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// formula solution</span>
+
+<span class="w">    </span><span class="c1">//  3,  6,  9, ...</span>
+<span class="w">    </span><span class="c1">//  5, 10, 15, ...</span>
+<span class="w">    </span><span class="c1">// 15, 30, 45, ...</span>
+
+<span class="w">    </span><span class="c1">//  3 * 1,  3 * 2,  3 * 3, ...,  3 * a =&gt; sum:  3 * a * (1 + a) / 2</span>
+<span class="w">    </span><span class="c1">//  5 * 1,  5 * 2,  5 * 3, ...,  5 * b =&gt; sum:  5 * b * (1 + b) / 2</span>
+<span class="w">    </span><span class="c1">// 15 * 1, 15 * 2, 15 * 3, ..., 15 * c =&gt; sum: 15 * c * (1 + c) / 2</span>
+
+<span class="w">    </span><span class="k">fn</span><span class="w"> </span><span class="n">sum_range</span><span class="p">(</span><span class="n">start</span><span class="o">:</span><span class="w"> </span><span class="kt">u64</span><span class="p">,</span><span class="w"> </span><span class="n">end</span><span class="o">:</span><span class="w"> </span><span class="kt">u64</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">u64</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">end</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">start</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">end</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">fn</span><span class="w"> </span><span class="n">sum_multiples_of_two_below</span><span class="p">(</span><span class="n">base_num</span><span class="o">:</span><span class="w"> </span><span class="o">&amp;</span><span class="p">[</span><span class="kt">u64</span><span class="p">],</span><span class="w"> </span><span class="n">end</span><span class="o">:</span><span class="w"> </span><span class="kt">u64</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">u64</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="n">v1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">base_num</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="n">v2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">base_num</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">v1</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">v2</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">v1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">v2</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="n">sum_a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">sum_range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="n">sum_b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">sum_range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="n">sum_c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">v1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">v2</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">sum_range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">sum_a</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">sum_c</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">sum_b</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">sum_multiples_of_two_below</span><span class="p">(</span><span class="o">&amp;</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">],</span><span class="w"> </span><span class="mi">1000</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// -C opt-level=3 :</span>
+<span class="w">    </span><span class="c1">//</span>
+<span class="w">    </span><span class="c1">//      p1_sol1::h7b3c1cda8687c063eaa:</span>
+<span class="w">    </span><span class="c1">//          cmpq     %fs:112, %rsp</span>
+<span class="w">    </span><span class="c1">//          ja       .LBB0_2</span>
+<span class="w">    </span><span class="c1">//          movabsq  $8, %r10</span>
+<span class="w">    </span><span class="c1">//          movabsq  $0, %r11</span>
+<span class="w">    </span><span class="c1">//          callq    __morestack</span>
+<span class="w">    </span><span class="c1">//          retq</span>
+<span class="w">    </span><span class="c1">//      .LBB0_2:</span>
+<span class="w">    </span><span class="c1">//          pushq    %rbp</span>
+<span class="w">    </span><span class="c1">//          movq     %rsp, %rbp</span>
+<span class="w">    </span><span class="c1">//          movl     $233168, %eax</span>
+<span class="w">    </span><span class="c1">//          popq     %rbp</span>
+<span class="w">    </span><span class="c1">//          retq</span>
+<span class="w">    </span><span class="c1">//</span>
+<span class="w">    </span><span class="c1">// -C opt-level=3 -C no-stack-check :</span>
+<span class="w">    </span><span class="c1">//</span>
+<span class="w">    </span><span class="c1">//      p1_sol1::h7b3c1cda8687c063eaa:</span>
+<span class="w">    </span><span class="c1">//          pushq   %rbp</span>
+<span class="w">    </span><span class="c1">//          movq    %rsp, %rbp</span>
+<span class="w">    </span><span class="c1">//          movl    $233168, %eax</span>
+<span class="w">    </span><span class="c1">//          popq    %rbp</span>
+<span class="w">    </span><span class="c1">//          retq</span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">fn</span><span class="w"> </span><span class="n">p1_sol2</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">u64</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// simple filter solution</span>
+<span class="w">    </span><span class="p">(</span><span class="mf">1.</span><span class="p">.</span><span class="mi">1000</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="n">filter</span><span class="p">(</span><span class="o">|&amp;</span><span class="n">n</span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="n">sum</span><span class="p">()</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">fn</span><span class="w"> </span><span class="n">p1_sol3</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">u64</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// general filter solution</span>
+<span class="w">    </span><span class="k">fn</span><span class="w"> </span><span class="n">sum_multiples_of_base_below</span><span class="p">(</span><span class="n">base_num</span><span class="o">:</span><span class="w"> </span><span class="o">&amp;</span><span class="p">[</span><span class="kt">u64</span><span class="p">],</span><span class="w"> </span><span class="n">start</span><span class="o">:</span><span class="w"> </span><span class="kt">u64</span><span class="p">,</span><span class="w"> </span><span class="n">end</span><span class="o">:</span><span class="w"> </span><span class="kt">u64</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">u64</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="p">(</span><span class="n">start</span><span class="p">..</span><span class="n">end</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="p">.</span><span class="n">filter</span><span class="p">(</span><span class="o">|&amp;</span><span class="n">n</span><span class="o">|</span><span class="w"> </span><span class="n">base_num</span><span class="p">.</span><span class="n">iter</span><span class="p">().</span><span class="n">any</span><span class="p">(</span><span class="o">|&amp;</span><span class="n">base</span><span class="o">|</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">base</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">))</span><span class="w"></span>
+<span class="w">            </span><span class="p">.</span><span class="n">sum</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">sum_multiples_of_base_below</span><span class="p">(</span><span class="o">&amp;</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">],</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1000</span><span class="p">)</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">fn</span><span class="w"> </span><span class="n">p1_sol4</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">u64</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// macro version for filter</span>
+<span class="w">    </span><span class="n">macro_rules</span><span class="o">!</span><span class="w"> </span><span class="n">sum_multiples_of_base_below</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="p">(</span><span class="w"> </span><span class="n">OωO</span><span class="w"> </span><span class="cp">$($base</span><span class="o">:</span><span class="n">expr</span><span class="p">),</span><span class="o">+</span><span class="w"> </span><span class="n">OωO</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="cp">$start</span><span class="o">:</span><span class="n">expr</span><span class="p">,</span><span class="w"> </span><span class="cp">$end</span><span class="o">:</span><span class="n">expr</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="p">(</span><span class="cp">$start</span><span class="p">..</span><span class="cp">$end</span><span class="p">)</span><span class="w"></span>
+<span class="w">                </span><span class="p">.</span><span class="n">filter</span><span class="p">(</span><span class="o">|&amp;</span><span class="n">n</span><span class="o">|</span><span class="w"> </span><span class="cp">$(</span><span class="n">n</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="cp">$base</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="o">||+</span><span class="p">)</span><span class="w"></span>
+<span class="w">                </span><span class="p">.</span><span class="n">sum</span><span class="p">()</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">sum_multiples_of_base_below</span><span class="o">!</span><span class="p">(</span><span class="n">OωO</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="n">OωO</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1000</span><span class="p">)</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">fn</span><span class="w"> </span><span class="n">p1_sol5</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">u64</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// closure</span>
+
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// only borrow in this scope</span>
+
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">((</span><span class="n">v</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="kt">u64</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">v</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">_</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mf">1.</span><span class="p">.</span><span class="mi">1000</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">f</span><span class="p">();</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">s</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">fn</span><span class="w"> </span><span class="n">p1_sol6</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">u64</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// static variable</span>
+
+<span class="w">    </span><span class="k">fn</span><span class="w"> </span><span class="n">f</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">u64</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">s</span><span class="o">:</span><span class="w"> </span><span class="kt">u64</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">v</span><span class="o">:</span><span class="w"> </span><span class="kt">u64</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1">// static mut is unsafe</span>
+<span class="w">        </span><span class="k">unsafe</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">((</span><span class="n">v</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="kt">u64</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">v</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">s</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">_</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mf">1.</span><span class="p">.</span><span class="mi">1000</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">result</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">fn</span><span class="w"> </span><span class="n">p1_sol7</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">u64</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// iterator</span>
+
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="n">Euler</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">s</span><span class="o">:</span><span class="w"> </span><span class="kt">u64</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">v</span><span class="o">:</span><span class="w"> </span><span class="kt">u64</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">impl</span><span class="w"> </span><span class="nb">Iterator</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">Euler</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">type</span><span class="w"> </span><span class="n">Item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">u64</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">fn</span><span class="w"> </span><span class="n">next</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb">Option</span><span class="o">&lt;</span><span class="kt">u64</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="kd">let</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="p">.</span><span class="n">s</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="kd">let</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="p">.</span><span class="n">v</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="kd">let</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">((</span><span class="n">v</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="kt">u64</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">v</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="kd">let</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="bp">self</span><span class="p">.</span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="bp">self</span><span class="p">.</span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">            </span><span class="nb">Some</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">s</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">euler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Euler</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">s</span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">euler</span><span class="p">.</span><span class="n">skip</span><span class="p">(</span><span class="mi">1000</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="n">next</span><span class="p">().</span><span class="n">unwrap_or</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">fn</span><span class="w"> </span><span class="n">p1_sol8</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">u64</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// overload index</span>
+<span class="w">    </span><span class="c1">// index has side-effect, it&#39;s bad :P</span>
+
+<span class="w">    </span><span class="kn">use</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ops</span><span class="o">::</span><span class="p">{</span><span class="nb">Index</span><span class="p">,</span><span class="w"> </span><span class="n">IndexMut</span><span class="p">};</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="n">Euler</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">s</span><span class="o">:</span><span class="w"> </span><span class="kt">u64</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">v</span><span class="o">:</span><span class="w"> </span><span class="kt">u64</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">impl</span><span class="w"> </span><span class="nb">Index</span><span class="o">&lt;</span><span class="kt">u64</span><span class="o">&gt;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">Euler</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">type</span><span class="w"> </span><span class="n">Output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">u64</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">fn</span><span class="w"> </span><span class="n">index</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">_index</span><span class="o">:</span><span class="w"> </span><span class="kt">u64</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="kt">u64</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="o">&amp;</span><span class="bp">self</span><span class="p">.</span><span class="n">s</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">impl</span><span class="w"> </span><span class="n">IndexMut</span><span class="o">&lt;</span><span class="kt">u64</span><span class="o">&gt;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">Euler</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">fn</span><span class="w"> </span><span class="n">index_mut</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">_index</span><span class="o">:</span><span class="w"> </span><span class="kt">u64</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="kt">u64</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="kd">let</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="p">.</span><span class="n">v</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="kd">let</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">self</span><span class="p">.</span><span class="n">s</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="kd">let</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="kd">let</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">((</span><span class="n">v</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="kt">u64</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">v</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="bp">self</span><span class="p">.</span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="bp">self</span><span class="p">.</span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="bp">self</span><span class="p">.</span><span class="n">s</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">euler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Euler</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">s</span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">};</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">_</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mf">1.</span><span class="p">.</span><span class="mi">1000</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="n">euler</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">euler</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">fn</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// sum of all the multiples of 3 or 5 below 1000</span>
+<span class="w">    </span><span class="c1">// ans : 233168</span>
+<span class="w">    </span><span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;p1_sol1 : {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">p1_sol1</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;p1_sol2 : {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">p1_sol2</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;p1_sol3 : {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">p1_sol3</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;p1_sol4 : {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">p1_sol4</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;p1_sol5 : {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">p1_sol5</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;p1_sol6 : {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">p1_sol6</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;p1_sol7 : {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">p1_sol7</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;p1_sol8 : {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">p1_sol8</span><span class="p">());</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+<div class="section" id="solution-1">
+<h2>Solution 1</h2>
+<p>一般的公式解，但是還沒全部完成，
+目前只能吃兩個 base number，需要更 general。</p>
+<p>這邊剛好可以看到幾個地方，
+一個是 Rust 會用 <tt class="docutils literal">&amp;</tt> 符號來表示 pass by reference，
+array 的 reference 就會變成 <tt class="docutils literal">&amp;[type]</tt> 。
+再來是 Rust 的 function 裡面可以定義 function，
+個人有在寫 Python，
+而 Python 對於這種 function 裡面定義 function 是蠻方便且常見的 (看看 decorator)，
+看到 Rust 可以有 local function 就有種熟悉感，
+雖然 Python 跟 Rust 這兩個語言在本質上有很大的差異 XD</p>
+</div>
+<div class="section" id="solution-2">
+<h2>Solution 2</h2>
+<p>Rust 可以用 <tt class="docutils literal">..</tt> 這個特殊的 operator 來產生 Python 中 range 的效果，
+使用方法就直接寫 <tt class="docutils literal"><span class="pre">start..end</span></tt> 就可以了。</p>
+<p>另外 Rust 有支援豐富的 iterator 操作，
+可以使用 <tt class="docutils literal">.filter</tt> 來對 iterator 做篩選，
+而 .filter 中可以直接寫 lambda function 傳入，
+lambda function 的 syntax 是用 <tt class="docutils literal">| ... |</tt> 把參數夾住，
+可以指定參數的 type 以及是否要用 reference，
+如果要寫多行的 lambda function 的話，
+可以用 <tt class="docutils literal">{ ... }</tt> 來撰寫 (在 Rust 中 <tt class="docutils literal">{}</tt> 是個 expression)。</p>
+<ul class="simple">
+<li><a class="reference external" href="https://doc.rust-lang.org/std/ops/struct.Range.html">Struct std::ops::Range</a></li>
+</ul>
+</div>
+<div class="section" id="solution-3">
+<h2>Solution 3</h2>
+<p>Solution 2 的改版，
+利用傳入的 array 來做出 <tt class="docutils literal">.filter</tt> 需要的 lambda function，
+如此一來可以適用於任何長度的 array。</p>
+</div>
+<div class="section" id="solution-4">
+<h2>Solution 4</h2>
+<p>Solution 3 的改版，
+刻意拿 macro 出來玩 (?)。
+這邊要先注意一件事，
+Rust 的 macro 跟 C 和 C++ 的不同，
+並不是單純的字串取代，
+而是跟 AST 息息相關的一部份。
+這個範例把 <tt class="docutils literal">OωO</tt> 當作前面 base numbers 的開頭和結尾，
+中間的數字都會被 <tt class="docutils literal"><span class="pre">$($base:expr),*</span></tt> 吃進去，
+<tt class="docutils literal">$base:expr</tt> 表示說我要爬的是 expression，
+而爬到的資料我稱它為 &quot;base&quot;，
+最外面的 <tt class="docutils literal"><span class="pre">$(...),+</span></tt> 則表示裡面的 pattern 會重複一次以上 (中間用 <tt class="docutils literal">,</tt> 區隔)，
+後面分別是 <tt class="docutils literal">$start:expr</tt> 和 <tt class="docutils literal">$end:expr</tt> 兩個 expression，
+到這邊已經把東西 parse 完了，
+接下來是要生出想要的程式碼，
+<tt class="docutils literal">$start</tt> 和 <tt class="docutils literal">$end</tt> 直接拿去用在 range 上，
+而 <tt class="docutils literal">$(n % $base == <span class="pre">0)||*</span></tt> 則把寫的 base numbers 都展開成判斷式 (用 <tt class="docutils literal">||</tt> 接起來)，
+最後就達到類似 Solution 3 的效果啦~</p>
+<ul class="simple">
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/Hygienic_macro">Wikipedia - Hygienic macro</a></li>
+</ul>
+</div>
+<div class="section" id="todo">
+<h2>Todo</h2>
+<ul class="simple">
+<li>把 Solution 1 改的更 general</li>
+<li>觀察 Rust 編譯完後出來的結果</li>
+<li>觀察 Rust 底下的記憶體操作</li>
+<li>不同優化下生出的 assembly</li>
+<li>...</li>
+</ul>
+</div>
+</div>
+
+        <hr>
+        <h2>Related Posts</h2>
+        <ul>
+            <li><a href="/posts/2015/07/rust-closure/">Rust - Closure</a></li>
+        </ul>
+
+	<hr>
+
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'wdv4758h-blog';
+    var disqus_title = 'Rust Example - Project Euler #1 - Try Some Features in Simple Problem';
+	var disqus_identifier = 'posts/2015/07/rust-example-project-euler-1/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+                </div>
+            </div>
+		</div>
+	</div> 	<!-- <hr> -->
+</div> <!-- /container -->
+<footer class="aw-footer bg-danger">
+	<div class="container"> <!-- footer -->
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+				<div class="row">
+					<div class="col-md-3">
+						<h4>Navigation</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="">Dv 名字很難念</a></li>
+                            <li><a href="/about.html">About</a></li>
+							<li><a href="/archives"><i class="fa fa-archive "></i> archive</a></li>
+							<li><a href="/tags"><i class="fa fa-tags "></i> tags</a></li>
+							<li><a href="/feeds/all.rss.xml"><i class="fa fa-rss "></i> rss</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Author</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="https://wdv4758h.github.com">Homepage</a></li>
+							<li><a href="https://github.com/wdv4758h/">Github</a></li>
+							<li><a href="https://plus.google.com/103751737509044116269/posts">Google+</a></li>
+							<li><a href="https://www.facebook.com/wdv4758h">Facebook</a></li>
+							<li><a href="https://www.linkedin.com/pub/chiu-hsiang-hsu/69/83/530">Linked-in</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Categories</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="/category/c++.html">C++ (1)</a></li>
+							<li><a href="/category/compiler.html">Compiler (1)</a></li>
+							<li><a href="/category/django.html">Django (2)</a></li>
+							<li><a href="/category/functional.html">Functional (2)</a></li>
+							<li><a href="/category/fuzzy.html">Fuzzy (1)</a></li>
+							<li><a href="/category/gc.html">GC (1)</a></li>
+							<li><a href="/category/html5.html">HTML5 (1)</a></li>
+							<li><a href="/category/linux.html">Linux (3)</a></li>
+							<li><a href="/category/misc.html">Misc (40)</a></li>
+							<li><a href="/category/prolog.html">Prolog (1)</a></li>
+							<li><a href="/category/python.html">Python (14)</a></li>
+							<li><a href="/category/qemu.html">QEMU (1)</a></li>
+							<li><a href="/category/rust.html">Rust (3)</a></li>
+							<li><a href="/category/ted.html">TED (1)</a></li>
+							<li><a href="/category/vim.html">Vim (3)</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Links</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="https://www.python.org/">Python</a></li>
+							<li><a href="https://www.djangoproject.com/">Django</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; wdv4758h 2014</p>
+            <small>Arch Linux + Vim + reStructuredText + Pelican = Blog</small>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<!-- search -->
+<script type="text/javascript" src="/theme/tipuesearch/tipuesearch_set.js"></script>
+<script type="text/javascript" src="/theme/tipuesearch/tipuesearch.min.js"></script>
+<!------------>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-42810012-2', 'auto');
+  ga('send', 'pageview');
+</script>
+</body>
+</html>

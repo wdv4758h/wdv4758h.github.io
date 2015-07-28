@@ -1,5 +1,293 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/python.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 04 Feb 2015 00:33:00 +0800</lastBuildDate><item><title>PyPy - Tutorial for Brainfuck Interpreter</title><link>/posts/2015/01/pypy-tutorial-for-brainfuck-interpreter/</link><description>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Dv 名字很難念</title><link>/</link><description></description><atom:link href="/feeds/python.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 16 Apr 2015 00:23:00 +0800</lastBuildDate><item><title>Django migrations</title><link>/posts/2015/04/django-migrations-ask-log/</link><description>&lt;p&gt;前幾天學弟跑來問我說 Django 裡的 migrations 要怎麼用？&lt;/p&gt;
+&lt;p&gt;本來想說留個筆記，下次碰到問題時可以參考，後來決定紀錄對話 (X&lt;/p&gt;
+&lt;hr class="docutils" /&gt;
+&lt;p&gt;學弟 M：「dv ~，Django 的 migrations 要怎麼用啊？」&lt;/p&gt;
+&lt;p&gt;我：「你就想像是 database 的 version control 啊。用 &lt;tt class="docutils literal"&gt;python manage.py makemigrations myapp&lt;/tt&gt; 會把更動 commit 上去。」&lt;/p&gt;
+&lt;hr class="docutils" /&gt;
+&lt;p&gt;(幾分鐘後)&lt;/p&gt;
+&lt;p&gt;學弟 M：「可是我更改後它沒有偵測到耶」&lt;/p&gt;
+&lt;p&gt;我：「蛤 ~ ?」&lt;/p&gt;
+&lt;p&gt;我：「我之前用過可以正常偵測到啊，你的東西應該是用 inspectdb 去爬之前用的 database 生出來的吧 (我知道他要接現有的資料庫)，生出來後有先 makemigrations 嗎？」&lt;/p&gt;
+&lt;p&gt;學弟 M：「有啊，還是沒偵測到。」&lt;/p&gt;
+&lt;hr class="docutils" /&gt;
+&lt;p&gt;(我跑過去東看西看)&lt;/p&gt;
+&lt;p&gt;學弟 M：「dv，還是我開我機器的帳號給你進來看好了？」&lt;/p&gt;
+&lt;p&gt;我：「喔喔，好窩」&lt;/p&gt;
+&lt;hr class="docutils" /&gt;
+&lt;p&gt;(我進去東試試西試試)&lt;/p&gt;
+&lt;p&gt;我：「真的沒偵測到耶，好奇怪喔 ~ 囧」&lt;/p&gt;
+&lt;hr class="docutils" /&gt;
+&lt;p&gt;(開始 Google 各種資訊)&lt;/p&gt;
+&lt;p&gt;我：「還是它自己的問題？要升升 1.8 看嗎？反正你才剛開始寫。(隨便亂猜)」&lt;/p&gt;
+&lt;hr class="docutils" /&gt;
+&lt;p&gt;(我開始看 Django 1.8 的 release 有沒有相關的 change)&lt;/p&gt;
+&lt;p&gt;學弟 M：「好啊，我不是用 1.8 喔」&lt;/p&gt;
+&lt;p&gt;我：「我剛剛看你是 1.7.2 啊」&lt;/p&gt;
+&lt;p&gt;學弟 M：「喔喔，我去升看看」&lt;/p&gt;
+&lt;hr class="docutils" /&gt;
+&lt;p&gt;(幾分鐘後)&lt;/p&gt;
+&lt;p&gt;學弟 M：「我升好了~」&lt;/p&gt;
+&lt;p&gt;我：「有東西壞掉了耶 XD」&lt;/p&gt;
+&lt;p&gt;我：「看起來是底下的 db connector」&lt;/p&gt;
+&lt;p&gt;學弟 M：「真的耶，壞掉惹 Q_Q」&lt;/p&gt;
+&lt;hr class="docutils" /&gt;
+&lt;p&gt;(Google 中)&lt;/p&gt;
+&lt;p&gt;我：「原本你用的 mysql-connector-python 現在還沒支援 Django 1.8」&lt;/p&gt;
+&lt;p&gt;我：「可以先換 PyMySQL，裝一下 ~」&lt;/p&gt;
+&lt;p&gt;學弟 M：「好，我用 pip 裝一下」&lt;/p&gt;
+&lt;p&gt;學弟 M：「裝好啦」&lt;/p&gt;
+&lt;hr class="docutils" /&gt;
+&lt;p&gt;(我去改 settings.py 換成 django.db.backends.mysql)&lt;/p&gt;
+&lt;p&gt;我：「好啦 ~ 正常了，可以開始找剛剛的問題了 ...」&lt;/p&gt;
+&lt;hr class="docutils" /&gt;
+&lt;p&gt;(經過一些檔案開開關關和嘗試)&lt;/p&gt;
+&lt;p&gt;我：「找到問題啦，你的 models 那裡設了 &lt;tt class="docutils literal"&gt;manage = False&lt;/tt&gt; 這樣他不會去偵測更動」&lt;/p&gt;
+&lt;p&gt;我：「inspectdb 出來的就設成 False 了，應該是因為你在用 inspectdb 時，代表你很有可能有另外的程式在負責管理 database，所以 Django 預設就不去做更動。」&lt;/p&gt;
+&lt;p&gt;學弟 M：「哦哦哦，真的耶，解決啦，感謝 dv ~」&lt;/p&gt;
+&lt;p&gt;我：「喔，你那邊還會有些訊息說需要 default 值的 field 沒有給 default 值，你去改改後應該就都會 work 了」&lt;/p&gt;
+&lt;hr class="docutils" /&gt;
+&lt;p&gt;以上是在剛剛由回憶中撈取，根據修過的心理學，記憶是建構出來的，如有錯誤，我也沒辦法 XD&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Thu, 16 Apr 2015 00:23:00 +0800</pubDate><guid>tag:,2015-04-16:posts/2015/04/django-migrations-ask-log/</guid><category>Django</category><category>migrations</category></item><item><title>CPython's bug in feature that nobody uses</title><link>/posts/2015/03/cpython-bug-in-feature-that-nobody-uses/</link><description>&lt;p&gt;之前 (2015 二月初) 發現 CPython 3.4 開始支援在 command line 直接用 &lt;tt class="docutils literal"&gt;tarfile&lt;/tt&gt; 這 module 來處理檔案，
+也就是說可以能來當作 Unix-like 平台上常見的 &lt;tt class="docutils literal"&gt;tar&lt;/tt&gt; 指令的替代品，
+其中支援由指定的副檔名來選擇壓縮的演算法 (無、gzip、bz2、lzma)，
+但是經過嘗試後發現不管怎麼選都只是單純的 tar file，
+後來去翻了一下 CPython source code 發現有地方寫錯了，
+只好去開個 &lt;a class="reference external" href="http://bugs.python.org/issue23421"&gt;issue&lt;/a&gt; 送 patch 修正以及補上 test cases，
+才知道原來 CPython 的 code review 還是使用 &lt;a class="reference external" href="http://bugs.python.org/review/"&gt;Rietveld&lt;/a&gt; ，
+這也是我第一次幫 CPython 加 unit test :P&lt;/p&gt;
+&lt;p&gt;[準備要報 PyCon APAC 2015 的 lighting talk，之後會補上 slide]&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Thu, 12 Mar 2015 15:34:00 +0800</pubDate><guid>tag:,2015-03-12:posts/2015/03/cpython-bug-in-feature-that-nobody-uses/</guid><category>CPython</category></item><item><title>Python Benchmark for Interpreter</title><link>/posts/2015/02/python-benchmark-for-interpreter/</link><description>&lt;div class="section" id="introduction"&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;div class="section" id="benchmark"&gt;
+&lt;h3&gt;什麼是 benchmark ?&lt;/h3&gt;
+&lt;p&gt;benchmark 就是用幾個固定項目來測量不同程式的效率，
+取得測量出來的數值後互相做比較，
+藉此來做優劣分析，但是這作法其實是蠻粗糙的。
+benchmark 這種作法一直都有人在用 (也常會被拿來說嘴)，
+雖然一個程式的效率不能就這麼用 benchmark 跑出來的數字來輕易評斷，
+但還是能獲得些許的資訊，或者找到進步的空間。&lt;/p&gt;
+&lt;p&gt;以下會說明幾個拿來評量 Python interpreter 的 benchmark。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id1"&gt;
+&lt;h3&gt;實作介紹&lt;/h3&gt;
+&lt;div class="section" id="cpython"&gt;
+&lt;h4&gt;CPython&lt;/h4&gt;
+&lt;p&gt;Python 官方實作，
+中規中矩，
+garbage collection 採用 reference counting。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="pypy"&gt;
+&lt;h4&gt;PyPy&lt;/h4&gt;
+&lt;p&gt;JIT 版本實作，
+garbage collection 為 incremental generational tracing，
+內部 data structure 有做過改良。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="nuitka"&gt;
+&lt;h4&gt;Nuitka&lt;/h4&gt;
+&lt;p&gt;不是一個 Python interpreter 實作，
+而是把 Python code compile 成單一的執行檔，
+不過這樣一來也就損失了很多 Python 的特性。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="hello-world"&gt;
+&lt;h2&gt;Hello World&lt;/h2&gt;
+&lt;div class="section" id="background"&gt;
+&lt;h3&gt;Background&lt;/h3&gt;
+&lt;p&gt;沒什麼特別的，就是一個簡單的 Hello World，
+目的是要測 interpreter 的 startup time，
+在此項目中 startup time 愈小愈好。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="result"&gt;
+&lt;h3&gt;Result&lt;/h3&gt;
+&lt;p&gt;Test:&lt;/p&gt;
+&lt;table border="1" class="table table-bordered docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="70%" /&gt;
+&lt;col width="30%" /&gt;
+&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;CPython 2.7.9&lt;/td&gt;
+&lt;td&gt;0.01 ~ 0.03 s&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;CPython 3.4.2&lt;/td&gt;
+&lt;td&gt;0.02 ~ 0.04 s&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;PyPy 2.5  (Python 2.7.8)&lt;/td&gt;
+&lt;td&gt;0.10 ~ 0.12 s&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;PyPy3 2.4 (Python 3.2.5)&lt;/td&gt;
+&lt;td&gt;0.06 ~ 0.07 s&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Nuitka compile 0.5.9 (Python 2.7)&lt;/td&gt;
+&lt;td&gt;0.01 ~ 0.02 s&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Nuitka compile 0.5.9 (Python 3.4)&lt;/td&gt;
+&lt;td&gt;0.06 ~ 0.08 s&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="pystone"&gt;
+&lt;h2&gt;PyStone&lt;/h2&gt;
+&lt;div class="section" id="id2"&gt;
+&lt;h3&gt;Background&lt;/h3&gt;
+&lt;p&gt;PyStone 是 CPython 裡面一個非常 high-level 的 benchmark (CPython &lt;tt class="docutils literal"&gt;lib/test/pystone.py&lt;/tt&gt; ，
+拿不同的實作跑下去會拿到各自的 PyStone，代表著整體的效能分數，
+愈多的 PyStone 愈好。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id3"&gt;
+&lt;h3&gt;Result&lt;/h3&gt;
+&lt;p&gt;在這個項目中，PyPy JIT 的優勢大幅顯現，隨著 loop 量的上升，差距也跟著拉大。&lt;/p&gt;
+&lt;p&gt;Test: (50000 passes)&lt;/p&gt;
+&lt;table border="1" class="table table-bordered docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="59%" /&gt;
+&lt;col width="41%" /&gt;
+&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;CPython 2.7.9&lt;/td&gt;
+&lt;td&gt;59814 pystones/second&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;CPython 3.4.2&lt;/td&gt;
+&lt;td&gt;46957 pystones/second&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;PyPy 2.5  (Python 2.7.8)&lt;/td&gt;
+&lt;td&gt;570821 pystones/second&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;PyPy3 2.4 (Python 3.2.5)&lt;/td&gt;
+&lt;td&gt;475670 pystones/second&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Nuitka compile 0.5.9 (Python 2.7)&lt;/td&gt;
+&lt;td&gt;188474 pystones/second&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Nuitka compile 0.5.9 (Python 3.4)&lt;/td&gt;
+&lt;td&gt;94807 pystones/second&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Test: (1000000 passes)&lt;/p&gt;
+&lt;table border="1" class="table table-bordered docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="55%" /&gt;
+&lt;col width="45%" /&gt;
+&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;CPython 2.7.9&lt;/td&gt;
+&lt;td&gt;56851.8 pystones/second&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;CPython 3.4.2&lt;/td&gt;
+&lt;td&gt;46869.8 pystones/second&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;PyPy 2.5  (Python 2.7.8)&lt;/td&gt;
+&lt;td&gt;1.88367e+06 pystones/second&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;PyPy3 2.4 (Python 3.2.5)&lt;/td&gt;
+&lt;td&gt;1.54948e+06 pystones/second&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Nuitka compile 0.5.9 (Python 2.7)&lt;/td&gt;
+&lt;td&gt;186711 pystones/second&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Nuitka compile 0.5.9 (Python 3.4)&lt;/td&gt;
+&lt;td&gt;103947 pystones/second&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="pybench-2-0"&gt;
+&lt;h2&gt;PyBench 2.0&lt;/h2&gt;
+&lt;div class="section" id="id4"&gt;
+&lt;h3&gt;Background&lt;/h3&gt;
+&lt;p&gt;PyBench 是 CPython 裡的 low-level benchmarks (CPython &lt;tt class="docutils literal"&gt;Tools/pybench&lt;/tt&gt;)，
+PyStone 用來衡量整體效能，
+PyBench 用來衡量特定細項的效能。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="richards"&gt;
+&lt;h2&gt;Richards&lt;/h2&gt;
+&lt;div class="section" id="id5"&gt;
+&lt;h3&gt;Background&lt;/h3&gt;
+&lt;p&gt;和 PyStone 類似，
+是 PyPy 裡的 high-level benchmark (原版本是由 Dr. Martin Richards 在 Cambridge University 用 BCPL 寫的)
+(PyPy &lt;tt class="docutils literal"&gt;rpython/translator/goal/richards.py&lt;/tt&gt;)，
+一樣給出單一的值來衡量 (Average time per iteration)，
+愈低的 &amp;quot;Average time per iteration&amp;quot; 愈好。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id6"&gt;
+&lt;h3&gt;Result&lt;/h3&gt;
+&lt;table border="1" class="table table-bordered docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="76%" /&gt;
+&lt;col width="24%" /&gt;
+&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;CPython 2.7.9&lt;/td&gt;
+&lt;td&gt;382.70 ms&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;CPython 3.4.2&lt;/td&gt;
+&lt;td&gt;437.50 ms&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;PyPy 2.5  (Python 2.7.8)&lt;/td&gt;
+&lt;td&gt;49.66 ms&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;PyPy3 2.4 (Python 3.2.5)&lt;/td&gt;
+&lt;td&gt;58.72 ms&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Nuitka compile 0.5.9 (Python 2.7)&lt;/td&gt;
+&lt;td&gt;178.72 ms&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Nuitka compile 0.5.9 (Python 3.4)&lt;/td&gt;
+&lt;td&gt;261.62 ms&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id7"&gt;
+&lt;h2&gt;總結&lt;/h2&gt;
+&lt;p&gt;Nuitka 把 Python 轉成 C++ 然後 compile，
+雖然可以得到效能提升，但是缺失去很多 Python 的特質，
+雖然小 script 在處理過後可以得到小小的執行檔，
+但如果是一個大專案的話，
+compile 出來的結果可能就會很大 (先別提是否能好好處理)，
+這樣相對之下選用原本 interpreter 的方式可能還會好一些，
+而且如此一來，在更改 Python 專案時也需要不斷重新 compile，
+失去了一些方便性，
+如果別人要把 compile 過的 Python code import 進去來用又是另外一個問題，
+但不可否認，對於一個小 script 且又有 performance 和 memory 考量下，
+目前可能是個選擇。&lt;/p&gt;
+&lt;p&gt;若是單純講究 performance 的話，
+PyPy 的可能性會大很多，
+保留原本 Python 的特質，
+還有 JIT 加持，
+又有更好的 garbage collection 支援，
+一些 data structure 也有做過改良，
+雖然 PyPy 的成熟度已經愈來愈高了，
+但是還是會有地方需要改進，
+若發現有比原本 CPython 慢的地方可以回報，
+PyPy developer 會找到問題點然後解決 (有時是 project code 需要小改進，讓 JIT 可以幫上忙)，
+而且 PyPy 還有很多更 advanced 的 interpreter features 正在實驗，
+評估效能和整體架構下，可看性最高。&lt;/p&gt;
+&lt;p&gt;不過這邊的 benchmark 都只是一個粗略衡量，
+還是要像 speed.pypy.org 一樣拿一些實際在用的 project 來跑，
+可看性會比較高。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="reference"&gt;
+&lt;h2&gt;Reference&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://hg.python.org/benchmarks/"&gt;CPython benchmark suite&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://ironpython.codeplex.com/wikipage?title=IP26RC1VsCPy26Perf"&gt;IronPython Performance Report&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/IronPython"&gt;Wikipedia - IronPython&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Jython"&gt;Wikipedia - Jython&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Dynamic_Language_Runtime"&gt;Wikipedia - Dynamic Language Runtime&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Common_Language_Infrastructure"&gt;Wikipedia - Common Language Infrastructure&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Cython"&gt;Wikipedia - Cython&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Thu, 05 Feb 2015 13:23:00 +0800</pubDate><guid>tag:,2015-02-05:posts/2015/02/python-benchmark-for-interpreter/</guid><category>Python</category><category>Interpreter</category><category>Benchmark</category><category>CPython</category><category>PyPy</category><category>Nuitka</category></item><item><title>PyPy - Tutorial for Brainfuck Interpreter</title><link>/posts/2015/01/pypy-tutorial-for-brainfuck-interpreter/</link><description>
 &lt;div class="section" id="introduction"&gt;
 &lt;h2&gt;&lt;a class="toc-backref" href="#id5"&gt;Introduction&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;Python 是一個 Dynamic Language，
@@ -849,6 +1137,7 @@ mstuchli| This is prolly a stupid question, but the libpypy-c.so is a new thing,
 &lt;li&gt;&lt;a class="reference external" href="http://www.slideshare.net/jserv/pypy-dynamic-language-compilation-framework"&gt;PyPy: Dynamic Language Compilation Framework&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="https://speakerdeck.com/nzpug/ryan-kelly-pypy-dot-js-what-how-why"&gt;Ryan Kelly: PyPy.js: What? How? Why?&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://www.aosabook.org/en/pypy.html"&gt;The Architecture of Open Source Applications - PyPy&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://www.youtube.com/watch?v=VxGMp_xqTa4"&gt;(2013) (video) [jserv] PyPy 簡介&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://calmerthanyouare.org/2015/01/07/optimizing-brainfuck.html"&gt;brainfuck optimization strategies&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://blog.linux.org.tw/~jserv/archives/002119.html"&gt;打造 Brainfuck 的 JIT compiler&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://blog.linux.org.tw/~jserv/archives/2011/04/_llvm_brainfuck.html"&gt;透過 LLVM 打造 Brainfuck JIT compiler&lt;/a&gt;&lt;/li&gt;
@@ -860,7 +1149,442 @@ mstuchli| This is prolly a stupid question, but the libpypy-c.so is a new thing,
 &lt;li&gt;&lt;a class="reference external" href="http://llvm.org/pubs/2006-10-DLS-PyPy.pdf"&gt;PyPy's Approach to Virtual Machine Construction&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Wed, 04 Feb 2015 00:33:00 +0800</pubDate><guid>tag:,2015-01-31:posts/2015/01/pypy-tutorial-for-brainfuck-interpreter/</guid><category>PyPy</category><category>Brainfuck</category><category>Interpreter</category><category>JIT</category><category>GC</category></item><item><title>[PyPy] IO improvements</title><link>/posts/2014/11/pypy-io-improvements/</link><description>&lt;p&gt;剛剛看到 &lt;a class="reference external" href="http://morepypy.blogspot.tw/2014/11/pypy-io-improvements.html"&gt;PyPy status blog 上的新文章&lt;/a&gt; ，
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Wed, 04 Feb 2015 00:33:00 +0800</pubDate><guid>tag:,2015-01-31:posts/2015/01/pypy-tutorial-for-brainfuck-interpreter/</guid><category>PyPy</category><category>Brainfuck</category><category>Interpreter</category><category>JIT</category><category>GC</category></item><item><title>Celery - Distributed Task Queue</title><link>/posts/2015/01/celery/</link><description>
+&lt;p&gt;試到一半的 Celery ~"~ (未來會繼續)&lt;/p&gt;
+&lt;div class="section" id="introduction"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id9"&gt;Introduction&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;simple, flexible and reliable distributed system to process vast amounts of messages&lt;/p&gt;
+&lt;p&gt;task queue with focus on real-time processing, while also supporting task scheduling&lt;/p&gt;
+&lt;p&gt;BSD license&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="tutorial"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id10"&gt;Tutorial&lt;/a&gt;&lt;/h2&gt;
+&lt;div class="section" id="choosing-a-broker"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id11"&gt;Choosing a Broker&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Broker 的功能是收發 messages，這邊通常會用專門的 &lt;strong&gt;message broker&lt;/strong&gt; 來處理，
+例如 :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;dl class="first docutils"&gt;
+&lt;dt&gt;RabbitMQ&lt;/dt&gt;
+&lt;dd&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;feature-complete&lt;/li&gt;
+&lt;li&gt;stable&lt;/li&gt;
+&lt;li&gt;durable&lt;/li&gt;
+&lt;li&gt;excellent choice for a production environment&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;dl class="first docutils"&gt;
+&lt;dt&gt;Redis&lt;/dt&gt;
+&lt;dd&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;feature-complete&lt;/li&gt;
+&lt;li&gt;more susceptible to data loss in the event of abrupt termination or power failures&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;dl class="first docutils"&gt;
+&lt;dt&gt;Database&lt;/dt&gt;
+&lt;dd&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;不推薦拿 database 來當 message queue&lt;/li&gt;
+&lt;li&gt;但對於小需求可能就足夠&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;dl class="first docutils"&gt;
+&lt;dt&gt;Other Brokers&lt;/dt&gt;
+&lt;dd&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;Amazon SQS&lt;/li&gt;
+&lt;li&gt;MongoDB&lt;/li&gt;
+&lt;li&gt;IronMQ&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://celery.readthedocs.org/en/latest/getting-started/brokers/index.html"&gt;Broker Overview&lt;/a&gt;
+: (2015-01-27)&lt;/p&gt;
+&lt;table border="1" class="table table-bordered docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="22%"&gt;&lt;/col&gt;
+&lt;col width="26%"&gt;&lt;/col&gt;
+&lt;col width="22%"&gt;&lt;/col&gt;
+&lt;col width="30%"&gt;&lt;/col&gt;
+&lt;/colgroup&gt;
+&lt;thead valign="bottom"&gt;
+&lt;tr&gt;&lt;th class="head"&gt;Name&lt;/th&gt;
+&lt;th class="head"&gt;Status&lt;/th&gt;
+&lt;th class="head"&gt;Monitoring&lt;/th&gt;
+&lt;th class="head"&gt;Remote Control&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;RabbitMQ&lt;/td&gt;
+&lt;td&gt;Stable&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Redis&lt;/td&gt;
+&lt;td&gt;Stable&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Mongo DB&lt;/td&gt;
+&lt;td&gt;Experimental&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Beanstalk&lt;/td&gt;
+&lt;td&gt;Experimental&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Amazon SQS&lt;/td&gt;
+&lt;td&gt;Experimental&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Couch DB&lt;/td&gt;
+&lt;td&gt;Experimental&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Zookeeper&lt;/td&gt;
+&lt;td&gt;Experimental&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Django DB&lt;/td&gt;
+&lt;td&gt;Experimental&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;SQLAlchemy&lt;/td&gt;
+&lt;td&gt;Experimental&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Iron MQ&lt;/td&gt;
+&lt;td&gt;3rd party&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;command on Arch Linux :&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;yaourt -S rabbitmq
+
+sudo systemctl start rabbitmq
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="celery"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id12"&gt;安裝 Celery&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;要裝 Celery 沒有什麼特別的，用 &lt;tt class="docutils literal"&gt;pip&lt;/tt&gt; 就可以裝，
+通常再搭配上 virtualenv 做隔離&lt;/p&gt;
+&lt;p&gt;command :&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;pip install celery
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="application"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id13"&gt;Application&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Celery 裝完後要做的就是先建立一個 Celery instance (Celery application)，
+這個 instance 會是所有要交給 Celery 完成的事的 entry-point，
+所以要讓各 modules 都可以 import&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# proj/celery.py&lt;/span&gt;
+
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;celery&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Celery&lt;/span&gt;
+
+&lt;span class="n"&gt;app&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Celery&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'proj'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+             &lt;span class="n"&gt;broker&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'amqp://localhost:5672'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;    &lt;span class="c"&gt;# 沒寫 port 的話會自動找 5672 port&lt;/span&gt;
+             &lt;span class="n"&gt;backend&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'amqp://'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+             &lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;'proj.tasks'&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;    &lt;span class="c"&gt;# include 裡面是要跑的 tasks&lt;/span&gt;
+
+&lt;span class="c"&gt;# Optional configuration, see the application user guide.&lt;/span&gt;
+&lt;span class="n"&gt;app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;update&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+    &lt;span class="n"&gt;CELERY_TASK_RESULT_EXPIRES&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;3600&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;'__main__'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;start&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;寫完 instance 後，可以開始給 task 了&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# proj/tasks.py&lt;/span&gt;
+
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;proj.celery&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;app&lt;/span&gt;
+
+&lt;span class="nd"&gt;@app.task&lt;/span&gt;
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;
+
+&lt;span class="nd"&gt;@app.task&lt;/span&gt;
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;mul&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;
+
+&lt;span class="nd"&gt;@app.task&lt;/span&gt;
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;xsum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;numbers&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;numbers&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id1"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id14"&gt;啟動 Celery&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;接下來可以用 command 啟動 celery&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# celery -A ${app instance} worker -l info&lt;/span&gt;
+&lt;span class="c"&gt;# 如果 -A 後面接的 folder 的話，會去找裡面的 celery.py&lt;/span&gt;
+&lt;span class="c"&gt;# 等同於 "celery -A proj.celery worker -l info"&lt;/span&gt;
+&lt;span class="c"&gt;# 如果在 proj 底下的 app instance 檔案叫 mycelery.py 的話&lt;/span&gt;
+&lt;span class="c"&gt;# command 就變成 "celery -A proj.mycelery worker -l info"&lt;/span&gt;
+
+celery -A proj worker -l info
+
+&lt;span class="c"&gt;# More Help&lt;/span&gt;
+
+celery worker --help
+
+celery &lt;span class="nb"&gt;help&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;啟動畫面 :&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+ -------------- celery@linux-dv v3.1.17 (Cipater)
+---- **** -----
+--- * ***  * -- Linux-3.17.3-1-ARCH-x86_64-with-arch
+-- * - **** ---
+1. ** ---------- [config]
+2. ** ---------- .&amp;gt; app:         __main__:0x7fc92f14e0f0
+3. ** ---------- .&amp;gt; transport:   amqp://guest:**@localhost:5672//
+4. ** ---------- .&amp;gt; results:     amqp://
+5. *** --- * --- .&amp;gt; concurrency: 8 (prefork)
+-- ******* ----
+--- ***** ----- [queues]
+  -------------- .&amp;gt; celery           exchange=celery(direct) key=celery
+
+
+[tasks]
+   . proj.task.add
+   . proj.task.mul
+   . proj.task.xsum
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class="section" id="task"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id15"&gt;開始丟 Task&lt;/a&gt;&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;proj.tasks&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;add&lt;/span&gt;
+
+&lt;span class="n"&gt;add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;           &lt;span class="c"&gt;# 直接 call 不換產生 task 給 Celery，而是會直接做&lt;/span&gt;
+&lt;span class="n"&gt;add&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;delay&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;     &lt;span class="c"&gt;# 用 delay 會產生 task 交給 Celery，所以是 asynchronous 的&lt;/span&gt;
+                    &lt;span class="c"&gt;# delay 其實 "apply_async" 的 shortcut&lt;/span&gt;
+                    &lt;span class="c"&gt;# add.delay(4, 5) 等同於 add.apply_async((4, 5))&lt;/span&gt;
+
+&lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;add&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;delay&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;9&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  &lt;span class="c"&gt;# type(data) : celery.result.AsyncResult&lt;/span&gt;
+&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;timeout&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c"&gt;# 取值，等超過 1 秒還沒完成就 timeout，會 raise TimeoutError&lt;/span&gt;
+
+&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;revoke&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;terminate&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c"&gt;# 強制停止 task&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;強制停止 task (from outside) :&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;celery.task.control&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;revoke&lt;/span&gt;
+
+&lt;span class="c"&gt;# 參數一是 task id，可以從 celery 的 log 中的得知&lt;/span&gt;
+&lt;span class="n"&gt;revoke&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"69511b35-dcbc-4f93-9252-e428ed8114f5"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;terminate&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id2"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id16"&gt;保存結果&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;如果要持續監控 tasks 的狀態的話，需要把 Celery 接上 backend 來儲存，
+內建的 backend 支援有很多種，
+例如: SQLAlchemy、Django ORM、Memcached、Redis、AMQP (RabbitMQ)、MongoDB 等，
+或者是可以自己接新的 backend。&lt;/p&gt;
+&lt;p&gt;backend 的設定在 "Celery" 的 &lt;tt class="docutils literal"&gt;backend&lt;/tt&gt; argument 或是 configuration module 裡的 &lt;tt class="docutils literal"&gt;CELERY_RESULT_BACKEND&lt;/tt&gt;&lt;/p&gt;
+&lt;p&gt;AMQP 當 backend :&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;app&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Celery&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'tasks'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;backend&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'amqp'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;broker&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'amqp://'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Redis 當 backend :&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;app&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Celery&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'tasks'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;backend&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'redis://localhost'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;broker&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'amqp://'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;在用 delay 來丟 task 的時候，回傳的會是一個 &lt;tt class="docutils literal"&gt;AsyncResult&lt;/tt&gt; instance，
+接著可以用 &lt;tt class="docutils literal"&gt;ready()&lt;/tt&gt; 這個 method 來確認完成了沒。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;add&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;delay&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;    &lt;span class="c"&gt;# AsyncResult&lt;/span&gt;
+&lt;span class="n"&gt;result&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ready&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;              &lt;span class="c"&gt;# True / False&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;另外可以用 &lt;tt class="docutils literal"&gt;get()&lt;/tt&gt; method 來一段等待時間，超過時間還沒完成就 timeout，
+最後就會拿到 TimeoutError 這個 exception。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;result&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;timeout&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;       &lt;span class="c"&gt;# result value / TimeoutError exception / exception in task&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;如果 task 裡 raise 了 exception， &lt;tt class="docutils literal"&gt;get()&lt;/tt&gt; 會再 re-raise exception，
+如果不想要再 re-raise 的話，就在 get 裡加上 &lt;tt class="docutils literal"&gt;propagate=False&lt;/tt&gt; 這參數，
+加上這參數後，如果 task 裡 raise 了 exception 的話，
+"get()" 拿到的會是 exception instance，
+而不是直接 re-raise exception，
+另外有 exception 的時候可以在 &lt;tt class="docutils literal"&gt;traceback&lt;/tt&gt; 這個 attribute 裡看到原本的 traceback。&lt;/p&gt;
+&lt;p&gt;假設現在寫了一種新的 task :&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# proj/tasks.py&lt;/span&gt;
+
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;proj.celery&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;app&lt;/span&gt;
+
+&lt;span class="nd"&gt;@app.task&lt;/span&gt;
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;exception&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+    &lt;span class="k"&gt;raise&lt;/span&gt; &lt;span class="ne"&gt;ValueError&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"just kidding"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;接著在別的地方來丟出 task :&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;proj&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;tasks&lt;/span&gt;
+
+&lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;tasks&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exception&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;delay&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="n"&gt;result&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;    &lt;span class="c"&gt;# exception and traceback&lt;/span&gt;
+                &lt;span class="c"&gt;# ValueError: just kidding&lt;/span&gt;
+
+&lt;span class="n"&gt;tmp&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;result&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;propagate&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;   &lt;span class="c"&gt;# instance of ValueError&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tmp&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;          &lt;span class="c"&gt;# just kidding&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;repr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tmp&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;    &lt;span class="c"&gt;# ValueError('just kidding',)&lt;/span&gt;
+&lt;span class="nb"&gt;isinstance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tmp&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ne"&gt;ValueError&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;     &lt;span class="c"&gt;# True&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;result&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;traceback&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="configuration"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id17"&gt;Configuration&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;用預設的東西，不太別去調設定，其實就可以良好運作了。
+但是 Celery 也有提供更多的設定讓使用者可以自己調整，&lt;/p&gt;
+&lt;div class="section" id="serializer"&gt;
+&lt;h4&gt;&lt;a class="toc-backref" href="#id18"&gt;serializer&lt;/a&gt;&lt;/h4&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="celery-with-non-python"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id19"&gt;Celery with non-Python&lt;/a&gt;&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://groups.google.com/forum/#!topic/celery-users/K5i4r1rh4vU"&gt;https://groups.google.com/forum/#!topic/celery-users/K5i4r1rh4vU&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="frequently-asked-questions"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id20"&gt;Frequently Asked Questions&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Celery 的 FAQ 的節錄 (2015-01-27)&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://celery.readthedocs.org/en/latest/faq.html"&gt;Celery - Frequently Asked Questions&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="section" id="general"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id21"&gt;General&lt;/a&gt;&lt;/h3&gt;
+&lt;div class="section" id="id3"&gt;
+&lt;h4&gt;&lt;a class="toc-backref" href="#id22"&gt;我該拿 Celery 做什麼 ?&lt;/a&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p class="first"&gt;&lt;a class="reference external" href="http://decafbad.com/blog/2008/07/04/queue-everything-and-delight-everyone/"&gt;Queue everything and delight everyone&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;dl class="first docutils"&gt;
+&lt;dt&gt;把東西放在 background 跑&lt;/dt&gt;
+&lt;dd&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;例如 web request 盡可能地早點回傳給使用者，接著再把耗時的東西陸續傳給使用者，這會讓使用者感覺回應時間減少、performance 變好&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;在 web request 結束後跑其他額外的工作&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;確保工作有完成 (asynchronously 執行，定期檢查、重試)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;定期執行的工作&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;分散式計算&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;平行化執行&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="misconceptions"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id23"&gt;Misconceptions&lt;/a&gt;&lt;/h3&gt;
+&lt;div class="section" id="celery-pickle"&gt;
+&lt;h4&gt;&lt;a class="toc-backref" href="#id24"&gt;Celery 一定需要 pickle ?&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;No.&lt;/p&gt;
+&lt;p&gt;Celery 支援各種 serialization scheme，
+目前內建支援的有 JSON、YAML、Pickle、msgpack，
+每個 task 要用什麼 serialization scheme 是可以分別指定的，
+預設使用 pickle 是因為可以傳送複雜的 Python objects，
+如果需要跟不同語言溝通的話可以選擇其他適合的 format。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="troubleshooting"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id25"&gt;Troubleshooting&lt;/a&gt;&lt;/h3&gt;
+&lt;div class="section" id="waiting-tasks"&gt;
+&lt;h4&gt;&lt;a class="toc-backref" href="#id26"&gt;清除所有 waiting tasks ?&lt;/a&gt;&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;celery -A proj purge
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="results"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id27"&gt;Results&lt;/a&gt;&lt;/h3&gt;
+&lt;div class="section" id="task-id"&gt;
+&lt;h4&gt;&lt;a class="toc-backref" href="#id28"&gt;取得某 task id 的東西&lt;/a&gt;&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;my_task&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;AsyncResult&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;task_id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;result&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="security"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id29"&gt;Security&lt;/a&gt;&lt;/h3&gt;
+&lt;div class="section" id="pickle-security"&gt;
+&lt;h4&gt;&lt;a class="toc-backref" href="#id30"&gt;用 pickle 會有 security 問題吧 ?&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;是，用 pickle 會有安全疑慮，
+基本上你要確保不該有 access 權限的地方不能 access 到你的 broker、databases、other services。&lt;/p&gt;
+&lt;p&gt;可以設定 &lt;tt class="docutils literal"&gt;CELERY_TASK_SERIALIZER&lt;/tt&gt; 來改變 task messages 格式成 json 或 yaml 之類的。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id4"&gt;
+&lt;h4&gt;&lt;a class="toc-backref" href="#id31"&gt;我想要加密&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;對於支援 SSL 的 AMQP brokers 可以設定 &lt;tt class="docutils literal"&gt;BROKER_USE_SSL&lt;/tt&gt; 來加密&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="tasks"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="#id32"&gt;Tasks&lt;/a&gt;&lt;/h3&gt;
+&lt;div class="section" id="call-task"&gt;
+&lt;h4&gt;&lt;a class="toc-backref" href="#id33"&gt;用名稱來 call task ?&lt;/a&gt;&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;send_task&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'tasks.add'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;{})&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id5"&gt;
+&lt;h4&gt;&lt;a class="toc-backref" href="#id34"&gt;取得 task id ?&lt;/a&gt;&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nd"&gt;@app.task&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;bind&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;mytask&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;cache&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"Running"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id6"&gt;
+&lt;h4&gt;&lt;a class="toc-backref" href="#id35"&gt;我要跑連續的 task&lt;/a&gt;&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;celery.utils.log&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;get_task_logger&lt;/span&gt;
+
+&lt;span class="n"&gt;logger&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;get_task_logger&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;__name__&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="nd"&gt;@app.task&lt;/span&gt;
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;
+
+&lt;span class="nd"&gt;@app.task&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ignore_result&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;log_result&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;result&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"log_result got: &lt;/span&gt;&lt;span class="si"&gt;%r&lt;/span&gt;&lt;span class="s"&gt;"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;result&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+
+&lt;span class="c"&gt;# run task&lt;/span&gt;
+&lt;span class="c"&gt;# 這邊注意到用的是 ".s" 而不是直接 call ".delay"&lt;/span&gt;
+&lt;span class="c"&gt;# 詳細看 celery.canvas.Signature&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;add&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;log_result&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;delay&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="reference"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="#id36"&gt;Reference&lt;/a&gt;&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.celeryproject.org/"&gt;Celery&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://celery.readthedocs.org/en/latest/index.html"&gt;Celery Documentation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://github.com/celery/celery"&gt;GitHub - celery/celery&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.celeryproject.org/community/"&gt;Celery - Community Links&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://celery.readthedocs.org/en/latest/faq.html"&gt;Celery - Frequently Asked Questions&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.fullstackpython.com/task-queues.html"&gt;Full Stack Python - Task Queues&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://queues.io/"&gt;Queues - Job queues, message queues and other queues. Almost all of them in one place&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Message_broker"&gt;Wikipedia - Message broker&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Celery_Task_Queue"&gt;Wikipedia - Celery Task Queue&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Advanced_Message_Queuing_Protocol"&gt;Wikipedia - Advanced Message Queuing Protocol&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Distributed_computing"&gt;Wikipedia - Distributed computing&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Parallel_computing"&gt;Wikipedia - Parallel computing&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">wdv4758h</dc:creator><pubDate>Mon, 26 Jan 2015 23:45:00 +0800</pubDate><guid>tag:,2015-01-26:posts/2015/01/celery/</guid><category>Celery</category><category>RabbitMQ</category></item><item><title>[PyPy] IO improvements</title><link>/posts/2014/11/pypy-io-improvements/</link><description>&lt;p&gt;剛剛看到 &lt;a class="reference external" href="http://morepypy.blogspot.tw/2014/11/pypy-io-improvements.html"&gt;PyPy status blog 上的新文章&lt;/a&gt; ，
 以下是大概的內容&lt;/p&gt;
 &lt;p&gt;PyPy 在 Warsaw (為波蘭的首都及最大的城市) 的 sprint 順利結束了 (wrapped up)，
 有些 branch (gc_no_cleanup_nursery, gc-incminimark-pinning) 已經順利 merge 回 master (improve I/O &amp;amp; GC)&lt;/p&gt;

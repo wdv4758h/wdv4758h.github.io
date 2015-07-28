@@ -1,0 +1,1 @@
+var result_20152220572383819 = { "value":[{"personId":"904701","ratingFinal":9.4,"ratingCount":8826},{"personId":"912664","ratingFinal":8.1,"ratingCount":249}],"error":null};var result=result_20152220572383819;

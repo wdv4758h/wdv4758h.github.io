@@ -1,0 +1,1 @@
+var result_20152220572385138 = { "value":{"commentPraiseCount":[0,0,0,0,0,0,0,0,0,0],"commentPraiseStatus":[false,false,false,false,false,false,false,false,false,false],"commentShareCount":[0,0,0,0,0,0,0,0,0,0]},"error":null};var GetNewsCommentCountInfoResult=result_20152220572385138;

@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>OpenMP 入門 — Dv 名字很難念</title>
+	<meta name="description" content="Title: OpenMP 入門; Date: 2015-05-07; Author: wdv4758h">
+	<meta name="author" content="wdv4758h">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="/theme/html5.js"></script>
+		<![endif]-->
+	<link href="/theme/css/ipython.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/simplex/bootstrap.min.css" rel="stylesheet">
+	<link href="/theme/css/local.css" rel="stylesheet">
+	<link href="/theme/css/pygments.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/tipuesearch/tipuesearch.css">
+</head>
+
+<body>
+<div class="container">
+	<div class="page-header">
+		<h1>
+            <a href="/">Dv 名字很難念</a>
+			<br>
+            <small>Aquí hay gato encerrado. </small>
+            <form id="searchform" action="/search.html" onsubmit="return (this.elements['q'].value.length > 0)">
+                    <input id="searchbox" type="text" name="q" size="12" placeholder="Search">
+            </form>
+        </h1>
+        <a class="top-line-label" href="/about.html">About</a>
+	</div>
+	<div class="row">
+        <div>
+            <div class="row-fluid">
+                <div class="col-md-8 col-md-offset-2">
+<div class="article">
+
+	<div class="text-center article-header">
+
+		<h1 class="article-title">OpenMP 入門</h1>
+		<span>
+			<h4>wdv4758h</h4>
+		</span>
+        <span>publish: <time datetime="2015-05-07T21:39:00+08:00">Thu 07 May 2015</time></span>
+
+            <br>
+            <span>update: <time datetime="2015-05-07 21:39:00+08:00">Thu 07 May 2015</time></span>
+
+	</div>
+
+	<div>
+		Category:
+		<span>
+			<a href="/category/misc.html" rel="category">Misc</a>
+		</span>
+	</div>
+
+	<div>
+		Tags:
+		<span>
+			<a href="/tag/c.html" rel="tag">C</a>
+		</span>
+	</div>
+
+</div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-8">
+	<div class="article-body"><div class="section" id="introduction">
+<h2>Introduction</h2>
+<p>OpenMP 全名叫 Open Multi-Processing，
+是由 OpenMP Architecture Review Board 這個非營利組織所訂定的跨平台 API 規範，
+目標是要幫現有的程式快速的加上多核心支援，
+語言支援有 C、C++、Fortran，
+內容包含 compiler directives、library routines、environment variables。</p>
+<div class="section" id="compiler-support">
+<h3>Compiler Support</h3>
+<ul class="simple">
+<li>GCC 從 4.2 開始支援 OpenMP</li>
+<li>Clang 在 3.6 時還沒有完整的支援</li>
+</ul>
+<table border="1" class="table table-bordered docutils">
+<colgroup>
+<col width="47%" />
+<col width="15%" />
+<col width="18%" />
+<col width="21%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">OpenMP Version</th>
+<th class="head">GCC</th>
+<th class="head">icc</th>
+<th class="head">Clang</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>2.5</td>
+<td>4.2</td>
+<td>10.1</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>3.0</td>
+<td>4.4</td>
+<td>11.0</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>3.1</td>
+<td>4.7</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>4.0</td>
+<td>4.9</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><dl class="first docutils">
+<dt>Current Compiler Version</dt>
+<dd><ul class="first last simple">
+<li>GCC : 5.1, 2015-04-22</li>
+<li>Clang : 3.6, 2015-02-27</li>
+<li>Intel C++ Compiler : 15.0.2, 2015-01-22</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="highlight"><pre><span class="err">$</span> <span class="n">gcc</span> <span class="o">-</span><span class="n">fopenmp</span> <span class="n">hello</span><span class="p">.</span><span class="n">c</span> <span class="o">-</span><span class="n">o</span> <span class="n">hello</span>
+</pre></div>
+<ul>
+<li><p class="first"><a class="reference external" href="http://openmp.org/wp/openmp-compilers/">OpenMP Compilers</a></p>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference external" href="http://openmp.llvm.org/">LLVM - OpenMP</a></dt>
+<dd><ul class="first last simple">
+<li><a class="reference external" href="https://github.com/clang-omp/clang/wiki/Status-of-supported-OpenMP-constructs">Clang - Status of supported OpenMP constructs</a></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>GCC</dt>
+<dd><ul class="first last simple">
+<li><tt class="docutils literal"><span class="pre">-fopenmp</span></tt></li>
+<li><a class="reference external" href="https://gcc.gnu.org/wiki/openmp">GCC - OpenMP</a></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="example">
+<h3>Example</h3>
+<div class="highlight"><pre><span class="c1">// sleep sort</span>
+
+<span class="cp">#include &lt;cstdio&gt;</span>
+<span class="cp">#include &lt;vector&gt;</span>
+<span class="cp">#include &lt;unistd.h&gt; </span><span class="c1">// sleep</span>
+
+<span class="kt">void</span> <span class="nf">sleep_sort</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">length</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+
+    <span class="cp">#pragma omp parallel num_threads(length)</span>
+    <span class="p">{</span>
+        <span class="cp">#pragma omp for</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">sleep</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%llu</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="n">data</span><span class="p">(</span><span class="n">argc</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+
+    <span class="cp">#pragma omp parallel for</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">argc</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">sscanf</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="s">&quot;%llu&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+
+    <span class="n">sleep_sort</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+<p>OpenMP 會利用 directive 來增加 multithread 支援，
+起手勢為 <tt class="docutils literal">#pragma omp</tt></p>
+<p>在 GCC 中， <tt class="docutils literal"><span class="pre">-fopenmp</span></tt> 會在 link 時加上 <tt class="docutils literal">libgomp</tt> 這個 runtime library，
+libgomp 會由 CPU 核心數來決定要開的 thread 數</p>
+<p>在 C/C++ 標準中，如果遇到不支援的 <tt class="docutils literal">#pragma</tt> 就直接忽略，
+所以這樣增加 OpenMP 的支援不會造成舊 compiler 編譯時出現問題。</p>
+<p>經由 <tt class="docutils literal">omp.h</tt> 可以存取一個 runtime library，
+但是這通常不需要，
+如果要的話可以從 <tt class="docutils literal">#define _OPENMP</tt> 得知對於不支援的 compiler 會如何處理。</p>
+</div>
+<div class="section" id="syntax">
+<h3>Syntax</h3>
+<div class="section" id="parallel">
+<h4>parallel</h4>
+<p>使用 parallel pragma 來開始一個 parallel block，
+程式會 runtime 決定要開多少 thread，
+平行化的範圍是 parallel pragma 後的 statement 或 block，
+結束後 thread 就會收回。</p>
+<div class="highlight"><pre><span class="cp">#pragma omp parallel</span>
+<span class="p">{</span>
+    <span class="c1">// Code inside this region runs in parallel.</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+<p>實作上，GCC 會產生一個 magic function，把相關的 code 都放進去，
+如此一來 block 裡個變數都是 function 的 local variable (在不同 thread 也是 local)。
+ICC 則是使用類似 fork 的機制，而非使用 magic function。
+兩種實作都會正常運作。</p>
+<p>不同 context 間的變數的分享是自動處理的，
+有時候是用 reference，有時候是用 register 變數 (離開 parallel block 或是執行 flush 時會清掉)</p>
+<p>OpenMP 的平行化只要搭配 if clause 就可以使用 condition 來開關</p>
+<div class="highlight"><pre><span class="cp">#pragma omp parallel for if(parallelism_enabled)</span>
+<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">c</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">handle</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="section" id="loop-directive-for">
+<h4>Loop directive: for</h4>
+<div class="highlight"><pre><span class="cp">#pragma omp for</span>
+<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">;</span> <span class="o">++</span><span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+<p>這段 code 和以下 code 等價 :</p>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">this_thread</span> <span class="o">=</span> <span class="n">omp_get_thread_num</span><span class="p">(),</span> <span class="n">num_threads</span> <span class="o">=</span> <span class="n">omp_get_num_threads</span><span class="p">();</span>
+<span class="kt">int</span> <span class="n">start</span> <span class="o">=</span> <span class="p">(</span><span class="n">this_thread</span>    <span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">20</span> <span class="o">-</span> <span class="mi">10</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_threads</span> <span class="o">+</span> <span class="mi">10</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">end</span>   <span class="o">=</span> <span class="p">(</span><span class="n">this_thread</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">20</span> <span class="o">-</span> <span class="mi">10</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_threads</span> <span class="o">+</span> <span class="mi">10</span><span class="p">;</span>
+<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">start</span><span class="p">;</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">;</span> <span class="o">++</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+</pre></div>
+<p>其中， <tt class="docutils literal">omp_get_thread_num</tt> 取得的是現在這個 thread 的編號，
+<tt class="docutils literal">omp_get_num_threads</tt> 取得的是總共有多少 thread。
+在只有單條 thread 的情況下，this_thread 就會是 0，
+num_threads 就會是 1，
+start 和 end 的話則是把 for 裡的範圍分配給各個 thread，
+每個 thread 會拿到 loop 裡的不同 section，如此一來每個 section 會各自平行執行。</p>
+</div>
+<div class="section" id="scheduling">
+<h4>Scheduling</h4>
+<p>預設的 schedule 是 static，在進入 loop 時，各 loop 會各自決定要計算的部份。</p>
+<div class="highlight"><pre><span class="cp">#pragma omp for schedule(static)</span>
+<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">c</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">handle</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+</pre></div>
+<p>在 dynamic 的 schedule 中，不會事先決定好每個 thread 要跑哪個部份，
+每個 thread 會去詢問 OpenMP runtime library 來取得 iteration number 然後運算，
+算完後再要下一個。常和 <tt class="docutils literal">ordered</tt> 一起使用，或是不同的 iteration 會需要不同時間來執行時。</p>
+<div class="highlight"><pre><span class="cp">#pragma omp for schedule(dynamic)</span>
+<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">c</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">handle</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+</pre></div>
+<p>另外可以指定一次分配多少個 iteration 來減少詢問 OpenMP runtime library 的次數 :</p>
+<div class="highlight"><pre><span class="cp">#pragma omp for schedule(dynamic, 3)</span>
+<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">c</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span> <span class="o">++</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">handle</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="section" id="ordered">
+<h4>ordered</h4>
+<p>指定 code 中的某部份需要照順序執行</p>
+<div class="highlight"><pre><span class="cp">#pragma omp for ordered schedule(dynamic)</span>
+<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">n</span><span class="o">&lt;</span><span class="mi">100</span><span class="p">;</span> <span class="o">++</span><span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">files</span><span class="p">[</span><span class="n">n</span><span class="p">].</span><span class="n">compress</span><span class="p">();</span>
+
+    <span class="cp">#pragma omp ordered</span>
+    <span class="n">send</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="n">n</span><span class="p">]);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="sections">
+<h4>Sections</h4>
+<p>指定多個 block 可以平行執行</p>
+<div class="highlight"><pre><span class="cp">#pragma omp sections</span>
+<span class="p">{</span>
+    <span class="p">{</span> <span class="n">Work1</span><span class="p">();</span> <span class="p">}</span>
+    <span class="cp">#pragma omp section</span>
+    <span class="p">{</span> <span class="n">Work2</span><span class="p">();</span>
+      <span class="n">Work3</span><span class="p">();</span> <span class="p">}</span>
+    <span class="cp">#pragma omp section</span>
+    <span class="p">{</span> <span class="n">Work4</span><span class="p">();</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+<div class="highlight"><pre><span class="cp">#pragma omp parallel </span><span class="c1">// starts a new team</span>
+<span class="p">{</span>
+    <span class="c1">//Work0(); // this function would be run by all threads.</span>
+
+    <span class="cp">#pragma omp sections </span><span class="c1">// divides the team into sections</span>
+    <span class="p">{</span>
+      <span class="c1">// everything herein is run only once.</span>
+      <span class="p">{</span> <span class="n">Work1</span><span class="p">();</span> <span class="p">}</span>
+      <span class="cp">#pragma omp section</span>
+      <span class="p">{</span> <span class="n">Work2</span><span class="p">();</span>
+        <span class="n">Work3</span><span class="p">();</span> <span class="p">}</span>
+      <span class="cp">#pragma omp section</span>
+      <span class="p">{</span> <span class="n">Work4</span><span class="p">();</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">//Work5(); // this function would be run by all threads.</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="tasks-openmp-3-0">
+<h4>tasks (OpenMP 3.0)</h4>
+<div class="highlight"><pre><span class="k">struct</span> <span class="n">node</span> <span class="p">{</span> <span class="n">node</span> <span class="o">*</span><span class="n">left</span><span class="p">,</span> <span class="o">*</span><span class="n">right</span><span class="p">;</span> <span class="p">};</span>
+<span class="k">extern</span> <span class="kt">void</span> <span class="nf">process</span><span class="p">(</span><span class="n">node</span><span class="o">*</span> <span class="p">);</span>
+<span class="kt">void</span> <span class="nf">postorder_traverse</span><span class="p">(</span><span class="n">node</span><span class="o">*</span> <span class="n">p</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">)</span>
+        <span class="cp">#pragma omp task </span><span class="c1">// p is firstprivate by default</span>
+        <span class="n">postorder_traverse</span><span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">)</span>
+        <span class="cp">#pragma omp task </span><span class="c1">// p is firstprivate by default</span>
+        <span class="n">postorder_traverse</span><span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span>
+    <span class="cp">#pragma omp taskwait</span>
+    <span class="n">process</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+<p>有了起手勢 <tt class="docutils literal">#pragma omp</tt> 後，可以接以下東西 :</p>
+<table border="1" class="table table-bordered docutils">
+<colgroup>
+<col width="19%" />
+<col width="81%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>parallel</td>
+<td>建 thread</td>
+</tr>
+<tr><td>for</td>
+<td>把 for 切給各個 thread</td>
+</tr>
+<tr><td>num_threads(N)</td>
+<td>指定要開 N 個 thread</td>
+</tr>
+<tr><td>ordered</td>
+<td>指定 code 中的某部份需要照順序執行</td>
+</tr>
+<tr><td>sections / section</td>
+<td>指定多個 block 可以平行執行</td>
+</tr>
+<tr><td>atomic</td>
+<td>只能用於簡單的運算 (例如加法)</td>
+</tr>
+<tr><td>critical</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>reduction</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>flush</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>private</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>firstprivate</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>shared</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>lastprivate</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>default</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>barrier</td>
+<td>一條分界線，後面的 code 會等所有 thread 把前面都執行完後才開始</td>
+</tr>
+<tr><td>nowait</td>
+<td>這個 statement 或 block 可以不用等，先執行完的 thread 可以繼續 (例如搭配 for 來使用)</td>
+</tr>
+<tr><td>single</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>master</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>collapse(N)</td>
+<td>(搭配 for 使用) 處理 N 層的 Nested Loops</td>
+</tr>
+</tbody>
+</table>
+<p>OpenMP 2.5 中，for 裡的 iteration variable 必需是 signed integer。
+OpenMP 3.0 中，還可以是 unsigned integer、pointer、constant-time random access iterator，
+iterator 的 case 會使用 <tt class="docutils literal"><span class="pre">std::distance()</span></tt> 來判斷 loop 的次數。</p>
+</div>
+</div>
+<div class="section" id="problem">
+<h3>Problem</h3>
+<div class="section" id="nested-loops">
+<h4>Nested Loops</h4>
+<div class="highlight"><pre><span class="cp">#pragma omp parallel for</span>
+<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">y</span><span class="o">&lt;</span><span class="mi">25</span><span class="p">;</span> <span class="o">++</span><span class="n">y</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="cp">#pragma omp parallel for</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">x</span><span class="o">&lt;</span><span class="mi">80</span><span class="p">;</span> <span class="o">++</span><span class="n">x</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">tick</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+<p>裡面那層的 OpenMP code 實際上不會平行化。</p>
+<p>OpenMP 3.0 中加入了 collapse 可以解決這個狀況 :</p>
+<div class="highlight"><pre><span class="cp">#pragma omp parallel for collapse(2)</span>
+<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">y</span><span class="o">&lt;</span><span class="mi">25</span><span class="p">;</span> <span class="o">++</span><span class="n">y</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">x</span><span class="o">&lt;</span><span class="mi">80</span><span class="p">;</span> <span class="o">++</span><span class="n">x</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">tick</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+<p>效能方面，因為 libgomp 夠聰明，所以這種多層的平行化不會一直建立和回收 thread，
+建立次數 (<tt class="docutils literal">clone</tt> system call) 會和 concurrent threads 的最大數量一樣，
+parallel 不單純是 pthread_create 和 pthread_join 的結合。</p>
+</div>
+</div>
+</div>
+<div class="section" id="reference">
+<h2>Reference</h2>
+<ul class="simple">
+<li><a class="reference external" href="http://bisqwit.iki.fi/story/howto/openmp/">Guide into OpenMP: Easy multithreading programming for C++</a></li>
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/OpenMP">Wikipedia - OpenMP</a></li>
+</ul>
+</div>
+</div>
+
+        <hr>
+        <h2>Related Posts</h2>
+        <ul>
+            <li><a href="/posts/2015/01/cpp11-override-and-final/">C++11 - override & final</a></li>
+        </ul>
+
+	<hr>
+
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'wdv4758h-blog';
+    var disqus_title = 'OpenMP 入門';
+	var disqus_identifier = 'posts/2015/05/openmp-intro/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+                </div>
+            </div>
+		</div>
+	</div> 	<!-- <hr> -->
+</div> <!-- /container -->
+<footer class="aw-footer bg-danger">
+	<div class="container"> <!-- footer -->
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+				<div class="row">
+					<div class="col-md-3">
+						<h4>Navigation</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="">Dv 名字很難念</a></li>
+                            <li><a href="/about.html">About</a></li>
+							<li><a href="/archives"><i class="fa fa-archive "></i> archive</a></li>
+							<li><a href="/tags"><i class="fa fa-tags "></i> tags</a></li>
+							<li><a href="/feeds/all.rss.xml"><i class="fa fa-rss "></i> rss</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Author</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="https://wdv4758h.github.com">Homepage</a></li>
+							<li><a href="https://github.com/wdv4758h/">Github</a></li>
+							<li><a href="https://plus.google.com/103751737509044116269/posts">Google+</a></li>
+							<li><a href="https://www.facebook.com/wdv4758h">Facebook</a></li>
+							<li><a href="https://www.linkedin.com/pub/chiu-hsiang-hsu/69/83/530">Linked-in</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Categories</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="/category/c++.html">C++ (1)</a></li>
+							<li><a href="/category/compiler.html">Compiler (1)</a></li>
+							<li><a href="/category/django.html">Django (2)</a></li>
+							<li><a href="/category/functional.html">Functional (2)</a></li>
+							<li><a href="/category/fuzzy.html">Fuzzy (1)</a></li>
+							<li><a href="/category/gc.html">GC (1)</a></li>
+							<li><a href="/category/html5.html">HTML5 (1)</a></li>
+							<li><a href="/category/linux.html">Linux (3)</a></li>
+							<li><a href="/category/misc.html">Misc (40)</a></li>
+							<li><a href="/category/prolog.html">Prolog (1)</a></li>
+							<li><a href="/category/python.html">Python (14)</a></li>
+							<li><a href="/category/qemu.html">QEMU (1)</a></li>
+							<li><a href="/category/rust.html">Rust (3)</a></li>
+							<li><a href="/category/ted.html">TED (1)</a></li>
+							<li><a href="/category/vim.html">Vim (3)</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Links</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="https://www.python.org/">Python</a></li>
+							<li><a href="https://www.djangoproject.com/">Django</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; wdv4758h 2014</p>
+            <small>Arch Linux + Vim + reStructuredText + Pelican = Blog</small>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<!-- search -->
+<script type="text/javascript" src="/theme/tipuesearch/tipuesearch_set.js"></script>
+<script type="text/javascript" src="/theme/tipuesearch/tipuesearch.min.js"></script>
+<!------------>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-42810012-2', 'auto');
+  ga('send', 'pageview');
+</script>
+</body>
+</html>

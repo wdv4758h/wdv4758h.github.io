@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Rust 的一些紀錄 — Dv 名字很難念</title>
+	<meta name="description" content="Title: Rust 的一些紀錄; Date: 2015-05-14; Author: wdv4758h">
+	<meta name="author" content="wdv4758h">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="/theme/html5.js"></script>
+		<![endif]-->
+	<link href="/theme/css/ipython.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/simplex/bootstrap.min.css" rel="stylesheet">
+	<link href="/theme/css/local.css" rel="stylesheet">
+	<link href="/theme/css/pygments.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/tipuesearch/tipuesearch.css">
+</head>
+
+<body>
+<div class="container">
+	<div class="page-header">
+		<h1>
+            <a href="/">Dv 名字很難念</a>
+			<br>
+            <small>Aquí hay gato encerrado. </small>
+            <form id="searchform" action="/search.html" onsubmit="return (this.elements['q'].value.length > 0)">
+                    <input id="searchbox" type="text" name="q" size="12" placeholder="Search">
+            </form>
+        </h1>
+        <a class="top-line-label" href="/about.html">About</a>
+	</div>
+	<div class="row">
+        <div>
+            <div class="row-fluid">
+                <div class="col-md-8 col-md-offset-2">
+<div class="article">
+
+	<div class="text-center article-header">
+
+		<h1 class="article-title">Rust 的一些紀錄</h1>
+		<span>
+			<h4>wdv4758h</h4>
+		</span>
+        <span>publish: <time datetime="2015-05-14T21:57:00+08:00">Thu 14 May 2015</time></span>
+
+            <br>
+            <span>update: <time datetime="2015-05-24 21:57:00+08:00">Sun 24 May 2015</time></span>
+
+	</div>
+
+	<div>
+		Category:
+		<span>
+			<a href="/category/rust.html" rel="category">Rust</a>
+		</span>
+	</div>
+
+	<div>
+		Tags:
+		<span>
+			<a href="/tag/.html" rel="tag"></a>
+		</span>
+	</div>
+
+</div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-8">
+    <div class="well">
+        <h2>Table of Content</h2>
+        <div class="contents topic">
+            <div class="toc" id="">
+
+<ul class="simple">
+<li><a class="reference internal" href="#o-big-number" id="id1">[Ｏ] Big Number 支援？</a></li>
+<li><a class="reference internal" href="#o-first-class-function" id="id2">[Ｏ] First-class function 支援？</a></li>
+<li><a class="reference internal" href="#o-map-reduce-filter" id="id3">[Ｏ] map / reduce / filter 之類的東西？</a></li>
+<li><a class="reference internal" href="#o-option-type-maybe-type" id="id4">[Ｏ] Option type (maybe type) ?</a></li>
+<li><a class="reference internal" href="#o-oop-object-oriented-programming" id="id5">[Ｏ] OOP (object-oriented programming)？</a></li>
+<li><a class="reference internal" href="#o-type-inference" id="id6">[Ｏ] Type Inference</a></li>
+<li><a class="reference internal" href="#o-memory-control" id="id7">[Ｏ] 高度的 Memory Control？</a></li>
+<li><a class="reference internal" href="#repl" id="id8">[－] REPL？</a></li>
+<li><a class="reference internal" href="#sort-algorithm" id="id9">[？] 預設提供的 Sort Algorithm 是啥？</a></li>
+<li><a class="reference internal" href="#o-regular-expression" id="id10">[Ｏ] Regular Expression 支援？</a></li>
+<li><a class="reference internal" href="#o-ffi-foreign-function-interface" id="id11">[Ｏ] FFI (Foreign Function Interface)？</a></li>
+<li><a class="reference internal" href="#o-import-third-party-library" id="id12">[Ｏ] Import third party library？</a></li>
+<li><a class="reference internal" href="#o-native-threading-support" id="id13">[Ｏ] Native Threading Support？</a></li>
+<li><a class="reference internal" href="#x-garbage-collection" id="id14">[Ｘ] Garbage Collection？</a></li>
+<li><a class="reference internal" href="#o-format-string" id="id15">[Ｏ] Format String？</a></li>
+<li><a class="reference internal" href="#o-ownership" id="id16">[Ｏ] Ownership？</a></li>
+<li><a class="reference internal" href="#third-party" id="id17">Third Party</a><ul>
+<li><a class="reference internal" href="#django-like-project" id="id18">Django-like project？</a></li>
+<li><a class="reference internal" href="#game-engine" id="id19">Game Engine？</a></li>
+<li><a class="reference internal" href="#template-engine" id="id20">Template Engine？</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+    </div>
+	<div class="article-body">
+<p>最近又心血來潮翻了一點 Rust，
+目前版本還在 1.0 beta (現在已經正式 release 啦~)，
+但是有許多東西已經差不多定型了，
+開始紀錄一下狀況 XD</p>
+<ul>
+<li><dl class="first docutils">
+<dt>待研究列表</dt>
+<dd><ul class="first last">
+<li><p class="first">traits</p>
+</li>
+<li><p class="first">format! 實作</p>
+</li>
+<li><p class="first">macro</p>
+</li>
+<li><dl class="first docutils">
+<dt>Ownership</dt>
+<dd><ul class="first last simple">
+<li>Box</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">Lifetime</p>
+</li>
+<li><p class="first">static variable</p>
+</li>
+<li><p class="first">dylib, rlib, and staticlib</p>
+</li>
+<li><p class="first">coroutine</p>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<hr class="docutils"/>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/kud1ing/awesome-rust">[GitHub] awesome-rust</a></li>
+<li><a class="reference external" href="http://www.reddit.com/r/rust/">Reddit - Rust</a></li>
+</ul>
+<div class="section" id="o-big-number">
+<h2><a class="toc-backref" href="#id1">[Ｏ] Big Number 支援？</a></h2>
+<p>有！</p>
+<ul class="simple">
+<li><a class="reference external" href="http://doc.rust-lang.org/num/num/bigint/">Rust - Module num::bigint</a></li>
+<li><a class="reference external" href="http://benchmarksgame.alioth.debian.org/u64/performance.php?test=pidigits">pidigits benchmark | Computer Language Benchmarks Game</a></li>
+<li><a class="reference external" href="http://www.wilfred.me.uk/blog/2014/10/20/the-fastest-bigint-in-the-west/">The Fastest BigInt In The West</a></li>
+</ul>
+</div>
+<div class="section" id="o-first-class-function">
+<h2><a class="toc-backref" href="#id2">[Ｏ] First-class function 支援？</a></h2>
+<p>有！</p>
+<table border="1" class="table table-bordered docutils">
+<colgroup>
+<col width="23%"></col>
+<col width="9%"></col>
+<col width="17%"></col>
+<col width="20%"></col>
+<col width="10%"></col>
+<col width="20%"></col>
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head" colspan="2">Higher-order functions</th>
+<th class="head" colspan="3">Non-local variables</th>
+<th class="head" rowspan="2">Partial application</th>
+</tr>
+<tr><th class="head">Arguments</th>
+<th class="head">Results</th>
+<th class="head">Nested functions</th>
+<th class="head">Anonymous functions</th>
+<th class="head">Closures</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/First-class_function">Wikipedia - Firsr-class function</a></li>
+</ul>
+</div>
+<div class="section" id="o-map-reduce-filter">
+<h2><a class="toc-backref" href="#id3">[Ｏ] map / reduce / filter 之類的東西？</a></h2>
+<p>有！在 iterator</p>
+<ul class="simple">
+<li><a class="reference external" href="http://doc.rust-lang.org/std/iter/trait.Iterator.html">Rust - Trait std::iter::Iterator</a></li>
+</ul>
+<div class="highlight"><pre><span class="kd">let</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">];</span><span class="w"></span>
+
+<span class="c1">// get a new iterator with map</span>
+<span class="kd">let</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">iter</span><span class="p">().</span><span class="n">map</span><span class="p">(</span><span class="o">|&amp;</span><span class="n">x</span><span class="o">|</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// get a new iterator with filter</span>
+<span class="kd">let</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">iter</span><span class="p">().</span><span class="n">filter</span><span class="p">(</span><span class="o">|&amp;</span><span class="n">x</span><span class="o">|</span><span class="w"> </span><span class="o">*</span><span class="n">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+
+<span class="c1">// use fold (reduce) to get summation</span>
+<span class="kd">let</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">];</span><span class="w"></span>
+<span class="kd">let</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">iter</span><span class="p">().</span><span class="n">fold</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">|</span><span class="n">acc</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">item</span><span class="o">|</span><span class="w"> </span><span class="n">acc</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">item</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="section" id="o-option-type-maybe-type">
+<h2><a class="toc-backref" href="#id4">[Ｏ] Option type (maybe type) ?</a></h2>
+<p>有！</p>
+<p>(目前理解) Maybe monad 裡面可能是該有的值或是 Nothing，
+這樣包起來可以提醒你 handle 好意外狀況。
+在 Rust 裡這樣的 type 叫作 <tt class="docutils literal">Option</tt> ，
+<tt class="docutils literal">Option</tt> 可以用來表示 function 可能會 fail，
+實際存的資料長這樣 :</p>
+<div class="highlight"><pre><span class="k">pub</span><span class="w"> </span><span class="k">enum</span><span class="w"> </span><span class="nb">Option</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nb">None</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nb">Some</span><span class="p">(</span><span class="n">T</span><span class="p">),</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+<p>其中可以看到除了預期的型態之外，多加了一個 None 為可能的回傳，
+當處理出問題就回傳 <tt class="docutils literal">None</tt> ，
+適用於簡單的狀況。
+但是如果狀況比較複雜，
+想要知道為什麼會 fail 的時候，
+可以使用 <tt class="docutils literal">Result</tt> ，
+實際存的資料長這樣 :</p>
+<div class="highlight"><pre><span class="k">enum</span><span class="w"> </span><span class="nb">Result</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">E</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">   </span><span class="nb">Ok</span><span class="p">(</span><span class="n">T</span><span class="p">),</span><span class="w"></span>
+<span class="w">   </span><span class="nb">Err</span><span class="p">(</span><span class="n">E</span><span class="p">)</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+<p>可以看到正常狀況下會回傳 <tt class="docutils literal">Ok(T)</tt> ，失敗的話會回傳 <tt class="docutils literal">Err(E)</tt> ，
+跟前面的 <tt class="docutils literal">Option</tt> 相比多了 error 狀況可以檢查。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://hoverbear.org/2014/08/12/option-monads-in-rust/">Option Monads in Rust</a></li>
+<li><a class="reference external" href="http://blog.burntsushi.net/rust-error-handling/">Error Handling in Rust</a></li>
+<li><a class="reference external" href="http://lucumr.pocoo.org/2014/10/16/on-error-handling/">On Error Handling in Rust</a></li>
+<li><a class="reference external" href="https://doc.rust-lang.org/book/error-handling.html">Rust - Error Handling</a></li>
+<li><a class="reference external" href="http://blog.8thlight.com/uku-taht/2015/04/29/using-the-option-type-effectively.html">Using The Option Type Effectively</a></li>
+<li><a class="reference external" href="http://blog.8thlight.com/dave-torre/2015/03/11/the-option-type.html">The Option Type</a></li>
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/Option_type">Wikipedia - Option type</a></li>
+</ul>
+</div>
+<div class="section" id="o-oop-object-oriented-programming">
+<h2><a class="toc-backref" href="#id5">[Ｏ] OOP (object-oriented programming)？</a></h2>
+<p>(研讀中 XD)</p>
+<ul class="simple">
+<li><a class="reference external" href="http://blog.rust-lang.org/2015/05/11/traits.html">Abstraction without overhead: traits in Rust</a></li>
+<li><a class="reference external" href="https://joshldavis.com/2013/06/16/the-rise-of-the-gang-of-four-with-rust/">[2013] The Rise of the Gang of Four with Rust</a></li>
+<li><a class="reference external" href="https://lwn.net/Articles/548560/">Go and Rust — objects without class</a></li>
+<li><a class="reference external" href="https://doc.rust-lang.org/book/traits.html">Rust Book - Traits</a></li>
+<li><a class="reference external" href="https://doc.rust-lang.org/book/trait-objects.html">Rust Book - Traits Objects</a></li>
+<li><a class="reference external" href="https://github.com/rust-lang/rust-guidelines/blob/master/features/traits/objects.md">rust-guidelines - traits/objects</a></li>
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/Trait_%28computer_programming%29">Wikipedia - Trait (computer programming)</a></li>
+</ul>
+</div>
+<div class="section" id="o-type-inference">
+<h2><a class="toc-backref" href="#id6">[Ｏ] Type Inference</a></h2>
+</div>
+<div class="section" id="o-memory-control">
+<h2><a class="toc-backref" href="#id7">[Ｏ] 高度的 Memory Control？</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://www.slideshare.net/nikomatsakis/guaranteeing-memory-safety-in-rust-39042975">Guaranteeing Memory Safety in Rust</a></li>
+</ul>
+</div>
+<div class="section" id="repl">
+<h2><a class="toc-backref" href="#id8">[－] REPL？</a></h2>
+<p>官方目前沒有提供，
+但是有專案正在進行中</p>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/murarth/rusti">[GitHub] rusti</a></li>
+</ul>
+</div>
+<div class="section" id="sort-algorithm">
+<h2><a class="toc-backref" href="#id9">[？] 預設提供的 Sort Algorithm 是啥？</a></h2>
+<div class="highlight"><pre><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">];</span><span class="w"></span>
+<span class="n">v</span><span class="p">.</span><span class="n">sort</span><span class="p">();</span><span class="w"></span>
+</pre></div>
+<p>目前看 <tt class="docutils literal">src/libcollections/slice.rs</tt> 裡面的 <tt class="docutils literal">sort_by</tt> 是去 call <tt class="docutils literal">merge_sort</tt></p>
+<table border="1" class="table table-bordered docutils">
+<colgroup>
+<col width="54%"></col>
+<col width="46%"></col>
+</colgroup>
+<tbody valign="top">
+<tr><td>Worst Case</td>
+<td>O(n log n)</td>
+</tr>
+<tr><td>Average Case</td>
+<td>O(n log n)</td>
+</tr>
+<tr><td>Best Case</td>
+<td>O(n log n)</td>
+</tr>
+<tr><td>Space</td>
+<td>O(2 n)</td>
+</tr>
+<tr><td>Stable</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><a class="reference external" href="https://doc.rust-lang.org/std/primitive.slice.html#method.sort_by">Rust - Primitive Type slice - sort_by</a></li>
+</ul>
+</div>
+<div class="section" id="o-regular-expression">
+<h2><a class="toc-backref" href="#id10">[Ｏ] Regular Expression 支援？</a></h2>
+<p>官方有實作，也有文件，不過放在另外一個 package</p>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/rust-lang/regex">[GitHub] rust-lang/regex</a></li>
+<li><a class="reference external" href="http://doc.rust-lang.org/regex/regex/">Rust - Crate regex</a></li>
+</ul>
+</div>
+<div class="section" id="o-ffi-foreign-function-interface">
+<h2><a class="toc-backref" href="#id11">[Ｏ] FFI (Foreign Function Interface)？</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://blog.rust-lang.org/2015/04/24/Rust-Once-Run-Everywhere.html">Rust Once, Run Everywhere</a></li>
+<li><a class="reference external" href="https://doc.rust-lang.org/book/ffi.html">Rust Book - Foreign Function Interface</a></li>
+<li><a class="reference external" href="https://doc.rust-lang.org/std/ffi/">Rust - Module std::ffi</a></li>
+<li><a class="reference external" href="http://doc.rust-lang.org/libc/libc/">Rust - Crate libc</a></li>
+<li><a class="reference external" href="https://github.com/rust-lang/libc">[GitHub] rust-lang/libc</a></li>
+<li><a class="reference external" href="https://github.com/alexcrichton/rust-ffi-examples">[GitHub] rust-ffi-examples - FFI examples written in Rust</a></li>
+</ul>
+</div>
+<div class="section" id="o-import-third-party-library">
+<h2><a class="toc-backref" href="#id12">[Ｏ] Import third party library？</a></h2>
+</div>
+<div class="section" id="o-native-threading-support">
+<h2><a class="toc-backref" href="#id13">[Ｏ] Native Threading Support？</a></h2>
+<p>(Native Threads) 目前是 1:1 的 thread，每個 user thread 都會對應到一個 kernel thread</p>
+<ul class="simple">
+<li><a class="reference external" href="https://doc.rust-lang.org/std/thread/">Rust - Module std::thread</a></li>
+<li><a class="reference external" href="https://doc.rust-lang.org/book/concurrency.html">Rust Book - Concurrency</a></li>
+<li><a class="reference external" href="http://blog.rust-lang.org/2015/04/10/Fearless-Concurrency.html">Fearless Concurrency with Rust</a></li>
+</ul>
+</div>
+<div class="section" id="x-garbage-collection">
+<h2><a class="toc-backref" href="#id14">[Ｘ] Garbage Collection？</a></h2>
+</div>
+<div class="section" id="o-format-string">
+<h2><a class="toc-backref" href="#id15">[Ｏ] Format String？</a></h2>
+<p>使用 macro <tt class="docutils literal">format!</tt></p>
+<div class="highlight"><pre><span class="n">format</span><span class="o">!</span><span class="p">(</span><span class="s">"the value is {}"</span><span class="p">,</span><span class="w"> </span><span class="mi">123</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+<ul class="simple">
+<li><a class="reference external" href="https://doc.rust-lang.org/std/fmt/">Rust - Module std::fmt</a></li>
+</ul>
+</div>
+<div class="section" id="o-ownership">
+<h2><a class="toc-backref" href="#id16">[Ｏ] Ownership？</a></h2>
+<ul>
+<li><p class="first"><a class="reference external" href="http://chrismorgan.info/blog/rust-ownership-the-hard-way.html">Rust ownership, the hard way</a></p>
+</li>
+<li><p class="first"><a class="reference external" href="https://github.com/rust-lang/rfcs/blob/master/text/0599-default-object-bound.md">[GitHub] Rust RFCs - 0599 - Default Object Bound</a></p>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference external" href="http://blog.sei.cmu.edu/post.cfm/using-the-pointer-ownership-model-to-secure-memory-management-in-c-and-c">[2013] Using the Pointer Ownership Model to Secure Memory Management in C and C++</a></dt>
+<dd><ul class="first last simple">
+<li>不錯的 Memory Management 相關背景知識解說</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first"><a class="reference external" href="https://www.securecoding.cert.org/confluence/display/c/CERT+C+Coding+Standard">CERT C Coding Standard</a></p>
+</li>
+</ul>
+</div>
+<div class="section" id="third-party">
+<h2><a class="toc-backref" href="#id17">Third Party</a></h2>
+<div class="section" id="django-like-project">
+<h3><a class="toc-backref" href="#id18">Django-like project？</a></h3>
+<p>還在發展中，漸漸有一些 web framework 出現。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://chrismorgan.info/blog/introducing-teepee.html">Introducing Teepee: the next step for rust-http</a></li>
+</ul>
+<p>上面那篇的作者有寫過 Django，後來跳出來用 Rust 想做另一套自己想要的 web framework，
+但是 Rust 在當時還沒有強大的 HTTP library 可以用，
+所以寫了 rust-http，後來對 Rust 更熟悉以及有了 rust-http 的經驗後，
+決定重設計一個 library 並增加更多支援，這 library 被取名為 <tt class="docutils literal">Teepee</tt> 。</p>
+<p>現在出現的 framework 有 :</p>
+<ul class="simple">
+<li><a class="reference external" href="http://ironframework.io/">Iron</a></li>
+<li><a class="reference external" href="http://nickel.rs/">nickel.rs</a></li>
+</ul>
+<hr class="docutils"/>
+<ul class="simple">
+<li><a class="reference external" href="http://www.reddit.com/r/rust/comments/2myght/are_there_any_rust_projects_that_have_similar/">Are there any Rust projects that have similar goals to Django (i.e. full-featured web framework)? If not, want to start one?</a></li>
+</ul>
+</div>
+<div class="section" id="game-engine">
+<h3><a class="toc-backref" href="#id19">Game Engine？</a></h3>
+<ul class="simple">
+<li><a class="reference external" href="http://www.piston.rs/">http://www.piston.rs/</a></li>
+</ul>
+</div>
+<div class="section" id="template-engine">
+<h3><a class="toc-backref" href="#id20">Template Engine？</a></h3>
+</div>
+</div>
+</div>
+
+        <hr>
+        <h2>Related Posts</h2>
+        <ul>
+            <li><a href="/posts/2014/10/stellarium/">血月之 Stellarium</a></li>
+        </ul>
+
+	<hr>
+
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'wdv4758h-blog';
+    var disqus_title = 'Rust 的一些紀錄';
+	var disqus_identifier = 'posts/2015/05/some-rust/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+                </div>
+            </div>
+		</div>
+	</div> 	<!-- <hr> -->
+</div> <!-- /container -->
+<footer class="aw-footer bg-danger">
+	<div class="container"> <!-- footer -->
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+				<div class="row">
+					<div class="col-md-3">
+						<h4>Navigation</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="">Dv 名字很難念</a></li>
+                            <li><a href="/about.html">About</a></li>
+							<li><a href="/archives"><i class="fa fa-archive "></i> archive</a></li>
+							<li><a href="/tags"><i class="fa fa-tags "></i> tags</a></li>
+							<li><a href="/feeds/all.rss.xml"><i class="fa fa-rss "></i> rss</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Author</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="https://wdv4758h.github.com">Homepage</a></li>
+							<li><a href="https://github.com/wdv4758h/">Github</a></li>
+							<li><a href="https://plus.google.com/103751737509044116269/posts">Google+</a></li>
+							<li><a href="https://www.facebook.com/wdv4758h">Facebook</a></li>
+							<li><a href="https://www.linkedin.com/pub/chiu-hsiang-hsu/69/83/530">Linked-in</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Categories</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="/category/c++.html">C++ (1)</a></li>
+							<li><a href="/category/compiler.html">Compiler (1)</a></li>
+							<li><a href="/category/django.html">Django (2)</a></li>
+							<li><a href="/category/functional.html">Functional (2)</a></li>
+							<li><a href="/category/fuzzy.html">Fuzzy (1)</a></li>
+							<li><a href="/category/gc.html">GC (1)</a></li>
+							<li><a href="/category/html5.html">HTML5 (1)</a></li>
+							<li><a href="/category/linux.html">Linux (3)</a></li>
+							<li><a href="/category/misc.html">Misc (40)</a></li>
+							<li><a href="/category/prolog.html">Prolog (1)</a></li>
+							<li><a href="/category/python.html">Python (14)</a></li>
+							<li><a href="/category/qemu.html">QEMU (1)</a></li>
+							<li><a href="/category/rust.html">Rust (3)</a></li>
+							<li><a href="/category/ted.html">TED (1)</a></li>
+							<li><a href="/category/vim.html">Vim (3)</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Links</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="https://www.python.org/">Python</a></li>
+							<li><a href="https://www.djangoproject.com/">Django</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; wdv4758h 2014</p>
+            <small>Arch Linux + Vim + reStructuredText + Pelican = Blog</small>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<!-- search -->
+<script type="text/javascript" src="/theme/tipuesearch/tipuesearch_set.js"></script>
+<script type="text/javascript" src="/theme/tipuesearch/tipuesearch.min.js"></script>
+<!------------>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-42810012-2', 'auto');
+  ga('send', 'pageview');
+</script>
+</body>
+</html>

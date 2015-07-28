@@ -1,5 +1,233 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Dv 名字很難念</title><link href="/" rel="alternate"></link><link href="/feeds/linux.atom.xml" rel="self"></link><id>/</id><updated>2015-01-24T21:21:00+08:00</updated><entry><title>Xorg with libinput as driver</title><link href="/posts/2015/01/xorg-with-libinput-as-driver/" rel="alternate"></link><updated>2015-01-24T21:21:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2015-01-24:posts/2015/01/xorg-with-libinput-as-driver/</id><summary type="html">&lt;div class="section" id="libinput"&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Dv 名字很難念</title><link href="/" rel="alternate"></link><link href="/feeds/linux.atom.xml" rel="self"></link><id>/</id><updated>2015-03-22T12:28:00+08:00</updated><entry><title>Linux Video Hardware Acceleration</title><link href="/posts/2015/03/linux-video-acceleration/" rel="alternate"></link><updated>2015-03-22T12:28:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2015-03-22:posts/2015/03/linux-video-acceleration/</id><summary type="html">&lt;p&gt;tl;dr; VDPAU 和 VA-API 是 Unix-like 上 Video Decode 的硬體加速 API&lt;/p&gt;
+&lt;p&gt;VA-API (Video Acceleration API) 是 Intel 在 2007 年提出的一套 royalty-free API，
+實作在 &lt;tt class="docutils literal"&gt;libVA&lt;/tt&gt; 以 MIT license 釋出。
+目的是讓其他程式可以使用 Video 硬體加速。&lt;/p&gt;
+&lt;p&gt;VDPAU (Video Decode and Presentation API for Unix) 是 NVIDIA 在 2009 年提出的另一套 royalty-free API，
+實作放在 &lt;tt class="docutils literal"&gt;libvdpau&lt;/tt&gt; 以 MIT license 釋出 (一開始是做給 NVIDIA 自己的 GPU 用的)。&lt;/p&gt;
+&lt;p&gt;mesa 在 0.8 版加入了 VDPAU 的支援，以後只要是利用 Gallium3D 的顯卡驅動就可以獲得 VDPAU 的支援。&lt;/p&gt;
+&lt;p&gt;XvBA (X-Video Bitstream Acceleration) 則是 AMD 後來提的令一套 API ...&lt;/p&gt;
+&lt;p&gt;VDPAU 也可以當作 VA-API 的 backend (libva-vdpau-driver)，
+VA-API 也可以當作 VDPAU 的 backend (libvdpau-va-gl)，
+他們有一部份是重疊的。&lt;/p&gt;
+&lt;table border="1" class="table table-bordered docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="20%" /&gt;
+&lt;col width="17%" /&gt;
+&lt;col width="43%" /&gt;
+&lt;col width="20%" /&gt;
+&lt;/colgroup&gt;
+&lt;thead valign="bottom"&gt;
+&lt;tr&gt;&lt;th class="head"&gt;Company&lt;/th&gt;
+&lt;th class="head"&gt;Name&lt;/th&gt;
+&lt;th class="head"&gt;First Release Year&lt;/th&gt;
+&lt;th class="head"&gt;License&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;Intel&lt;/td&gt;
+&lt;td&gt;VA-API&lt;/td&gt;
+&lt;td&gt;2007&lt;/td&gt;
+&lt;td&gt;MIT&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;NVIDIA&lt;/td&gt;
+&lt;td&gt;VDPAU&lt;/td&gt;
+&lt;td&gt;2009&lt;/td&gt;
+&lt;td&gt;MIT&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;AMD&lt;/td&gt;
+&lt;td&gt;XvBA&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div class="section" id="vdpau"&gt;
+&lt;h2&gt;vdpau&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Intel : libvdpau-va-gl&lt;/li&gt;
+&lt;li&gt;AMD : mesa-vdpau&lt;/li&gt;
+&lt;li&gt;NVIDIA : mesa-vdpau&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# Intel&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;sudo pacman -S libvdpau-va-gl
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;可以裝 &lt;tt class="docutils literal"&gt;vdpauinfo&lt;/tt&gt; 這個 package 來知道目前這台機器上的 GPU 支援的 features&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# 裝 vdpauinfo 來看相關資訊&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;sudo pacman -S vdpauinfo
+
+&lt;span class="c"&gt;# 跑 vdpauinfo 來取得訊息&lt;/span&gt;
+&lt;span class="c"&gt;# 但是在我筆電上 (Intel i5-3210M, HD Graphics 4000) 會出現找不到 shared object 的錯誤&lt;/span&gt;
+&lt;span class="c"&gt;# 感覺算是 bug&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;vdpauinfo
+display: :0   screen: 0
+Failed to open VDPAU backend libvdpau_i965.so: cannot open shared object file: No such file or directory
+Error creating VDPAU device: 1
+
+&lt;span class="c"&gt;# 用 VDPAU_DRIVER 這個環境變數來指定 driver 後就正常了&lt;/span&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;env &lt;span class="nv"&gt;VDPAU_DRIVER&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;va_gl vdpauinfo
+display: :0   screen: 0
+&lt;span class="o"&gt;[&lt;/span&gt;VS&lt;span class="o"&gt;]&lt;/span&gt; Software VDPAU backend library initialized
+libva info: VA-API version 0.37.0
+libva info: va_getDriverName&lt;span class="o"&gt;()&lt;/span&gt; returns 0
+libva info: Trying to open /usr/lib/dri/i965_drv_video.so
+libva info: Found init &lt;span class="k"&gt;function&lt;/span&gt; __vaDriverInit_0_37
+libva info: va_openDriver&lt;span class="o"&gt;()&lt;/span&gt; returns 0
+API version: 1
+Information string: OpenGL/VAAPI/libswscale backend &lt;span class="k"&gt;for&lt;/span&gt; VDPAU
+
+Video surface:
+
+name   width height types
+-------------------------------------------
+&lt;span class="m"&gt;420&lt;/span&gt;     &lt;span class="m"&gt;1920&lt;/span&gt;  &lt;span class="m"&gt;1080&lt;/span&gt;  NV12 YV12 UYVY YUYV Y8U8V8A8 V8U8Y8A8
+&lt;span class="m"&gt;422&lt;/span&gt;     &lt;span class="m"&gt;1920&lt;/span&gt;  &lt;span class="m"&gt;1080&lt;/span&gt;  NV12 YV12 UYVY YUYV Y8U8V8A8 V8U8Y8A8
+&lt;span class="m"&gt;444&lt;/span&gt;     &lt;span class="m"&gt;1920&lt;/span&gt;  &lt;span class="m"&gt;1080&lt;/span&gt;  NV12 YV12 UYVY YUYV Y8U8V8A8 V8U8Y8A8
+
+Decoder capabilities:
+
+name                        level macbs width height
+----------------------------------------------------
+MPEG1                          --- not supported ---
+MPEG2_SIMPLE                   --- not supported ---
+MPEG2_MAIN                     --- not supported ---
+H264_BASELINE                  &lt;span class="m"&gt;51&lt;/span&gt; &lt;span class="m"&gt;16384&lt;/span&gt;  &lt;span class="m"&gt;2048&lt;/span&gt;  2048
+H264_MAIN                      &lt;span class="m"&gt;51&lt;/span&gt; &lt;span class="m"&gt;16384&lt;/span&gt;  &lt;span class="m"&gt;2048&lt;/span&gt;  2048
+H264_HIGH                      &lt;span class="m"&gt;51&lt;/span&gt; &lt;span class="m"&gt;16384&lt;/span&gt;  &lt;span class="m"&gt;2048&lt;/span&gt;  2048
+VC1_SIMPLE                     --- not supported ---
+VC1_MAIN                       --- not supported ---
+VC1_ADVANCED                   --- not supported ---
+MPEG4_PART2_SP                 --- not supported ---
+MPEG4_PART2_ASP                --- not supported ---
+DIVX4_QMOBILE                  --- not supported ---
+DIVX4_MOBILE                   --- not supported ---
+DIVX4_HOME_THEATER             --- not supported ---
+DIVX4_HD_1080P                 --- not supported ---
+DIVX5_QMOBILE                  --- not supported ---
+DIVX5_MOBILE                   --- not supported ---
+DIVX5_HOME_THEATER             --- not supported ---
+DIVX5_HD_1080P                 --- not supported ---
+H264_CONSTRAINED_BASELINE      --- not supported ---
+H264_EXTENDED                  --- not supported ---
+H264_PROGRESSIVE_HIGH          --- not supported ---
+H264_CONSTRAINED_HIGH          --- not supported ---
+H264_HIGH_444_PREDICTIVE       --- not supported ---
+
+Output surface:
+
+name              width height nat types
+----------------------------------------------------
+B8G8R8A8            &lt;span class="m"&gt;53&lt;/span&gt;    &lt;span class="m"&gt;53&lt;/span&gt;    y
+R8G8B8A8             &lt;span class="m"&gt;0&lt;/span&gt;     &lt;span class="m"&gt;0&lt;/span&gt;    y
+R10G10B10A2          &lt;span class="m"&gt;0&lt;/span&gt;     &lt;span class="m"&gt;0&lt;/span&gt;    y
+B10G10R10A2          &lt;span class="m"&gt;0&lt;/span&gt;     &lt;span class="m"&gt;0&lt;/span&gt;    y
+A8                   &lt;span class="m"&gt;0&lt;/span&gt;     &lt;span class="m"&gt;0&lt;/span&gt;    y
+
+Bitmap surface:
+
+name              width height
+------------------------------
+B8G8R8A8          &lt;span class="m"&gt;8192&lt;/span&gt;  8192
+R8G8B8A8          &lt;span class="m"&gt;8192&lt;/span&gt;  8192
+R10G10B10A2       &lt;span class="m"&gt;8192&lt;/span&gt;  8192
+B10G10R10A2       &lt;span class="m"&gt;8192&lt;/span&gt;  8192
+A8                &lt;span class="m"&gt;8192&lt;/span&gt;  8192
+
+Video mixer:
+
+feature name                    sup
+------------------------------------
+DEINTERLACE_TEMPORAL             -
+DEINTERLACE_TEMPORAL_SPATIAL     -
+INVERSE_TELECINE                 -
+NOISE_REDUCTION                  -
+SHARPNESS                        -
+LUMA_KEY                         -
+HIGH QUALITY SCALING - L1        -
+HIGH QUALITY SCALING - L2        -
+HIGH QUALITY SCALING - L3        -
+HIGH QUALITY SCALING - L4        -
+HIGH QUALITY SCALING - L5        -
+HIGH QUALITY SCALING - L6        -
+HIGH QUALITY SCALING - L7        -
+HIGH QUALITY SCALING - L8        -
+HIGH QUALITY SCALING - L9        -
+
+parameter name                  sup      min      max
+-----------------------------------------------------
+VIDEO_SURFACE_WIDTH              -
+VIDEO_SURFACE_HEIGHT             -
+CHROMA_TYPE                      -
+LAYERS                           -
+
+attribute name                  sup      min      max
+-----------------------------------------------------
+BACKGROUND_COLOR                 -
+CSC_MATRIX                       -
+NOISE_REDUCTION_LEVEL            -
+SHARPNESS_LEVEL                  -
+LUMA_KEY_MIN_LUMA                -
+LUMA_KEY_MAX_LUMA                -
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="libva"&gt;
+&lt;h2&gt;libva&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;sudo pacman -S libva
+&lt;span class="nv"&gt;$ &lt;/span&gt;vainfo    &lt;span class="c"&gt;# 看硬體解碼支援哪些格式&lt;/span&gt;
+libva info: VA-API version 0.37.0
+libva info: va_getDriverName&lt;span class="o"&gt;()&lt;/span&gt; returns 0
+libva info: Trying to open /usr/lib/dri/i965_drv_video.so
+libva info: Found init &lt;span class="k"&gt;function&lt;/span&gt; __vaDriverInit_0_37
+libva info: va_openDriver&lt;span class="o"&gt;()&lt;/span&gt; returns 0
+vainfo: VA-API version: 0.37 &lt;span class="o"&gt;(&lt;/span&gt;libva 1.5.0&lt;span class="o"&gt;)&lt;/span&gt;
+vainfo: Driver version: Intel i965 driver &lt;span class="k"&gt;for&lt;/span&gt; Intel&lt;span class="o"&gt;(&lt;/span&gt;R&lt;span class="o"&gt;)&lt;/span&gt; Ivybridge Mobile - 1.5.0
+vainfo: Supported profile and entrypoints
+      VAProfileMPEG2Simple            :     VAEntrypointVLD
+      VAProfileMPEG2Simple            :     VAEntrypointEncSlice
+      VAProfileMPEG2Main              :     VAEntrypointVLD
+      VAProfileMPEG2Main              :     VAEntrypointEncSlice
+      VAProfileH264ConstrainedBaseline:     VAEntrypointVLD
+      VAProfileH264ConstrainedBaseline:     VAEntrypointEncSlice
+      VAProfileH264Main               :     VAEntrypointVLD
+      VAProfileH264Main               :     VAEntrypointEncSlice
+      VAProfileH264High               :     VAEntrypointVLD
+      VAProfileH264High               :     VAEntrypointEncSlice
+      VAProfileH264StereoHigh         :     VAEntrypointVLD
+      VAProfileVC1Simple              :     VAEntrypointVLD
+      VAProfileVC1Main                :     VAEntrypointVLD
+      VAProfileVC1Advanced            :     VAEntrypointVLD
+      VAProfileNone                   :     VAEntrypointVideoProc
+      VAProfileJPEGBaseline           :     VAEntrypointVLD
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="chromium"&gt;
+&lt;h2&gt;Chromium&lt;/h2&gt;
+&lt;p&gt;原來現在從 package 裡裝到的 chromium 都是沒有開 VAAPI 支援的，
+目前好像只有 &lt;a class="reference external" href="https://code.google.com/p/chromium/codesearch#chromium/src/content/common/gpu/media/gpu_video_decode_accelerator.cc&amp;amp;sq=package:chromium&amp;amp;type=cs&amp;amp;l=343&amp;amp;rcl=1426535742"&gt;在 ChromeOS 上會開啟&lt;/a&gt;&lt;/p&gt;
+&lt;img alt="Chromium" src="/img/vdpau/chromium-vaapi.png" /&gt;
+&lt;p&gt;如果在 chromium 裡面開影片的話會看到 console 上有段資訊 (寫著 &amp;quot;&lt;strong&gt;HW video decode acceleration not available.&lt;/strong&gt;&amp;quot;) :&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+[5100:5100:0322/052925:ERROR:gpu_video_decode_accelerator.cc(272)] Not implemented reached in void content::GpuVideoDecodeAccelerator::Initialize(media::VideoCodecProfile, IPC::Message*)HW video decode acceleration not available.
+&lt;/pre&gt;
+&lt;p&gt;官方也寫了 &lt;a class="reference external" href="https://code.google.com/p/chromium/wiki/LinuxHWVideoDecode"&gt;unsupport&lt;/a&gt; ...&lt;/p&gt;
+&lt;img alt="Chromium VAAPI on Linux" src="/img/vdpau/chromium-vaapi-linux.png" /&gt;
+&lt;p&gt;另外可以在 chromium 裡的 &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;chrome://gpu&lt;/span&gt;&lt;/tt&gt; 看到一些 features 的支援狀況 (但是 video 的 hardware decode acceleration 實際上還是沒開啟 ...)&lt;/p&gt;
+&lt;img alt="Chromium GPU" src="/img/vdpau/chromium-gpu.png" /&gt;
+&lt;/div&gt;
+&lt;div class="section" id="reference"&gt;
+&lt;h2&gt;Reference&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://wiki.archlinux.org/index.php/VDPAU"&gt;Arch Wiki - VDPAU&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://wiki.archlinux.org/index.php/VA-API"&gt;Arch Wiki - VA-API&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://en.wikipedia.org/wiki/VDPAU"&gt;Wikipedia - VDPAU&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://en.wikipedia.org/wiki/Video_Acceleration_API"&gt;Wikipedia - Video Acceleration API&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://en.wikipedia.org/wiki/X-Video_Bitstream_Acceleration"&gt;Wikipedia - X-Video Bitstream Acceleration&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.freedesktop.org/wiki/Software/vaapi/"&gt;freedesktop.org - vaapi&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.freedesktop.org/wiki/Software/VDPAU/"&gt;freedesktop.org - VDPAU&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://01.org/linuxgraphics/community/vaapi"&gt;Linux Graphics - VAAPI&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</summary><category term="VDPAU"></category><category term="VAAPI"></category></entry><entry><title>Xorg with libinput as driver</title><link href="/posts/2015/01/xorg-with-libinput-as-driver/" rel="alternate"></link><updated>2015-01-24T21:21:00+08:00</updated><author><name>wdv4758h</name></author><id>tag:,2015-01-24:posts/2015/01/xorg-with-libinput-as-driver/</id><summary type="html">&lt;div class="section" id="libinput"&gt;
 &lt;h2&gt;libinput&lt;/h2&gt;
 &lt;p&gt;這是 Xorg 上的 Input Stack :&lt;/p&gt;
 &lt;img alt="Xorg Input Stack" src="/img/linux/x-input-stack.png" /&gt;
