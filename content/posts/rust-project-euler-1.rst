@@ -1,7 +1,7 @@
 :title: Rust Example - Project Euler #1 - Try Some Features in Simple Problem
 :slug: rust-example-project-euler-1
 :date: 2015-07-26 16:17
-:modified: 2015-07-26 16:17
+:modified: 2015-07-28 21:46
 :category: Rust
 :tags: Rust, macro
 :author: wdv4758h
@@ -31,9 +31,6 @@
         fn sum_range(start: u64, end: u64) -> u64 {
             end * (start + end) / 2
         }
-
-        // [TODO]
-        // make function more general
 
         fn sum_multiples_of_two_below(base_num: &[u64], end: u64) -> u64 {
             let v1 = base_num[0];
@@ -106,6 +103,122 @@
         sum_multiples_of_base_below!(OωO 3, 5 OωO, 1, 1000)
     }
 
+    fn p1_sol5() -> u64 {
+        // closure
+
+        let mut s = 0;
+        let mut v = 0;
+
+        {
+            // only borrow in this scope
+
+            let mut f = || {
+                v = v + 1;
+                s = s + ((v % 3) * (v % 5) < 1) as u64 * v;
+            };
+
+            for _ in 1..1000 {
+                f();
+            }
+        }
+
+        s
+    }
+
+    fn p1_sol6() -> u64 {
+        // static variable
+
+        fn f() -> u64 {
+            static mut s: u64 = 0;
+            static mut v: u64 = 0;
+
+            // static mut is unsafe
+            unsafe {
+                v = v + 1;
+                s = s + ((v % 3) * (v % 5) < 1) as u64 * v;
+
+                s
+            }
+        }
+
+        let mut result = 0;
+
+        for _ in 1..1000 {
+            result = f();
+        }
+
+        result
+    }
+
+    fn p1_sol7() -> u64 {
+        // iterator
+
+        struct Euler {
+            s: u64,
+            v: u64,
+        }
+
+        impl Iterator for Euler {
+            type Item = u64;
+
+            fn next(&mut self) -> Option<u64> {
+                let s = self.s;
+                let v = self.v;
+                let s = s + ((v % 3) * (v % 5) < 1) as u64 * v;
+                let v = v + 1;
+                self.s = s;
+                self.v = v;
+
+                Some(self.s)
+            }
+        }
+
+        let euler = Euler { s: 0, v: 0 };
+
+        euler.skip(1000-1)
+            .next().unwrap_or(0)
+    }
+
+    fn p1_sol8() -> u64 {
+        // overload index
+        // index has side-effect, it's bad :P
+
+        use std::ops::{Index, IndexMut};
+
+        struct Euler {
+            s: u64,
+            v: u64,
+        }
+
+        impl Index<u64> for Euler {
+            type Output = u64;
+
+            fn index(&self, _index: u64) -> &u64 {
+                &self.s
+            }
+        }
+
+        impl IndexMut<u64> for Euler {
+            fn index_mut(&mut self, _index: u64) -> &mut u64 {
+                let v = self.v;
+                let s = self.s;
+                let v = v + 1;
+                let s = s + ((v % 3) * (v % 5) < 1) as u64 * v;
+                self.v = v;
+                self.s = s;
+                &mut self.s
+            }
+        }
+
+        let mut euler = Euler { s: 0, v: 0 };
+
+        for _ in 1..1000 {
+            &mut euler[0];
+        }
+
+        euler[0]
+    }
+
     fn main() {
         // sum of all the multiples of 3 or 5 below 1000
         // ans : 233168
@@ -113,6 +226,10 @@
         println!("p1_sol2 : {}", p1_sol2());
         println!("p1_sol3 : {}", p1_sol3());
         println!("p1_sol4 : {}", p1_sol4());
+        println!("p1_sol5 : {}", p1_sol5());
+        println!("p1_sol6 : {}", p1_sol6());
+        println!("p1_sol7 : {}", p1_sol7());
+        println!("p1_sol8 : {}", p1_sol8());
     }
 
 
